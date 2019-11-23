@@ -149,9 +149,9 @@ int main(int /*argc*/, char ** /*argv*/)
   printf("a =\n"); print(VectorT(cs::transpose(a)));
   printf("b =\n"); print(b);
 
-  __debugbreak();
+  // __debugbreak();
   const double dot = cs::dot(a, b);
-  __debugbreak();
+  // __debugbreak();
 
   printf("a^T o b = %8.3f\n", dot);
 #else
