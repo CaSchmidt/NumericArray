@@ -106,7 +106,7 @@ namespace cs {
       template<dim_T i, dim_T j>
       constexpr scalar_T eval() const
       {
-        return _arg.template eval<i,j>() / _length;
+        return _arg.template eval<i,j>()/_length;
       }
 
     private:
