@@ -41,12 +41,15 @@ namespace cs {
     // Implementation - Cyclic Index Computation /////////////////////////////
 
     template<dim_T i, dim_T N>
-    struct CI {
-      enum CyclicIndex : dim_T {
+    struct CyclicIndex {
+      enum NextIndex : dim_T {
         J = (i + 1)%N,
         K = (i + 2)%N
       };
     };
+
+    template<dim_T i>
+    using CI3 = CyclicIndex<i,3>;
 
   } // namespace impl
 

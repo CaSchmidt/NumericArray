@@ -53,44 +53,13 @@ namespace cs {
 
       ~Cross() noexcept = default;
 
-#if 1
       template<dim_T i, dim_T /*j*/>
       constexpr scalar_T eval() const
       {
         return
-            _arg1.template eval<CI<i,3>::J,0>()*_arg2.template eval<CI<i,3>::K,0>() -
-            _arg1.template eval<CI<i,3>::K,0>()*_arg2.template eval<CI<i,3>::J,0>();
+            _arg1.template eval<CI3<i>::J,0>()*_arg2.template eval<CI3<i>::K,0>() -
+            _arg1.template eval<CI3<i>::K,0>()*_arg2.template eval<CI3<i>::J,0>();
       }
-#else
-      template<dim_T i, dim_T>
-      constexpr scalar_T eval() const
-      {
-      }
-
-      template<>
-      constexpr scalar_T eval<0,0>() const
-      {
-        return
-            _arg1.template eval<1,0>()*_arg2.template eval<2,0>() -
-            _arg1.template eval<2,0>()*_arg2.template eval<1,0>();
-      }
-
-      template<>
-      constexpr scalar_T eval<1,0>() const
-      {
-        return
-            _arg1.template eval<2,0>()*_arg2.template eval<0,0>() -
-            _arg1.template eval<0,0>()*_arg2.template eval<2,0>();
-      }
-
-      template<>
-      constexpr scalar_T eval<2,0>() const
-      {
-        return
-            _arg1.template eval<0,0>()*_arg2.template eval<1,0>() -
-            _arg1.template eval<1,0>()*_arg2.template eval<0,0>();
-      }
-#endif
 
     private:
       const ARG1& _arg1;
