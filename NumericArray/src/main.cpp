@@ -155,24 +155,23 @@ int main(int /*argc*/, char ** /*argv*/)
 
   printf("a^T o b = %8.3f\n", dot);
 #else
-  const Vector a = {1, 2, 2};
-  print(a, "a =");
+  const Vector d = {1, 2, 2};
+  print(d, "d =");
 
-  printf("length(a) = %8.3f\n", cs::length(a));
+  printf("length(d) = %8.3f\n", cs::length(d));
 
   // __debugbreak();
-  const Vector x = cs::normalize(a);
+  const Vector x = cs::normalize(d);
   // __debugbreak();
-  print(x, "cs::normalize(a) =");
+  print(x, "cs::normalize(d) =");
 
-  const Vector from(1);
-  const Vector   to(from + a);
   printf("distance(Vector(1), Vector(1) + {1, 2, 2}) = %8.3f\n",
-         cs::distance(from, to));
-  print(cs::direction(from, to),
+         cs::distance(Vector(1) - Vector(0), Vector(1) + d));
+  print(cs::direction(Vector(1) - Vector(0), Vector(1) + d),
         "direction(Vector(1), Vector(1) + {1, 2, 2}) =");
-  print(cs::cross(Vector({1, 2, 3}), Vector(0) + Vector({4, 5, 6})),
-        "cross({1, 2, 3}, Vector(0) + {4, 5, 6}) =");
+
+  print(cs::cross(Vector({1, 2, 3}) - Vector(0), Vector(0) + Vector({4, 5, 6})),
+        "cross({1, 2, 3} - Vector(0), Vector(0) + {4, 5, 6}) =");
 #endif
 
   return EXIT_SUCCESS;

@@ -39,6 +39,13 @@
 
 namespace cs {
 
+  // Forward Declarations ////////////////////////////////////////////////////
+
+  template<typename scalar_T, dim_T ROWS, typename ARG>
+  constexpr scalar_T length(const ExprBase<scalar_T,ROWS,1,ARG>& arg);
+
+  // Cross Product ///////////////////////////////////////////////////////////
+
   template<typename scalar_T, typename ARG1, typename ARG2>
   constexpr impl::Cross<scalar_T,ARG1,ARG2> cross(
       const ExprBase<scalar_T,3,1,ARG1>& arg1,
@@ -48,13 +55,32 @@ namespace cs {
     return impl::Cross<scalar_T,ARG1,ARG2>(arg1.as_derived(), arg2.as_derived());
   }
 
-  template<typename scalar_T, dim_T ROWS, dim_T COLS, typename ARG>
-  constexpr impl::Transpose<scalar_T,COLS,ROWS,ARG> transpose(
-      const ExprBase<scalar_T,ROWS,COLS,ARG>& arg
+  // Direction ///////////////////////////////////////////////////////////////
+
+  template<typename scalar_T, dim_T ROWS, typename FROM, typename TO>
+  constexpr impl::Normalize<scalar_T,ROWS,impl::BinSub<scalar_T,ROWS,1,TO,FROM>> direction(
+      const ExprBase<scalar_T,ROWS,1,FROM>& from,
+      const ExprBase<scalar_T,ROWS,1,TO>& to
       )
   {
-    return impl::Transpose<scalar_T,COLS,ROWS,ARG>(arg.as_derived());
+    using SUB = impl::BinSub<scalar_T,ROWS,1,TO,FROM>;
+    return impl::Normalize<scalar_T,ROWS,SUB>(SUB(to.as_derived(), from.as_derived()),
+                                              cs::length(SUB(to.as_derived(), from.as_derived())));
   }
+
+  // Distance ////////////////////////////////////////////////////////////////
+
+  template<typename scalar_T, dim_T ROWS, typename FROM, typename TO>
+  constexpr scalar_T distance(
+      const ExprBase<scalar_T,ROWS,1,FROM>& from,
+      const ExprBase<scalar_T,ROWS,1,TO>& to
+      )
+  {
+    using SUB = impl::BinSub<scalar_T,ROWS,1,TO,FROM>;
+    return cs::length(SUB(to.as_derived(), from.as_derived()));
+  }
+
+  // Dot Product /////////////////////////////////////////////////////////////
 
   template<typename scalar_T, dim_T ROWS, typename ARG1, typename ARG2>
   constexpr scalar_T dot(
@@ -62,8 +88,12 @@ namespace cs {
       const ExprBase<scalar_T,ROWS,1,ARG2>& arg2
       )
   {
-    return (transpose(arg1)*arg2).template eval<0,0>();
+    using TRANSPOSE = impl::Transpose<scalar_T,1,ROWS,ARG1>;
+    using       MUL = impl::BinMul<scalar_T,1,ROWS,1,TRANSPOSE,ARG2>;
+    return MUL(arg1.as_derived(), arg2.as_derived()).template eval<0,0>();
   }
+
+  // Length //////////////////////////////////////////////////////////////////
 
   template<typename scalar_T, dim_T ROWS, typename ARG>
   constexpr scalar_T length(
@@ -73,14 +103,7 @@ namespace cs {
     return std::sqrt(dot(arg, arg));
   }
 
-  template<typename scalar_T, dim_T ROWS, typename FROM, typename TO>
-  constexpr scalar_T distance(
-      const ExprBase<scalar_T,ROWS,1,FROM>& from,
-      const ExprBase<scalar_T,ROWS,1,TO>& to
-      )
-  {
-    return cs::length(to - from);
-  }
+  // Vector Normalization ////////////////////////////////////////////////////
 
   template<typename scalar_T, dim_T ROWS, typename ARG>
   constexpr impl::Normalize<scalar_T,ROWS,ARG> normalize(
@@ -91,14 +114,14 @@ namespace cs {
                                               cs::length(arg.as_derived()));
   }
 
-  template<typename scalar_T, dim_T ROWS, typename FROM, typename TO>
-  constexpr impl::Normalize<scalar_T,ROWS,impl::BinSub<scalar_T,ROWS,1,TO,FROM>> direction(
-      const ExprBase<scalar_T,ROWS,1,FROM>& from,
-      const ExprBase<scalar_T,ROWS,1,TO>& to
+  // Matrix Transposition ////////////////////////////////////////////////////
+
+  template<typename scalar_T, dim_T ROWS, dim_T COLS, typename ARG>
+  constexpr impl::Transpose<scalar_T,COLS,ROWS,ARG> transpose(
+      const ExprBase<scalar_T,ROWS,COLS,ARG>& arg
       )
   {
-    return impl::Normalize<scalar_T,ROWS,impl::BinSub<scalar_T,ROWS,1,TO,FROM>>(to - from,
-                                                                                cs::length(to - from));
+    return impl::Transpose<scalar_T,COLS,ROWS,ARG>(arg.as_derived());
   }
 
 } // namespace cs
