@@ -172,6 +172,9 @@ int main(int /*argc*/, char ** /*argv*/)
 
   print(cs::cross(Vector({1, 2, 3}) - Vector(0), Vector(0) + Vector({4, 5, 6})),
         "cross({1, 2, 3} - Vector(0), Vector(0) + {4, 5, 6}) =");
+
+  print(1.5*(d + d + Vector(0))*2./cs::length(d),
+        "1.5*(d + d)*2/length(d) =");
 #endif
 
   return EXIT_SUCCESS;

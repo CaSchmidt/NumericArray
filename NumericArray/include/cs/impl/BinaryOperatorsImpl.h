@@ -63,6 +63,31 @@ namespace cs {
       const RHS& _rhs;
     };
 
+    // Implementation - Scalar Division //////////////////////////////////////
+
+    template<typename scalar_T, dim_T ROWS, dim_T COLS, typename OP>
+    class BinSDiv
+        : public ExprBase<scalar_T,ROWS,COLS,BinSDiv<scalar_T,ROWS,COLS,OP>> {
+    public:
+      BinSDiv(const OP& op, const scalar_T scalar) noexcept
+        : _op(op)
+        , _scalar{scalar}
+      {
+      }
+
+      ~BinSDiv() noexcept = default;
+
+      template<dim_T i, dim_T j>
+      constexpr scalar_T eval() const
+      {
+        return _op.template eval<i,j>()/_scalar;
+      }
+
+    private:
+      const OP& _op;
+      scalar_T _scalar;
+    };
+
     // Implementation - Multiplication ///////////////////////////////////////
 
     template<typename scalar_T, dim_T I, dim_T J, dim_T k, dim_T INNER, typename LHS, typename RHS>
@@ -112,6 +137,31 @@ namespace cs {
     private:
       const LHS& _lhs;
       const RHS& _rhs;
+    };
+
+    // Implementation - Scalar Multiplication ////////////////////////////////
+
+    template<typename scalar_T, dim_T ROWS, dim_T COLS, typename OP>
+    class BinSMul
+        : public ExprBase<scalar_T,ROWS,COLS,BinSMul<scalar_T,ROWS,COLS,OP>> {
+    public:
+      BinSMul(const OP& op, const scalar_T scalar) noexcept
+        : _op(op)
+        , _scalar{scalar}
+      {
+      }
+
+      ~BinSMul() noexcept = default;
+
+      template<dim_T i, dim_T j>
+      constexpr scalar_T eval() const
+      {
+        return _op.template eval<i,j>()*_scalar;
+      }
+
+    private:
+      const OP& _op;
+      const scalar_T _scalar;
     };
 
     // Implementation - Subtraction //////////////////////////////////////////

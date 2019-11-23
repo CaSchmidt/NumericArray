@@ -63,6 +63,33 @@ namespace cs {
     return impl::BinMul<scalar_T,ROWS,INNER,COLS,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
   }
 
+  template<typename scalar_T, dim_T ROWS, dim_T COLS, typename OP>
+  constexpr impl::BinSMul<scalar_T,ROWS,COLS,OP> operator*(
+      const ExprBase<scalar_T,ROWS,COLS,OP>& op,
+      const scalar_T scalar
+      )
+  {
+    return impl::BinSMul<scalar_T,ROWS,COLS,OP>(op.as_derived(), scalar);
+  }
+
+  template<typename scalar_T, dim_T ROWS, dim_T COLS, typename OP>
+  constexpr impl::BinSMul<scalar_T,ROWS,COLS,OP> operator*(
+      const scalar_T scalar,
+      const ExprBase<scalar_T,ROWS,COLS,OP>& op
+      )
+  {
+    return impl::BinSMul<scalar_T,ROWS,COLS,OP>(op.as_derived(), scalar);
+  }
+
+  template<typename scalar_T, dim_T ROWS, dim_T COLS, typename OP>
+  constexpr impl::BinSDiv<scalar_T,ROWS,COLS,OP> operator/(
+      const ExprBase<scalar_T,ROWS,COLS,OP>& op,
+      const scalar_T scalar
+      )
+  {
+    return impl::BinSDiv<scalar_T,ROWS,COLS,OP>(op.as_derived(), scalar);
+  }
+
 } // namespace cs
 
 #endif // BINARYOPERATORS_H
