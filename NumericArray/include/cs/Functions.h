@@ -114,7 +114,7 @@ namespace cs {
                                               cs::length(arg.as_derived()));
   }
 
-  // Matrix Transposition ////////////////////////////////////////////////////
+  // Vector/Matrix Transposition /////////////////////////////////////////////
 
   template<typename scalar_T, dim_T ROWS, dim_T COLS, typename ARG>
   constexpr impl::Transpose<scalar_T,COLS,ROWS,ARG> transpose(

@@ -66,29 +66,6 @@ namespace cs {
       const ARG2& _arg2;
     };
 
-    // Implementation - Matrix/Vector Transposition //////////////////////////
-
-    template<typename scalar_T, dim_T ROWS, dim_T COLS, typename ARG>
-    class Transpose
-        : public ExprBase<scalar_T,ROWS,COLS,Transpose<scalar_T,ROWS,COLS,ARG>> {
-    public:
-      Transpose(const ARG& arg) noexcept
-        : _arg(arg)
-      {
-      }
-
-      ~Transpose() noexcept = default;
-
-      template<dim_T i, dim_T j>
-      constexpr scalar_T eval() const
-      {
-        return _arg.template eval<j,i>();
-      }
-
-    private:
-      const ARG& _arg;
-    };
-
     // Implementation - Vector Normalization /////////////////////////////////
 
     template<typename scalar_T, dim_T ROWS, typename ARG>
@@ -112,6 +89,29 @@ namespace cs {
     private:
       const ARG&     _arg;
       const scalar_T _length{};
+    };
+
+    // Implementation - Matrix/Vector Transposition //////////////////////////
+
+    template<typename scalar_T, dim_T ROWS, dim_T COLS, typename ARG>
+    class Transpose
+        : public ExprBase<scalar_T,ROWS,COLS,Transpose<scalar_T,ROWS,COLS,ARG>> {
+    public:
+      Transpose(const ARG& arg) noexcept
+        : _arg(arg)
+      {
+      }
+
+      ~Transpose() noexcept = default;
+
+      template<dim_T i, dim_T j>
+      constexpr scalar_T eval() const
+      {
+        return _arg.template eval<j,i>();
+      }
+
+    private:
+      const ARG& _arg;
     };
 
   } // namespace impl
