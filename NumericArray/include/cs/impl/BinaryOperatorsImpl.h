@@ -67,19 +67,27 @@ namespace cs {
 
     template<typename scalar_T, dim_T I, dim_T J, dim_T k, dim_T INNER, typename LHS, typename RHS>
     struct BinMulProduct {
+      enum Index : dim_T {
+        K = INNER - 1 - k
+      };
+
       static constexpr scalar_T run(const LHS& lhs, const RHS& rhs)
       {
         return
-            lhs.template eval<I,INNER - 1 - k>()*rhs.template eval<INNER - 1 - k,J>() +
-            BinMulProduct<scalar_T,I,J,k - 1,INNER,LHS,RHS>::run(lhs, rhs);
+            lhs.template eval<I,K>()*rhs.template eval<K,J>() +
+            BinMulProduct<scalar_T,I,J,k-1,INNER,LHS,RHS>::run(lhs, rhs);
       }
     };
 
     template<typename scalar_T, dim_T I, dim_T J, dim_T INNER, typename LHS, typename RHS>
     struct BinMulProduct<scalar_T,I,J,0,INNER,LHS,RHS> {
+      enum Index : dim_T {
+        K = INNER - 1
+      };
+
       static constexpr scalar_T run(const LHS& lhs, const RHS& rhs)
       {
-        return lhs.template eval<I,INNER - 1>()*rhs.template eval<INNER - 1,J>();
+        return lhs.template eval<I,K>()*rhs.template eval<K,J>();
       }
     };
 
@@ -98,7 +106,7 @@ namespace cs {
       template<dim_T i, dim_T j>
       constexpr scalar_T eval() const
       {
-        return BinMulProduct<scalar_T,i,j,INNER - 1,INNER,LHS,RHS>::run(_lhs, _rhs);
+        return BinMulProduct<scalar_T,i,j,INNER-1,INNER,LHS,RHS>::run(_lhs, _rhs);
       }
 
     private:

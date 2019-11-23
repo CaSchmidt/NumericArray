@@ -40,7 +40,7 @@ namespace cs {
 
     /*
      * NOTE:
-     * i,j := [ROWS-1,0], [COLS-1,0] -> Loop Variable; Counting DOWN!
+     * i,j := [ROWS-1,0], [COLS-1,0] -> Loop Variable, Counting DOWN!
      * I,J := [0,ROWS-1], [0,COLS-1] -> Absolute Row/Column
      */
 
@@ -48,35 +48,51 @@ namespace cs {
 
     template<dim_T I, dim_T j, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
     struct RowMajorColumnIter { // Inner Loop: Iterate Columns
+      enum Index : dim_T {
+        J = COLS - 1 - j
+      };
+
       static constexpr void run(dest_T& dest, const src_T& src)
       {
-        dest.template ref<I,COLS - 1 - j>() = src.template eval<I,COLS - 1 - j>();
+        dest.template ref<I,J>() = src.template eval<I,J>();
         RowMajorColumnIter<I,j-1,ROWS,COLS,dest_T,src_T>::run(dest, src);
       }
     };
 
     template<dim_T I, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
     struct RowMajorColumnIter<I,0,ROWS,COLS,dest_T,src_T> {
+      enum Index : dim_T {
+        J = COLS - 1
+      };
+
       static constexpr void run(dest_T& dest, const src_T& src)
       {
-        dest.template ref<I,COLS - 1>() = src.template eval<I,COLS - 1>();
+        dest.template ref<I,J>() = src.template eval<I,J>();
       }
     };
 
     template<dim_T i, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
     struct RowMajorRowIter { // Outer Loop: Iterate Rows
+      enum Index : dim_T {
+        I = ROWS - 1 - i
+      };
+
       static constexpr void run(dest_T& dest, const src_T& src)
       {
-        RowMajorColumnIter<ROWS - 1 - i,COLS - 1,ROWS,COLS,dest_T,src_T>::run(dest, src);
+        RowMajorColumnIter<I,COLS-1,ROWS,COLS,dest_T,src_T>::run(dest, src);
         RowMajorRowIter<i-1,ROWS,COLS,dest_T,src_T>::run(dest, src);
       }
     };
 
     template<dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
     struct RowMajorRowIter<0,ROWS,COLS,dest_T,src_T> {
+      enum Index : dim_T {
+        I = ROWS - 1
+      };
+
       static constexpr void run(dest_T& dest, const src_T& src)
       {
-        RowMajorColumnIter<ROWS - 1,COLS - 1,ROWS,COLS,dest_T,src_T>::run(dest, src);
+        RowMajorColumnIter<I,COLS-1,ROWS,COLS,dest_T,src_T>::run(dest, src);
       }
     };
 

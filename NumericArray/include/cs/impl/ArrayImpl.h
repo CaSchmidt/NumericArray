@@ -42,18 +42,26 @@ namespace cs {
 
     template<typename T, dim_T i, dim_T SIZE>
     struct ArrayCopy {
+      enum Index : dim_T {
+        I = SIZE - 1 - i
+      };
+
       static constexpr void run(T *dest, const T *src)
       {
-        dest[SIZE - 1 - i] = src[SIZE - 1 - i];
+        dest[I] = src[I];
         ArrayCopy<T,i-1,SIZE>::run(dest, src);
       }
     };
 
     template<typename T, dim_T SIZE>
     struct ArrayCopy<T,0,SIZE> {
+      enum Index : dim_T {
+        I = SIZE - 1
+      };
+
       static constexpr void run(T *dest, const T *src)
       {
-        dest[SIZE - 1] = src[SIZE - 1];
+        dest[I] = src[I];
       }
     };
 
@@ -61,18 +69,26 @@ namespace cs {
 
     template<typename T, dim_T i, dim_T SIZE>
     struct ArrayMove {
+      enum Index : dim_T {
+        I = SIZE - 1 - i
+      };
+
       static constexpr void run(T *dest, const T *src)
       {
-        dest[SIZE - 1 - i] = std::move(src[SIZE - 1 - i]);
+        dest[I] = std::move(src[I]);
         ArrayMove<T,i-1,SIZE>::run(dest, src);
       }
     };
 
     template<typename T, dim_T SIZE>
     struct ArrayMove<T,0,SIZE> {
+      enum Index : dim_T {
+        I = SIZE - 1
+      };
+
       static constexpr void run(T *dest, const T *src)
       {
-        dest[SIZE - 1] = std::move(src[SIZE - 1]);
+        dest[I] = std::move(src[I]);
       }
     };
 
@@ -80,18 +96,26 @@ namespace cs {
 
     template<typename T, dim_T i, dim_T SIZE>
     struct ArraySet {
+      enum Index : dim_T {
+        I = SIZE - 1 - i
+      };
+
       static constexpr void run(T *dest, const T& value)
       {
-        dest[SIZE - 1 - i] = value;
+        dest[I] = value;
         ArraySet<T,i-1,SIZE>::run(dest, value);
       }
     };
 
     template<typename T, dim_T SIZE>
     struct ArraySet<T,0,SIZE> {
+      enum Index : dim_T {
+        I = SIZE - 1
+      };
+
       static constexpr void run(T *dest, const T& value)
       {
-        dest[SIZE - 1] = value;
+        dest[I] = value;
       }
     };
 
