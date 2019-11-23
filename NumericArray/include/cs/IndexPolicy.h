@@ -29,15 +29,15 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef ARRAYTRAITS_H
-#define ARRAYTRAITS_H
+#ifndef INDEXPOLICY_H
+#define INDEXPOLICY_H
 
-#include "cs/impl/ArrayTraitsImpl.h"
+#include "cs/impl/IndexPolicyImpl.h"
 
 namespace cs {
 
   template<dim_T ROWS, dim_T COLS>
-  struct RowMajorTraits {
+  struct RowMajorPolicy {
     template<dim_T i, dim_T j>
     static constexpr dim_T index()
     {
@@ -58,4 +58,4 @@ namespace cs {
 
 } // namespace cs
 
-#endif // ARRAYTRAITS_H
+#endif // INDEXPOLICY_H

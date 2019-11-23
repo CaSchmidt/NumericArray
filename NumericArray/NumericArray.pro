@@ -22,8 +22,6 @@ SOURCES += \
 
 HEADERS += \
     include/cs/Types.h \
-    include/cs/ArrayTraits.h \
-    include/cs/impl/ArrayTraitsImpl.h \
     include/cs/ExprBase.h \
     include/cs/BinaryOperators.h \
     include/cs/impl/BinaryOperatorsImpl.h \
@@ -34,4 +32,6 @@ HEADERS += \
     include/cs/impl/UnaryOperatorsImpl.h \
     include/cs/Functions.h \
     include/cs/UnaryOperators.h \
-    include/cs/impl/Indexing.h
+    include/cs/impl/Indexing.h \
+    include/cs/IndexPolicy.h \
+    include/cs/impl/IndexPolicyImpl.h

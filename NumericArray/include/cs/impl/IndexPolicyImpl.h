@@ -29,8 +29,8 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef ARRAYTRAITSIMPL_H
-#define ARRAYTRAITSIMPL_H
+#ifndef INDEXPOLICYIMPL_H
+#define INDEXPOLICYIMPL_H
 
 #include "cs/Types.h"
 
@@ -100,4 +100,4 @@ namespace cs {
 
 } // namespace cs
 
-#endif // ARRAYTRAITSIMPL_H
+#endif // INDEXPOLICYIMPL_H

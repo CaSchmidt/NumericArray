@@ -35,7 +35,7 @@
 #include <algorithm>
 
 #include "cs/impl/ArrayImpl.h"
-#include "cs/ArrayTraits.h"
+#include "cs/IndexPolicy.h"
 #include "cs/ExprBase.h"
 
 namespace cs {
@@ -105,24 +105,24 @@ namespace cs {
     template<typename derived_T>
     Array(const ExprBase<scalar_T,ROWS,COLS,derived_T>& expr)
     {
-      Traits::assign(*this, expr.as_derived());
+      IndexPolicy::assign(*this, expr.as_derived());
     }
 
     template<typename derived_T>
     Array& operator=(const ExprBase<scalar_T,ROWS,COLS,derived_T>& expr) noexcept
     {
-      Traits::assign(*this, expr.as_derived());
+      IndexPolicy::assign(*this, expr.as_derived());
       return *this;
     }
 
     constexpr scalar_T operator()(const dim_T i, const dim_T j) const
     {
-      return _data[Traits::index(i, j)];
+      return _data[IndexPolicy::index(i, j)];
     }
 
     inline scalar_T& operator()(const dim_T i, const dim_T j)
     {
-      return _data[Traits::index(i, j)];
+      return _data[IndexPolicy::index(i, j)];
     }
 
     constexpr scalar_T operator[](const dim_T index) const
@@ -153,19 +153,19 @@ namespace cs {
     template<dim_T i, dim_T j>
     constexpr scalar_T eval() const
     {
-      return _data[Traits::template index<i,j>()];
+      return _data[IndexPolicy::template index<i,j>()];
     }
 
     template<dim_T i, dim_T j>
     inline scalar_T& ref()
     {
-      return _data[Traits::template index<i,j>()];
+      return _data[IndexPolicy::template index<i,j>()];
     }
 
   private:
     Array() noexcept = delete;
 
-    using Traits = RowMajorTraits<ROWS,COLS>;
+    using IndexPolicy = RowMajorPolicy<ROWS,COLS>;
 
     static constexpr dim_T SIZE = ROWS*COLS;
 
