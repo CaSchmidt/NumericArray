@@ -39,6 +39,56 @@ namespace cs {
 
   namespace impl {
 
+    // Implementation - 3x3 Cofactor Matrix //////////////////////////////////
+
+    template<typename scalar_T, typename ARG>
+    class Cofactor3x3
+        : public ExprBase<scalar_T,3,3,Cofactor3x3<scalar_T,ARG>> {
+    public:
+      Cofactor3x3(const ARG& arg) noexcept
+        : _arg(arg)
+      {
+      }
+
+      ~Cofactor3x3() noexcept = default;
+
+      constexpr scalar_T determinant() const
+      {
+        return
+            _arg.template eval<0,0>()*eval<0,0>() +
+            _arg.template eval<0,1>()*eval<0,1>() +
+            _arg.template eval<0,2>()*eval<0,2>();
+      }
+
+      template<dim_T i, dim_T j>
+      constexpr scalar_T eval() const
+      {
+        return sign<i,j>()*(
+              _arg.template eval<AI3<i>::J,AI3<j>::J>()*
+              _arg.template eval<AI3<i>::K,AI3<j>::K>() -
+              _arg.template eval<AI3<i>::K,AI3<j>::J>()*
+              _arg.template eval<AI3<i>::J,AI3<j>::K>()
+              );
+      }
+
+    private:
+      static constexpr dim_T bitZERO = 0;
+      static constexpr dim_T  bitONE = 1;
+
+      static constexpr scalar_T  PLUS =  1;
+      static constexpr scalar_T MINUS = -1;
+
+      template<dim_T i, dim_T j>
+      constexpr scalar_T sign() const
+      {
+        return ((i ^ j) & bitONE) != bitZERO
+            ? MINUS
+            :  PLUS;
+      }
+
+      const ARG& _arg;
+    };
+
     // Implementation - Vector Cross Product /////////////////////////////////
 
     template<typename scalar_T, typename ARG1, typename ARG2>

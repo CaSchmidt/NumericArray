@@ -51,6 +51,40 @@ namespace cs {
     template<dim_T i>
     using CI3 = CyclicIndex<i,3>;
 
+    // Implementation - 3x3 Adjoint Index Computation ////////////////////////
+
+    template<dim_T i>
+    struct AdjointIndex3x3 {
+      // SFINAE
+    };
+
+    template<>
+    struct AdjointIndex3x3<0> {
+      enum Index : dim_T {
+        J = 1,
+        K = 2
+      };
+    };
+
+    template<>
+    struct AdjointIndex3x3<1> {
+      enum Index : dim_T {
+        J = 0,
+        K = 2
+      };
+    };
+
+    template<>
+    struct AdjointIndex3x3<2> {
+      enum Index : dim_T {
+        J = 0,
+        K = 1
+      };
+    };
+
+    template<dim_T i>
+    using AI3 = AdjointIndex3x3<i>;
+
   } // namespace impl
 
 } // namespace cs

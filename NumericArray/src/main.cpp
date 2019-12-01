@@ -114,6 +114,15 @@ void test_set(const cs::dim_T i, const cs::dim_T j, const Matrix::value_type val
   fflush(stdout);
 }
 
+template<cs::dim_T i, cs::dim_T N = 3>
+void print_index()
+{
+  printf("Index: %d -> %d -> %d\n",
+         i,
+         cs::impl::CyclicIndex<i,N>::J,
+         cs::impl::CyclicIndex<i,N>::K);
+}
+
 int main(int /*argc*/, char ** /*argv*/)
 {
   test_assign_list();
@@ -175,6 +184,27 @@ int main(int /*argc*/, char ** /*argv*/)
 
   print(1.5*(d + d + Vector(0))*2./cs::length(d),
         "1.5*(d + d)*2/length(d) =");
+
+  const Matrix M({3, 1, 1, 5, 2, 1, 3, 1, 2});
+  print(M, "M =");
+  printf("det(M) = %8.3f\n", cs::determinant(M));
+  print(cs::inverse(M), "inv(M) =");
+  print(M*cs::inverse(M), "M*inv(M) =");
+
+  /*
+  {
+    printf("*********\n");
+
+    using COFACTOR = cs::impl::Cofactor3x3<double,Matrix>;
+    printf("(0,0) = %8.3f\n", COFACTOR(M).eval<0,0>());
+    printf("(0,1) = %8.3f\n", COFACTOR(M).eval<0,1>());
+    printf("(0,2) = %8.3f\n", COFACTOR(M).eval<0,2>());
+
+    print_index<0>();
+    print_index<1>();
+    print_index<2>();
+  }
+  */
 #endif
 
   return EXIT_SUCCESS;

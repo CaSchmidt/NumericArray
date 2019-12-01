@@ -55,6 +55,17 @@ namespace cs {
     return impl::Cross<scalar_T,ARG1,ARG2>(arg1.as_derived(), arg2.as_derived());
   }
 
+  // Determinant /////////////////////////////////////////////////////////////
+
+  template<typename scalar_T, typename ARG>
+  constexpr scalar_T determinant(
+      const ExprBase<scalar_T,3,3,ARG>& arg
+      )
+  {
+    using COFACTOR = impl::Cofactor3x3<scalar_T,ARG>;
+    return COFACTOR(arg.as_derived()).determinant();
+  }
+
   // Direction ///////////////////////////////////////////////////////////////
 
   template<typename scalar_T, dim_T ROWS, typename FROM, typename TO>
@@ -91,6 +102,20 @@ namespace cs {
     using TRANSPOSE = impl::Transpose<scalar_T,1,ROWS,ARG1>;
     using       MUL = impl::BinMul<scalar_T,1,ROWS,1,TRANSPOSE,ARG2>;
     return MUL(arg1.as_derived(), arg2.as_derived()).template eval<0,0>();
+  }
+
+  // Inverse /////////////////////////////////////////////////////////////////
+
+  template<typename scalar_T, typename ARG>
+  constexpr impl::BinSDiv<scalar_T,3,3,impl::Transpose<scalar_T,3,3,impl::Cofactor3x3<scalar_T,ARG>>> inverse(
+      const ExprBase<scalar_T,3,3,ARG>& arg
+      )
+  {
+    using  COFACTOR = impl::Cofactor3x3<scalar_T,ARG>;
+    using TRANSPOSE = impl::Transpose<scalar_T,3,3,COFACTOR>;
+    using      SDIV = impl::BinSDiv<scalar_T,3,3,TRANSPOSE>;
+    return SDIV(TRANSPOSE(COFACTOR(arg.as_derived())),
+                COFACTOR(arg.as_derived()).determinant());
   }
 
   // Length //////////////////////////////////////////////////////////////////
