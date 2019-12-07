@@ -48,6 +48,8 @@ namespace cs {
 
     ~Array() noexcept = default;
 
+    // Copy Assignment ///////////////////////////////////////////////////////
+
     Array(const Array& other) noexcept
     {
       operator=(other);
@@ -60,6 +62,8 @@ namespace cs {
       }
       return *this;
     }
+
+    // Move Assignment ///////////////////////////////////////////////////////
 
     Array(Array&& other) noexcept
     {
@@ -74,6 +78,8 @@ namespace cs {
       return *this;
     }
 
+    // Scalar Assignment /////////////////////////////////////////////////////
+
     Array(const scalar_T& value = scalar_T{0}) noexcept
     {
       operator=(value);
@@ -85,6 +91,8 @@ namespace cs {
       return *this;
     }
 
+    // List Assignment ///////////////////////////////////////////////////////
+
     Array(const std::initializer_list<scalar_T>& list) noexcept
     {
       operator=(list);
@@ -93,14 +101,18 @@ namespace cs {
     Array& operator=(const std::initializer_list<scalar_T>& list) noexcept
     {
       const std::size_t max = std::min<std::size_t>(list.size(), SIZE);
-      for(std::size_t i = 0; i < max; i++) {
-        _data[i] = list.begin()[i];
+      for(std::size_t index = 0; index < max; index++) {
+        const dim_T i = static_cast<dim_T>(index)/COLS;
+        const dim_T j = static_cast<dim_T>(index)%COLS;
+        operator()(i, j) = list.begin()[index];
       }
-      for(std::size_t i = max; i < static_cast<std::size_t>(SIZE); i++) {
-        _data[i] = scalar_T{0};
+      for(std::size_t index = max; index < static_cast<std::size_t>(SIZE); index++) {
+        _data[index] = scalar_T{0};
       }
       return *this;
     }
+
+    // Expression Assignment /////////////////////////////////////////////////
 
     template<typename derived_T>
     Array(const ExprBase<scalar_T,ROWS,COLS,derived_T>& expr)
@@ -114,6 +126,8 @@ namespace cs {
       IndexPolicy::assign(*this, expr.as_derived());
       return *this;
     }
+
+    // Element Access ////////////////////////////////////////////////////////
 
     constexpr scalar_T operator()(const dim_T i, const dim_T j) const
     {
@@ -135,6 +149,8 @@ namespace cs {
       return _data[index];
     }
 
+    // Query Size ////////////////////////////////////////////////////////////
+
     constexpr dim_T rows() const
     {
       return ROWS;
@@ -149,6 +165,8 @@ namespace cs {
     {
       return SIZE;
     }
+
+    // Compile-Time Element Access ///////////////////////////////////////////
 
     template<dim_T i, dim_T j>
     constexpr scalar_T eval() const
