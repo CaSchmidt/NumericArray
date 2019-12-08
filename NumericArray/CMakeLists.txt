@@ -25,14 +25,21 @@ set(NumericArray_SOURCES
   src/main.cpp
   )
 
+set(NumericArray_3rdparty
+  3rdparty/Catch2/include/catch.hpp
+  )
+
 ### Target ###################################################################
 
 add_executable(NumericArray
-  ${NumericArray_HEADERS} ${NumericArray_SOURCES}
+  ${NumericArray_HEADERS}
+  ${NumericArray_SOURCES}
+  ${NumericArray_3rdparty}
   )
 
 target_include_directories(NumericArray PRIVATE
   ${NumericArray_SOURCE_DIR}/include
+  ${NumericArray_SOURCE_DIR}/3rdparty/Catch2/include
   )
 
 target_link_libraries(NumericArray)
