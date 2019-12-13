@@ -39,3 +39,19 @@ target_include_directories(NumericArray PRIVATE
   )
 
 target_link_libraries(NumericArray)
+
+### Tests ####################################################################
+
+add_executable(test_RunAll
+  tests/src/test_RunAll.cpp
+  ${NumericArray_HEADERS}
+  ${NumericArray_3rdparty}
+  )
+
+target_include_directories(test_RunAll PRIVATE
+  ${NumericArray_SOURCE_DIR}/include
+  ${NumericArray_SOURCE_DIR}/tests/include
+  ${NumericArray_SOURCE_DIR}/3rdparty/Catch2/include
+  )
+
+target_link_libraries(test_RunAll)
