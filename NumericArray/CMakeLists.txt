@@ -21,10 +21,6 @@ set(NumericArray_HEADERS
   include/cs/impl/UnaryOperatorsImpl.h
   )
 
-set(NumericArray_SOURCES
-  src/main.cpp
-  )
-
 set(NumericArray_3rdparty
   3rdparty/Catch2/include/catch.hpp
   )
@@ -32,8 +28,8 @@ set(NumericArray_3rdparty
 ### Target ###################################################################
 
 add_executable(NumericArray
+  src/main.cpp
   ${NumericArray_HEADERS}
-  ${NumericArray_SOURCES}
   ${NumericArray_3rdparty}
   )
 
