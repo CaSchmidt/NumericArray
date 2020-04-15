@@ -44,10 +44,14 @@ namespace cs {
      * I,J := [0,ROWS-1], [0,COLS-1] -> Absolute Row/Column
      */
 
-    // Implementation - Row Major Traits /////////////////////////////////////
+    /*************************************************************************
+     * Implementation - Row Major Traits *************************************
+     *************************************************************************/
+
+    // Row Major Traits - Inner Loop: Iterate Columns ////////////////////////
 
     template<dim_T I, dim_T j, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
-    struct RowMajorColumnIter { // Inner Loop: Iterate Columns
+    struct RowMajorColumnIter {
       enum Index : dim_T {
         J = COLS - 1 - j
       };
@@ -58,6 +62,8 @@ namespace cs {
         RowMajorColumnIter<I,j-1,ROWS,COLS,dest_T,src_T>::run(dest, src);
       }
     };
+
+    // Row Major Traits - Inner Loop: Iterate Columns (Last Column) //////////
 
     template<dim_T I, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
     struct RowMajorColumnIter<I,0,ROWS,COLS,dest_T,src_T> {
@@ -71,8 +77,10 @@ namespace cs {
       }
     };
 
+    // Row Major Traits - Outer Loop: Iterate Rows ///////////////////////////
+
     template<dim_T i, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
-    struct RowMajorRowIter { // Outer Loop: Iterate Rows
+    struct RowMajorRowIter {
       enum Index : dim_T {
         I = ROWS - 1 - i
       };
@@ -83,6 +91,8 @@ namespace cs {
         RowMajorRowIter<i-1,ROWS,COLS,dest_T,src_T>::run(dest, src);
       }
     };
+
+    // Row Major Traits - Outer Loop: Iterate Rows (Last Row) ////////////////
 
     template<dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
     struct RowMajorRowIter<0,ROWS,COLS,dest_T,src_T> {
