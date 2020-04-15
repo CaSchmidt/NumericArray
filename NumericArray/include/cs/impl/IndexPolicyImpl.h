@@ -52,9 +52,7 @@ namespace cs {
 
     template<dim_T I, dim_T j, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
     struct RowMajorColumnIter {
-      enum Index : dim_T {
-        J = COLS - 1 - j
-      };
+      static constexpr dim_T J = COLS - 1 - j;
 
       static constexpr void run(dest_T& dest, const src_T& src)
       {
@@ -67,9 +65,7 @@ namespace cs {
 
     template<dim_T I, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
     struct RowMajorColumnIter<I,0,ROWS,COLS,dest_T,src_T> {
-      enum Index : dim_T {
-        J = COLS - 1
-      };
+      static constexpr dim_T J = COLS - 1;
 
       static constexpr void run(dest_T& dest, const src_T& src)
       {
@@ -81,9 +77,7 @@ namespace cs {
 
     template<dim_T i, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
     struct RowMajorRowIter {
-      enum Index : dim_T {
-        I = ROWS - 1 - i
-      };
+      static const dim_T I = ROWS - 1 - i;
 
       static constexpr void run(dest_T& dest, const src_T& src)
       {
@@ -96,9 +90,7 @@ namespace cs {
 
     template<dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
     struct RowMajorRowIter<0,ROWS,COLS,dest_T,src_T> {
-      enum Index : dim_T {
-        I = ROWS - 1
-      };
+      static constexpr dim_T I = ROWS - 1;
 
       static constexpr void run(dest_T& dest, const src_T& src)
       {

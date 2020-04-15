@@ -42,10 +42,8 @@ namespace cs {
 
     template<dim_T i, dim_T N>
     struct CyclicIndex {
-      enum NextIndex : dim_T {
-        J = (i + 1)%N,
-        K = (i + 2)%N
-      };
+      static constexpr dim_T J = (i + 1)%N;
+      static constexpr dim_T K = (i + 2)%N;
     };
 
     template<dim_T i>
@@ -60,26 +58,20 @@ namespace cs {
 
     template<>
     struct AdjointIndex3x3<0> {
-      enum Index : dim_T {
-        J = 1,
-        K = 2
-      };
+      static constexpr dim_T J = 1;
+      static constexpr dim_T K = 2;
     };
 
     template<>
     struct AdjointIndex3x3<1> {
-      enum Index : dim_T {
-        J = 0,
-        K = 2
-      };
+      static constexpr dim_T J = 0;
+      static constexpr dim_T K = 2;
     };
 
     template<>
     struct AdjointIndex3x3<2> {
-      enum Index : dim_T {
-        J = 0,
-        K = 1
-      };
+      static constexpr dim_T J = 0;
+      static constexpr dim_T K = 1;
     };
 
     template<dim_T i>

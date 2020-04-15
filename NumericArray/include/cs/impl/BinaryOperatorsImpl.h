@@ -92,9 +92,7 @@ namespace cs {
 
     template<typename scalar_T, dim_T I, dim_T J, dim_T k, dim_T INNER, typename LHS, typename RHS>
     struct BinMulProduct {
-      enum Index : dim_T {
-        K = INNER - 1 - k
-      };
+      static constexpr dim_T K = INNER - 1 - k;
 
       static constexpr scalar_T run(const LHS& lhs, const RHS& rhs)
       {
@@ -106,9 +104,7 @@ namespace cs {
 
     template<typename scalar_T, dim_T I, dim_T J, dim_T INNER, typename LHS, typename RHS>
     struct BinMulProduct<scalar_T,I,J,0,INNER,LHS,RHS> {
-      enum Index : dim_T {
-        K = INNER - 1
-      };
+      static constexpr dim_T K = INNER - 1;
 
       static constexpr scalar_T run(const LHS& lhs, const RHS& rhs)
       {
