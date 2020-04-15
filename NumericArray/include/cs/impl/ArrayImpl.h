@@ -38,6 +38,12 @@ namespace cs {
 
   namespace impl {
 
+    /*
+     * NOTE:
+     * i := [SIZE-1,0] -> Loop Variable, Counting DOWN!
+     * I := [0,SIZE-1] -> Absolute Index
+     */
+
     // Implementation - Copy Array ///////////////////////////////////////////
 
     template<typename T, dim_T i, dim_T SIZE>
