@@ -117,7 +117,7 @@ namespace cs {
     template<typename derived_T>
     Array(const ExprBase<scalar_T,ROWS,COLS,derived_T>& expr)
     {
-      IndexPolicy::assign(*this, expr.as_derived());
+      operator=(expr);
     }
 
     template<typename derived_T>
