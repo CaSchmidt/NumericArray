@@ -4,12 +4,20 @@ cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
 project(NumericArray)
 
-set(NumericArray_HEADERS
+# Custom CMake utilities
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+include(FormatOutputName)
+
+### NumericArray #############################################################
+
+list(APPEND NumericArray_HEADERS
   include/cs/Array.h
   include/cs/BinaryOperators.h
   include/cs/ExprBase.h
   include/cs/Functions.h
   include/cs/IndexPolicy.h
+  include/cs/Math.h
   include/cs/NumericArray.h
   include/cs/Types.h
   include/cs/UnaryOperators.h
@@ -21,37 +29,8 @@ set(NumericArray_HEADERS
   include/cs/impl/UnaryOperatorsImpl.h
   )
 
-set(NumericArray_3rdparty
-  3rdparty/Catch2/include/catch.hpp
-  )
-
 ### Target ###################################################################
 
-add_executable(NumericArray
-  src/main.cpp
-  ${NumericArray_HEADERS}
-  ${NumericArray_3rdparty}
+add_custom_target(NumericArray
+  SOURCES ${NumericArray_HEADERS}
   )
-
-target_include_directories(NumericArray PRIVATE
-  ${NumericArray_SOURCE_DIR}/include
-  ${NumericArray_SOURCE_DIR}/3rdparty/Catch2/include
-  )
-
-target_link_libraries(NumericArray)
-
-### Tests ####################################################################
-
-add_executable(test_RunAll
-  tests/src/test_RunAll.cpp
-  ${NumericArray_HEADERS}
-  ${NumericArray_3rdparty}
-  )
-
-target_include_directories(test_RunAll PRIVATE
-  ${NumericArray_SOURCE_DIR}/include
-  ${NumericArray_SOURCE_DIR}/tests/include
-  ${NumericArray_SOURCE_DIR}/3rdparty/Catch2/include
-  )
-
-target_link_libraries(test_RunAll)
