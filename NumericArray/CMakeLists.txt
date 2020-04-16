@@ -34,3 +34,7 @@ list(APPEND NumericArray_HEADERS
 add_custom_target(NumericArray
   SOURCES ${NumericArray_HEADERS}
   )
+
+### Tests ####################################################################
+
+add_subdirectory(unittests)
