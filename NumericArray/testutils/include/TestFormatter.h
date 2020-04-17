@@ -118,12 +118,12 @@ template<typename CharT, typename T, class Traits>
 constexpr std::basic_ostream<CharT,Traits>& operator<<(std::basic_ostream<CharT,Traits>& os,
                                                        const FormatFloatingPoint<CharT,T>& fmt)
 {
-  constexpr std::ios_base::fmtflags floatcase = std::ios_base::floatfield | std::ios_base::uppercase;
   return ( os
            << std::setfill(fmt.fill())
            << std::setw(fmt.width())
            << std::setprecision(fmt.precision())
-           << std::setiosflags(fmt.format() | (os.flags() & ~floatcase))
+           << std::resetiosflags(std::ios_base::floatfield | std::ios_base::uppercase)
+           << std::setiosflags(fmt.format())
            << fmt.value() );
 }
 
@@ -193,6 +193,7 @@ constexpr std::basic_ostream<CharT,Traits>& operator<<(std::basic_ostream<CharT,
   return ( os
            << std::setfill(fmt.fill())
            << std::setw(fmt.width())
+           << std::resetiosflags(std::ios_base::basefield)
            << std::setbase(fmt.base())
            << fmt.value() );
 }
