@@ -181,8 +181,6 @@ namespace cs {
     }
 
   private:
-    Array() noexcept = delete;
-
     using IndexPolicy = RowMajorPolicy<ROWS,COLS>;
 
     static constexpr dim_T SIZE = ROWS*COLS;
