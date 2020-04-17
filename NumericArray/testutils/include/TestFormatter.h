@@ -132,7 +132,7 @@ constexpr std::basic_ostream<CharT,Traits>& operator<<(std::basic_ostream<CharT,
 template<typename CharT, typename T>
 class FormatInteger {
 public:
-  FormatInteger(const std::enable_if_t<std::is_integral<T>::value,T>& value,
+  FormatInteger(const std::enable_if_t<std::is_integral_v<T>,T>& value,
                 const int   width = 0,
                 const int    base = 10,
                 const CharT& fill = static_cast<CharT>(' ')) noexcept
