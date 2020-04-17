@@ -32,8 +32,8 @@
 #ifndef FUNCTIONSIMPL_H
 #define FUNCTIONSIMPL_H
 
-#include "cs/impl/Indexing.h"
-#include "cs/ExprBase.h"
+#include <cs/impl/Indexing.h>
+#include <cs/ExprBase.h>
 
 namespace cs {
 

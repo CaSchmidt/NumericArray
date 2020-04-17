@@ -32,7 +32,7 @@
 #ifndef BINARYOPERATORS_H
 #define BINARYOPERATORS_H
 
-#include "cs/impl/BinaryOperatorsImpl.h"
+#include <cs/impl/BinaryOperatorsImpl.h>
 
 namespace cs {
 

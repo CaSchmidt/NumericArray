@@ -32,7 +32,7 @@
 #ifndef INDEXPOLICY_H
 #define INDEXPOLICY_H
 
-#include "cs/impl/IndexPolicyImpl.h"
+#include <cs/impl/IndexPolicyImpl.h>
 
 namespace cs {
 
