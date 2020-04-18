@@ -39,12 +39,10 @@
 namespace cs {
 
   template<typename T>
-  using if_dim_type = std::enable_if_t<std::is_unsigned_v<T>,T>;
-
-  template<typename T>
   using if_float_type = std::enable_if_t<std::is_floating_point_v<T>,T>;
 
-  using dim_T = if_dim_type<uint8_t>;
+  template<typename T>
+  using if_size_type = std::enable_if_t<std::is_integral_v<T>  &&  std::is_unsigned_v<T>,T>;
 
 } // namespace cs
 

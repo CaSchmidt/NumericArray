@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (c) 2019, Carsten Schmidt. All rights reserved.
+** Copyright (c) 2020, Carsten Schmidt. All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
 ** modification, are permitted provided that the following conditions
@@ -29,19 +29,25 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef NUMERICARRAY_H
-#define NUMERICARRAY_H
+#ifndef ARRAYTRAITS_H
+#define ARRAYTRAITS_H
 
-#include <cs/Array.h>
-//#include <cs/BinaryOperators.h>
-//#include <cs/Functions.h>
-//#include <cs/UnaryOperators.h>
+#include <cs/TypeTraits.h>
 
 namespace cs {
 
   template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
-  using NumericArray = Array<ArrayTraits<value_T,size_T,ROWS,COLS>>;
+  struct ArrayTraits {
+    using  size_type = if_size_type<size_T>;
+    using value_type = if_float_type<value_T>;
+
+    enum : size_type {
+      Columns = COLS,
+      Rows    = ROWS,
+      Size    = COLS*ROWS
+    };
+  };
 
 } // namespace cs
 
-#endif // NUMERICARRAY_H
+#endif // ARRAYTRAITS_H

@@ -33,26 +33,45 @@
 #define ARRAYPOLICY_H
 
 #include <cs/impl/ArrayPolicyImpl.h>
+#include <cs/TypeTraits.h>
 
 namespace cs {
 
-  template<dim_T ROWS, dim_T COLS>
+  template<typename traits_T>
   struct RowMajorPolicy {
-    template<dim_T i, dim_T j>
-    static constexpr dim_T index()
+    using   size_type = if_size_type<typename traits_T::size_type>;
+    using traits_type = traits_T;
+
+    enum : size_type {
+      Columns = traits_type::Columns,
+      Rows    = traits_type::Rows
+    };
+
+    static constexpr size_type column(const size_type l)
     {
-      return i*COLS + j;
+      return l%Columns;
     }
 
-    static constexpr dim_T index(const dim_T i, const dim_T j)
+    template<size_type i, size_type j>
+    static constexpr size_type index()
     {
-      return i*COLS + j;
+      return i*Columns + j;
+    }
+
+    static constexpr size_type index(const size_type i, const size_type j)
+    {
+      return i*Columns + j;
+    }
+
+    static constexpr size_type row(const size_type l)
+    {
+      return l/Columns;
     }
 
     template<typename dest_T, typename src_T>
     static constexpr void assign(dest_T& dest, const src_T& src)
     {
-      impl::RowMajorRowIter<ROWS-1,ROWS,COLS,dest_T,src_T>::run(dest, src);
+      impl::RowMajorRowIter<Rows-1,Rows,Columns,dest_T,src_T>::run(dest, src);
     }
   };
 

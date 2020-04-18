@@ -32,8 +32,6 @@
 #ifndef ARRAYPOLICYIMPL_H
 #define ARRAYPOLICYIMPL_H
 
-#include <cs/TypeTraits.h>
-
 namespace cs {
 
   namespace impl {
@@ -50,9 +48,9 @@ namespace cs {
 
     // Row Major Traits - Inner Loop: Iterate Columns ////////////////////////
 
-    template<dim_T I, dim_T j, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
+    template<auto I, auto j, auto ROWS, auto COLS, typename dest_T, typename src_T>
     struct RowMajorColumnIter {
-      static constexpr dim_T J = COLS - 1 - j;
+      static constexpr auto J = COLS - 1 - j;
 
       static constexpr void run(dest_T& dest, const src_T& src)
       {
@@ -63,9 +61,9 @@ namespace cs {
 
     // Row Major Traits - Inner Loop: Iterate Columns (Last Column) //////////
 
-    template<dim_T I, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
+    template<auto I, auto ROWS, auto COLS, typename dest_T, typename src_T>
     struct RowMajorColumnIter<I,0,ROWS,COLS,dest_T,src_T> {
-      static constexpr dim_T J = COLS - 1;
+      static constexpr auto J = COLS - 1;
 
       static constexpr void run(dest_T& dest, const src_T& src)
       {
@@ -75,9 +73,9 @@ namespace cs {
 
     // Row Major Traits - Outer Loop: Iterate Rows ///////////////////////////
 
-    template<dim_T i, dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
+    template<auto i, auto ROWS, auto COLS, typename dest_T, typename src_T>
     struct RowMajorRowIter {
-      static const dim_T I = ROWS - 1 - i;
+      static const auto I = ROWS - 1 - i;
 
       static constexpr void run(dest_T& dest, const src_T& src)
       {
@@ -88,9 +86,9 @@ namespace cs {
 
     // Row Major Traits - Outer Loop: Iterate Rows (Last Row) ////////////////
 
-    template<dim_T ROWS, dim_T COLS, typename dest_T, typename src_T>
+    template<auto ROWS, auto COLS, typename dest_T, typename src_T>
     struct RowMajorRowIter<0,ROWS,COLS,dest_T,src_T> {
-      static constexpr dim_T I = ROWS - 1;
+      static constexpr auto I = ROWS - 1;
 
       static constexpr void run(dest_T& dest, const src_T& src)
       {

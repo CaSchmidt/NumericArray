@@ -32,8 +32,6 @@
 #ifndef ARRAYIMPL_H
 #define ARRAYIMPL_H
 
-#include <cs/TypeTraits.h>
-
 namespace cs {
 
   namespace impl {
@@ -46,9 +44,9 @@ namespace cs {
 
     // Implementation - Copy Array ///////////////////////////////////////////
 
-    template<typename T, dim_T i, dim_T SIZE>
+    template<typename T, auto i, auto SIZE>
     struct ArrayCopy {
-      static constexpr dim_T I = SIZE - 1 - i;
+      static constexpr auto I = SIZE - 1 - i;
 
       static constexpr void run(T *dest, const T *src)
       {
@@ -57,9 +55,9 @@ namespace cs {
       }
     };
 
-    template<typename T, dim_T SIZE>
+    template<typename T, auto SIZE>
     struct ArrayCopy<T,0,SIZE> {
-      static constexpr dim_T I = SIZE - 1;
+      static constexpr auto I = SIZE - 1;
 
       static constexpr void run(T *dest, const T *src)
       {
@@ -69,9 +67,9 @@ namespace cs {
 
     // Implementation - Move Array ///////////////////////////////////////////
 
-    template<typename T, dim_T i, dim_T SIZE>
+    template<typename T, auto i, auto SIZE>
     struct ArrayMove {
-      static constexpr dim_T I = SIZE - 1 - i;
+      static constexpr auto I = SIZE - 1 - i;
 
       static constexpr void run(T *dest, const T *src)
       {
@@ -80,9 +78,9 @@ namespace cs {
       }
     };
 
-    template<typename T, dim_T SIZE>
+    template<typename T, auto SIZE>
     struct ArrayMove<T,0,SIZE> {
-      static constexpr dim_T I = SIZE - 1;
+      static constexpr auto I = SIZE - 1;
 
       static constexpr void run(T *dest, const T *src)
       {
@@ -92,9 +90,9 @@ namespace cs {
 
     // Implementation - Set Array ////////////////////////////////////////////
 
-    template<typename T, dim_T i, dim_T SIZE>
+    template<typename T, auto i, auto SIZE>
     struct ArraySet {
-      static constexpr dim_T I = SIZE - 1 - i;
+      static constexpr auto I = SIZE - 1 - i;
 
       static constexpr void run(T *dest, const T& value)
       {
@@ -103,9 +101,9 @@ namespace cs {
       }
     };
 
-    template<typename T, dim_T SIZE>
+    template<typename T, auto SIZE>
     struct ArraySet<T,0,SIZE> {
-      static constexpr dim_T I = SIZE - 1;
+      static constexpr auto I = SIZE - 1;
 
       static constexpr void run(T *dest, const T& value)
       {

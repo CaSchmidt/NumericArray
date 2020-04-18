@@ -36,15 +36,25 @@
 
 #include <cs/impl/ArrayImpl.h>
 #include <cs/ArrayPolicy.h>
+#include <cs/ArrayTraits.h>
 #include <cs/ExprBase.h>
 
 namespace cs {
 
-  template<typename scalar_T, dim_T ROWS, dim_T COLS>
+  template<typename traits_T, typename policy_T = RowMajorPolicy<traits_T>>
   class Array
-      : public ExprBase<scalar_T,ROWS,COLS,Array<scalar_T,ROWS,COLS>> {
+      : public ExprBase<traits_T,Array<traits_T,policy_T>> {
   public:
-    using value_type = if_float_type<scalar_T>;
+    using policy_type = policy_T;
+    using   size_type = if_size_type<typename traits_T::size_type>;
+    using traits_type = traits_T;
+    using  value_type = if_float_type<typename traits_T::value_type>;
+
+    enum : size_type {
+      Columns = traits_type::Columns,
+      Rows    = traits_type::Rows,
+      Size    = traits_type::Size
+    };
 
     ~Array() noexcept = default;
 
@@ -58,7 +68,7 @@ namespace cs {
     Array& operator=(const Array& other) noexcept
     {
       if( this != &other ) {
-        impl::ArrayCopy<scalar_T,SIZE-1,SIZE>::run(_data, other._data);
+        impl::ArrayCopy<value_type,Size-1,Size>::run(_data, other._data);
       }
       return *this;
     }
@@ -73,41 +83,41 @@ namespace cs {
     Array& operator=(Array&& other) noexcept
     {
       if( this != &other ) {
-        impl::ArrayMove<scalar_T,SIZE-1,SIZE>::run(_data, other._data);
+        impl::ArrayMove<value_type,Size-1,Size>::run(_data, other._data);
       }
       return *this;
     }
 
     // Scalar Assignment /////////////////////////////////////////////////////
 
-    Array(const scalar_T& value = scalar_T{0}) noexcept
+    Array(const value_type& value = value_type{0}) noexcept
     {
       operator=(value);
     }
 
-    Array& operator=(const scalar_T& value) noexcept
+    Array& operator=(const value_type& value) noexcept
     {
-      impl::ArraySet<scalar_T,SIZE-1,SIZE>::run(_data, value);
+      impl::ArraySet<value_type,Size-1,Size>::run(_data, value);
       return *this;
     }
 
     // List Assignment ///////////////////////////////////////////////////////
 
-    Array(const std::initializer_list<scalar_T>& list) noexcept
+    Array(const std::initializer_list<value_type>& list) noexcept
     {
       operator=(list);
     }
 
-    Array& operator=(const std::initializer_list<scalar_T>& list) noexcept
+    Array& operator=(const std::initializer_list<value_type>& list) noexcept
     {
-      const std::size_t max = std::min<std::size_t>(list.size(), SIZE);
+      const std::size_t max = std::min<std::size_t>(list.size(), Size);
       for(std::size_t index = 0; index < max; index++) {
-        const dim_T i = static_cast<dim_T>(index)/COLS;
-        const dim_T j = static_cast<dim_T>(index)%COLS;
+        const size_type i = policy_type::row(static_cast<size_type>(index));
+        const size_type j = policy_type::column(static_cast<size_type>(index));
         operator()(i, j) = list.begin()[index];
       }
-      for(std::size_t index = max; index < static_cast<std::size_t>(SIZE); index++) {
-        _data[index] = scalar_T{0};
+      for(std::size_t index = max; index < static_cast<std::size_t>(Size); index++) {
+        _data[index] = value_type{0};
       }
       return *this;
     }
@@ -115,77 +125,73 @@ namespace cs {
     // Expression Assignment /////////////////////////////////////////////////
 
     template<typename derived_T>
-    Array(const ExprBase<scalar_T,ROWS,COLS,derived_T>& expr)
+    Array(const ExprBase<traits_type,derived_T>& expr)
     {
       operator=(expr);
     }
 
     template<typename derived_T>
-    Array& operator=(const ExprBase<scalar_T,ROWS,COLS,derived_T>& expr) noexcept
+    Array& operator=(const ExprBase<traits_type,derived_T>& expr) noexcept
     {
-      IndexPolicy::assign(*this, expr.as_derived());
+      policy_type::assign(*this, expr.as_derived());
       return *this;
     }
 
     // Element Access ////////////////////////////////////////////////////////
 
-    constexpr scalar_T operator()(const dim_T i, const dim_T j) const
+    constexpr value_type operator()(const size_type i, const size_type j) const
     {
-      return _data[IndexPolicy::index(i, j)];
+      return _data[policy_type::index(i, j)];
     }
 
-    inline scalar_T& operator()(const dim_T i, const dim_T j)
+    inline value_type& operator()(const size_type i, const size_type j)
     {
-      return _data[IndexPolicy::index(i, j)];
+      return _data[policy_type::index(i, j)];
     }
 
-    constexpr scalar_T operator[](const dim_T index) const
+    constexpr value_type operator[](const size_type l) const
     {
-      return _data[index];
+      return _data[l];
     }
 
-    inline scalar_T& operator[](const dim_T index)
+    inline value_type& operator[](const size_type l)
     {
-      return _data[index];
+      return _data[l];
     }
 
     // Query Size ////////////////////////////////////////////////////////////
 
-    constexpr dim_T rows() const
+    constexpr size_type rows() const
     {
-      return ROWS;
+      return Rows;
     }
 
-    constexpr dim_T columns() const
+    constexpr size_type columns() const
     {
-      return COLS;
+      return Columns;
     }
 
-    constexpr dim_T size() const
+    constexpr size_type size() const
     {
-      return SIZE;
+      return Size;
     }
 
     // Compile-Time Element Access ///////////////////////////////////////////
 
-    template<dim_T i, dim_T j>
-    constexpr scalar_T eval() const
+    template<size_type i, size_type j>
+    constexpr value_type eval() const
     {
-      return _data[IndexPolicy::template index<i,j>()];
+      return _data[policy_type::template index<i,j>()];
     }
 
-    template<dim_T i, dim_T j>
-    inline scalar_T& ref()
+    template<size_type i, size_type j>
+    inline value_type& ref()
     {
-      return _data[IndexPolicy::template index<i,j>()];
+      return _data[policy_type::template index<i,j>()];
     }
 
   private:
-    using IndexPolicy = RowMajorPolicy<ROWS,COLS>;
-
-    static constexpr dim_T SIZE = ROWS*COLS;
-
-    value_type _data[SIZE];
+    value_type _data[Size];
   };
 
 } // namespace cs

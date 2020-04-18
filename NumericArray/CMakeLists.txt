@@ -14,6 +14,7 @@ include(FormatOutputName)
 list(APPEND NumericArray_HEADERS
   include/cs/Array.h
   include/cs/ArrayPolicy.h
+  include/cs/ArrayTraits.h
   include/cs/BinaryOperators.h
   include/cs/ExprBase.h
   include/cs/Functions.h
