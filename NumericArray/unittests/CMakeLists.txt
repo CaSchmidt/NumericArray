@@ -5,7 +5,7 @@ macro(cs_unittest target)
   format_output_name(${target} ${target})
   if(MSVC)
     target_compile_options(${target}
-      PRIVATE /source-charset:UTF-8 /execution-charset:UTF-8 /validate-charset
+      PRIVATE /std:c++17
       )
   endif()
   target_include_directories(${target}

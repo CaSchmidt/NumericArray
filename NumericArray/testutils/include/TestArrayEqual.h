@@ -32,21 +32,22 @@
 #ifndef TESTARRAYEQUAL_H
 #define TESTARRAYEQUAL_H
 
-#include <cs/Array.h>
+#include <cs/NumericArray.h>
 
 #include "TestEquals.h"
 
-template<typename scalar_T, cs::dim_T ROWS, cs::dim_T COLS>
-inline bool equals(const cs::Array<scalar_T,ROWS,COLS>& A,
-                   const std::initializer_list<scalar_T>& list,
-                   const scalar_T& epsilon0 = Konst<scalar_T>::epsilon0)
+template<typename array_T>
+inline bool equals(const array_T& A,
+                   const std::initializer_list<typename array_T::value_type>& list,
+                   const typename array_T::value_type& epsilon0 = Konst<typename array_T::value_type>::epsilon0)
 {
+  using size_type = typename array_T::size_type;
   if( static_cast<std::size_t>(A.size()) != list.size() ) {
     return false;
   }
   for(std::size_t index = 0; index < list.size(); index++) {
-    const cs::dim_T i = static_cast<cs::dim_T>(index)/A.columns();
-    const cs::dim_T j = static_cast<cs::dim_T>(index)%A.columns();
+    const size_type i = array_T::policy_type::row(static_cast<size_type>(index));
+    const size_type j = array_T::policy_type::column(static_cast<size_type>(index));
     if( !equals(A(i, j), list.begin()[index], epsilon0) ) {
       return false;
     }
@@ -54,11 +55,11 @@ inline bool equals(const cs::Array<scalar_T,ROWS,COLS>& A,
   return true;
 }
 
-template<typename scalar_T, cs::dim_T ROWS, cs::dim_T COLS>
-constexpr bool equals0(const cs::Array<scalar_T,ROWS,COLS>& A,
-                       const std::initializer_list<scalar_T>& list)
+template<typename array_T>
+constexpr bool equals0(const array_T& A,
+                       const std::initializer_list<typename array_T::value_type>& list)
 {
-  return equals(A, list, Konst<scalar_T>::ZERO);
+  return equals(A, list, Konst<typename array_T::value_type>::ZERO);
 }
 
 #endif // TESTARRAYEQUAL_H
