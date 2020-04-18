@@ -36,20 +36,16 @@
 
 namespace cs {
 
-  template<typename scalar_T, dim_T ROWS, dim_T COLS, typename ARG>
-  constexpr impl::UnaPlus<scalar_T,ROWS,COLS,ARG> operator+(
-      const ExprBase<scalar_T,ROWS,COLS,ARG>& op
-      )
+  template<typename traits_T, typename OP>
+  constexpr auto operator+(const ExprBase<traits_T,OP>& op)
   {
-    return impl::UnaPlus<scalar_T,ROWS,COLS,ARG>(op.as_derived());
+    return impl::UnaPlus<traits_T,OP>(op.as_derived());
   }
 
-  template<typename scalar_T, dim_T ROWS, dim_T COLS, typename ARG>
-  constexpr impl::UnaMinus<scalar_T,ROWS,COLS,ARG> operator-(
-      const ExprBase<scalar_T,ROWS,COLS,ARG>& op
-      )
+  template<typename traits_T, typename OP>
+  constexpr auto operator-(const ExprBase<traits_T,OP>& op)
   {
-    return impl::UnaMinus<scalar_T,ROWS,COLS,ARG>(op.as_derived());
+    return impl::UnaMinus<traits_T,OP>(op.as_derived());
   }
 
 } // namespace cs

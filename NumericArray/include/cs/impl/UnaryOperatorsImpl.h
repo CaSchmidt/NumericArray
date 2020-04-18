@@ -40,11 +40,14 @@ namespace cs {
 
     // Implementation - Unary Minus //////////////////////////////////////////
 
-    template<typename scalar_T, dim_T ROWS, dim_T COLS, typename OP>
+    template<typename traits_T, typename OP>
     class UnaMinus
-        : public ExprBase<scalar_T,ROWS,COLS,UnaMinus<scalar_T,ROWS,COLS,OP>>
+        : public ExprBase<traits_T,UnaMinus<traits_T,OP>>
     {
     public:
+      using typename ExprBase<traits_T,UnaMinus<traits_T,OP>>::size_type;
+      using typename ExprBase<traits_T,UnaMinus<traits_T,OP>>::value_type;
+
       UnaMinus(const OP& op) noexcept
         : _op(op)
       {
@@ -52,8 +55,8 @@ namespace cs {
 
       ~UnaMinus() noexcept = default;
 
-      template<dim_T i, dim_T j>
-      constexpr scalar_T eval() const
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
       {
         return -_op.template eval<i,j>();
       }
@@ -64,11 +67,14 @@ namespace cs {
 
     // Implementation - Unary Plus ///////////////////////////////////////////
 
-    template<typename scalar_T, dim_T ROWS, dim_T COLS, typename OP>
+    template<typename traits_T, typename OP>
     class UnaPlus
-        : public ExprBase<scalar_T,ROWS,COLS,UnaPlus<scalar_T,ROWS,COLS,OP>>
+        : public ExprBase<traits_T,UnaPlus<traits_T,OP>>
     {
     public:
+      using typename ExprBase<traits_T,UnaPlus<traits_T,OP>>::size_type;
+      using typename ExprBase<traits_T,UnaPlus<traits_T,OP>>::value_type;
+
       UnaPlus(const OP& op) noexcept
         : _op(op)
       {
@@ -76,8 +82,8 @@ namespace cs {
 
       ~UnaPlus() noexcept = default;
 
-      template<dim_T i, dim_T j>
-      constexpr scalar_T eval() const
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
       {
         return _op.template eval<i,j>();
       }
