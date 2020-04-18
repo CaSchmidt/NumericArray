@@ -29,8 +29,8 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef NUM_TYPETRAITS_H
-#define NUM_TYPETRAITS_H
+#ifndef NA_TYPETRAITS_H
+#define NA_TYPETRAITS_H
 
 #include <cstdint>
 
@@ -48,4 +48,4 @@ namespace cs {
 
 } // namespace cs
 
-#endif // NUM_TYPETRAITS_H
+#endif // NA_TYPETRAITS_H

@@ -29,8 +29,8 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef CS_MATH_H
-#define CS_MATH_H
+#ifndef NA_MATH_H
+#define NA_MATH_H
 
 #include <emmintrin.h> // SSE2
 #include <xmmintrin.h> // SSE
@@ -59,4 +59,4 @@ namespace cs {
 
 } // namespace cs
 
-#endif // CS_MATH_H
+#endif // NA_MATH_H
