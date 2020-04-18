@@ -29,8 +29,8 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef INDEXPOLICYIMPL_H
-#define INDEXPOLICYIMPL_H
+#ifndef ARRAYPOLICYIMPL_H
+#define ARRAYPOLICYIMPL_H
 
 #include <cs/Types.h>
 
@@ -102,4 +102,4 @@ namespace cs {
 
 } // namespace cs
 
-#endif // INDEXPOLICYIMPL_H
+#endif // ARRAYPOLICYIMPL_H

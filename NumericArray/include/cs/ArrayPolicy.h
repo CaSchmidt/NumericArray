@@ -29,10 +29,10 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef INDEXPOLICY_H
-#define INDEXPOLICY_H
+#ifndef ARRAYPOLICY_H
+#define ARRAYPOLICY_H
 
-#include <cs/impl/IndexPolicyImpl.h>
+#include <cs/impl/ArrayPolicyImpl.h>
 
 namespace cs {
 
@@ -58,4 +58,4 @@ namespace cs {
 
 } // namespace cs
 
-#endif // INDEXPOLICY_H
+#endif // ARRAYPOLICY_H

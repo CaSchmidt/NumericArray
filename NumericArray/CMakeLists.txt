@@ -13,19 +13,19 @@ include(FormatOutputName)
 
 list(APPEND NumericArray_HEADERS
   include/cs/Array.h
+  include/cs/ArrayPolicy.h
   include/cs/BinaryOperators.h
   include/cs/ExprBase.h
   include/cs/Functions.h
-  include/cs/IndexPolicy.h
   include/cs/Math.h
   include/cs/NumericArray.h
   include/cs/Types.h
   include/cs/UnaryOperators.h
   include/cs/impl/ArrayImpl.h
+  include/cs/impl/ArrayPolicyImpl.h
   include/cs/impl/BinaryOperatorsImpl.h
   include/cs/impl/FunctionsImpl.h
   include/cs/impl/Indexing.h
-  include/cs/impl/IndexPolicyImpl.h
   include/cs/impl/UnaryOperatorsImpl.h
   )
 

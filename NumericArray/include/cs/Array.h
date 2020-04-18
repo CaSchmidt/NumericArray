@@ -35,7 +35,7 @@
 #include <algorithm>
 
 #include <cs/impl/ArrayImpl.h>
-#include <cs/IndexPolicy.h>
+#include <cs/ArrayPolicy.h>
 #include <cs/ExprBase.h>
 
 namespace cs {
