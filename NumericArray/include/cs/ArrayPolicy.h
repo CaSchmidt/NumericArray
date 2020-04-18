@@ -37,6 +37,27 @@
 
 namespace cs {
 
+  /*
+   * NOTE:
+   *
+   * i := [0,ROWS-1] -> Row Index
+   * j := [0,COLS-1] -> Column Index
+   * l := [0,SIZE-1] -> Linear Mapping to Row-Major Array Index
+   *
+   *
+   *
+   * Explanation of Row-Major Array Index:
+   *
+   * {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+   * ->
+   * [ 0  1   2   3 ]
+   * [ 4  5   6   7 ]
+   * [ 8  9  10  11 ]
+   *
+   * A Policy's column() and row() functions need to be implemented accordingly;
+   * even for a Column-Major Policy!
+   */
+
   template<typename traits_T>
   struct RowMajorPolicy {
     using   size_type = if_size_type<typename traits_T::size_type>;
