@@ -19,7 +19,7 @@ list(APPEND NumericArray_HEADERS
   include/cs/Functions.h
   include/cs/Math.h
   include/cs/NumericArray.h
-  include/cs/Types.h
+  include/cs/TypeTraits.h
   include/cs/UnaryOperators.h
   include/cs/impl/ArrayImpl.h
   include/cs/impl/ArrayPolicyImpl.h

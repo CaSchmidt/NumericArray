@@ -32,7 +32,7 @@
 #ifndef ARRAYIMPL_H
 #define ARRAYIMPL_H
 
-#include <cs/Types.h>
+#include <cs/TypeTraits.h>
 
 namespace cs {
 

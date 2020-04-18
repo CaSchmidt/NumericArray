@@ -32,7 +32,7 @@
 #ifndef ARRAYPOLICYIMPL_H
 #define ARRAYPOLICYIMPL_H
 
-#include <cs/Types.h>
+#include <cs/TypeTraits.h>
 
 namespace cs {
 
