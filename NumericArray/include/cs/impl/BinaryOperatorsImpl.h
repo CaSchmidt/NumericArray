@@ -40,10 +40,13 @@ namespace cs {
 
     // Implementation - Addition /////////////////////////////////////////////
 
-    template<typename scalar_T, dim_T ROWS, dim_T COLS, typename LHS, typename RHS>
+    template<typename traits_T, typename LHS, typename RHS>
     class BinAdd
-        : public ExprBase<scalar_T,ROWS,COLS,BinAdd<scalar_T,ROWS,COLS,LHS,RHS>> {
+        : public ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>> {
     public:
+      using typename ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>>::size_type;
+      using typename ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>>::value_type;
+
       BinAdd(const LHS& lhs, const RHS& rhs) noexcept
         : _lhs{lhs}
         , _rhs{rhs}
@@ -52,8 +55,8 @@ namespace cs {
 
       ~BinAdd() noexcept = default;
 
-      template<dim_T i, dim_T j>
-      constexpr scalar_T eval() const
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
       {
         return _lhs.template eval<i,j>() + _rhs.template eval<i,j>();
       }
@@ -65,11 +68,14 @@ namespace cs {
 
     // Implementation - Scalar Division //////////////////////////////////////
 
-    template<typename scalar_T, dim_T ROWS, dim_T COLS, typename OP>
+    template<typename traits_T, typename OP>
     class BinSDiv
-        : public ExprBase<scalar_T,ROWS,COLS,BinSDiv<scalar_T,ROWS,COLS,OP>> {
+        : public ExprBase<traits_T,BinSDiv<traits_T,OP>> {
     public:
-      BinSDiv(const OP& op, const scalar_T scalar) noexcept
+      using typename ExprBase<traits_T,BinSDiv<traits_T,OP>>::size_type;
+      using typename ExprBase<traits_T,BinSDiv<traits_T,OP>>::value_type;
+
+      BinSDiv(const OP& op, const value_type scalar) noexcept
         : _op(op)
         , _scalar{scalar}
       {
@@ -77,19 +83,20 @@ namespace cs {
 
       ~BinSDiv() noexcept = default;
 
-      template<dim_T i, dim_T j>
-      constexpr scalar_T eval() const
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
       {
         return _op.template eval<i,j>()/_scalar;
       }
 
     private:
       const OP& _op;
-      scalar_T _scalar;
+      value_type _scalar;
     };
 
     // Implementation - Multiplication ///////////////////////////////////////
 
+    /*
     template<typename scalar_T, dim_T I, dim_T J, dim_T k, dim_T INNER, typename LHS, typename RHS>
     struct BinMulProduct {
       static constexpr dim_T K = INNER - 1 - k;
@@ -134,14 +141,18 @@ namespace cs {
       const LHS& _lhs;
       const RHS& _rhs;
     };
+    */
 
     // Implementation - Scalar Multiplication ////////////////////////////////
 
-    template<typename scalar_T, dim_T ROWS, dim_T COLS, typename OP>
+    template<typename traits_T, typename OP>
     class BinSMul
-        : public ExprBase<scalar_T,ROWS,COLS,BinSMul<scalar_T,ROWS,COLS,OP>> {
+        : public ExprBase<traits_T,BinSMul<traits_T,OP>> {
     public:
-      BinSMul(const OP& op, const scalar_T scalar) noexcept
+      using typename ExprBase<traits_T,BinSMul<traits_T,OP>>::size_type;
+      using typename ExprBase<traits_T,BinSMul<traits_T,OP>>::value_type;
+
+      BinSMul(const OP& op, const value_type scalar) noexcept
         : _op(op)
         , _scalar{scalar}
       {
@@ -149,24 +160,26 @@ namespace cs {
 
       ~BinSMul() noexcept = default;
 
-      template<dim_T i, dim_T j>
-      constexpr scalar_T eval() const
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
       {
         return _op.template eval<i,j>()*_scalar;
       }
 
     private:
       const OP& _op;
-      const scalar_T _scalar;
+      const value_type _scalar;
     };
 
     // Implementation - Subtraction //////////////////////////////////////////
 
-    template<typename scalar_T, dim_T ROWS, dim_T COLS, typename LHS, typename RHS>
+    template<typename traits_T, typename LHS, typename RHS>
     class BinSub
-        : public ExprBase<scalar_T,ROWS,COLS,BinSub<scalar_T,ROWS,COLS,LHS,RHS>>
-    {
+        : public ExprBase<traits_T,BinSub<traits_T,LHS,RHS>> {
     public:
+      using typename ExprBase<traits_T,BinSub<traits_T,LHS,RHS>>::size_type;
+      using typename ExprBase<traits_T,BinSub<traits_T,LHS,RHS>>::value_type;
+
       BinSub(const LHS& lhs, const RHS& rhs) noexcept
         : _lhs(lhs)
         , _rhs(rhs)
@@ -175,8 +188,8 @@ namespace cs {
 
       ~BinSub() noexcept = default;
 
-      template<dim_T i, dim_T j>
-      constexpr scalar_T eval() const
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
       {
         return _lhs.template eval<i,j>() - _rhs.template eval<i,j>();
       }
