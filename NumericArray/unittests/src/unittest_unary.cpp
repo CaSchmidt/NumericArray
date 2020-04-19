@@ -10,14 +10,14 @@ using Values = std::initializer_list<value_T>;
 
 namespace test_unary {
 
-  TEST_CASE("cs::Array<> unary +.", "[unary][plus]") {
+  TEST_CASE("cs::Array<> unary plus.", "[unary][plus]") {
     const Vector x{1, 2, 3};
 
     const Vector y = +x;
     REQUIRE( equals0(y, Values{1, 2, 3}) );
   }
 
-  TEST_CASE("cs::Array<> unary -.", "[unary][minus]") {
+  TEST_CASE("cs::Array<> unary minus.", "[unary][minus]") {
     const Vector x{1, 2, 3};
 
     const Vector y = -x;
