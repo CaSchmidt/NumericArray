@@ -32,8 +32,6 @@
 #ifndef NA_TYPETRAITS_H
 #define NA_TYPETRAITS_H
 
-#include <cstdint>
-
 #include <type_traits>
 
 namespace cs {
