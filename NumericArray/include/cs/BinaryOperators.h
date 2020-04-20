@@ -59,21 +59,23 @@ namespace cs {
   }
   */
 
-  template<typename traits_T, typename value_T = typename traits_T::value_type, typename OP>
-  constexpr auto operator*(const ExprBase<traits_T,OP>& op, const value_T scalar)
+  template<typename traits_T, typename OP>
+  constexpr auto operator*(const ExprBase<traits_T,OP>& op,
+                           const typename traits_T::value_type scalar)
   {
     return impl::BinSMul<traits_T,OP>(op.as_derived(), scalar);
   }
 
-  template<typename traits_T, typename value_T = typename traits_T::value_type, typename OP>
-  constexpr auto operator*(const value_T scalar, const ExprBase<traits_T,OP>& op)
+  template<typename traits_T, typename OP>
+  constexpr auto operator*(const typename traits_T::value_type scalar,
+                           const ExprBase<traits_T,OP>& op)
   {
     return impl::BinSMul<traits_T,OP>(op.as_derived(), scalar);
   }
 
-  template<typename traits_T, typename value_T = typename traits_T::value_type, typename OP>
-  constexpr auto operator/(const ExprBase<traits_T,OP>& op, const value_T scalar
-      )
+  template<typename traits_T, typename OP>
+  constexpr auto operator/(const ExprBase<traits_T,OP>& op,
+                           const typename traits_T::value_type scalar)
   {
     return impl::BinSDiv<traits_T,OP>(op.as_derived(), scalar);
   }
