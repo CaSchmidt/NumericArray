@@ -38,6 +38,15 @@ namespace test_unary {
     REQUIRE( equals0(y, Values{0, 0, 0}) );
   }
 
+  TEST_CASE("cs::Array<> binary multiplication.", "[binary][mul]") {
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Matrix X{1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    const Matrix Y = X*X;
+    REQUIRE( equals0(Y, Values{30, 36, 42, 66, 81, 96, 102, 126, 150}) );
+  }
+
   TEST_CASE("cs::Array<> binary scalar multiplication.", "[binary][smul]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
