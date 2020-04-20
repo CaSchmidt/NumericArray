@@ -42,7 +42,7 @@ namespace test_unary {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
     const Vector x{1, 2, 3};
-    const Vector::value_type s{1.5};
+    const value_T s{1.5};
     Vector y;
 
     y = x*s;
@@ -56,7 +56,7 @@ namespace test_unary {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
     const Vector x{1, 2, 3};
-    const Vector::value_type s{2};
+    const value_T s{2};
 
     const Vector y = x/s;
     REQUIRE( equals0(y, Values{0.5, 1, 1.5}) );
