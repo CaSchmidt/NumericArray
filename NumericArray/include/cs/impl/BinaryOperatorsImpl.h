@@ -96,33 +96,35 @@ namespace cs {
 
     // Implementation - Multiplication ///////////////////////////////////////
 
-    /*
-    template<typename scalar_T, dim_T I, dim_T J, dim_T k, dim_T INNER, typename LHS, typename RHS>
+    template<typename value_T, auto I, auto J, auto k, auto INNER, typename LHS, typename RHS>
     struct BinMulProduct {
-      static constexpr dim_T K = INNER - 1 - k;
+      static constexpr auto K = INNER - 1 - k;
 
-      static constexpr scalar_T run(const LHS& lhs, const RHS& rhs)
+      static constexpr value_T run(const LHS& lhs, const RHS& rhs)
       {
         return
             lhs.template eval<I,K>()*rhs.template eval<K,J>() +
-            BinMulProduct<scalar_T,I,J,k-1,INNER,LHS,RHS>::run(lhs, rhs);
+            BinMulProduct<value_T,I,J,k-1,INNER,LHS,RHS>::run(lhs, rhs);
       }
     };
 
-    template<typename scalar_T, dim_T I, dim_T J, dim_T INNER, typename LHS, typename RHS>
-    struct BinMulProduct<scalar_T,I,J,0,INNER,LHS,RHS> {
-      static constexpr dim_T K = INNER - 1;
+    template<typename value_T, auto I, auto J, auto INNER, typename LHS, typename RHS>
+    struct BinMulProduct<value_T,I,J,0,INNER,LHS,RHS> {
+      static constexpr auto K = INNER - 1;
 
-      static constexpr scalar_T run(const LHS& lhs, const RHS& rhs)
+      static constexpr value_T run(const LHS& lhs, const RHS& rhs)
       {
         return lhs.template eval<I,K>()*rhs.template eval<K,J>();
       }
     };
 
-    template<typename scalar_T, dim_T ROWS, dim_T INNER, dim_T COLS, typename LHS, typename RHS>
+    template<typename traits_T, typename traits_T::size_type INNER, typename LHS, typename RHS>
     class BinMul
-        : public ExprBase<scalar_T,ROWS,COLS,BinMul<scalar_T,ROWS,INNER,COLS,LHS,RHS>> {
+        : public ExprBase<traits_T,BinMul<traits_T,INNER,LHS,RHS>> {
     public:
+      using typename ExprBase<traits_T,BinMul<traits_T,INNER,LHS,RHS>>::size_type;
+      using typename ExprBase<traits_T,BinMul<traits_T,INNER,LHS,RHS>>::value_type;
+
       BinMul(const LHS& lhs, const RHS& rhs) noexcept
         : _lhs(lhs)
         , _rhs(rhs)
@@ -131,17 +133,16 @@ namespace cs {
 
       ~BinMul() noexcept = default;
 
-      template<dim_T i, dim_T j>
-      constexpr scalar_T eval() const
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
       {
-        return BinMulProduct<scalar_T,i,j,INNER-1,INNER,LHS,RHS>::run(_lhs, _rhs);
+        return BinMulProduct<value_type,i,j,INNER-1,INNER,LHS,RHS>::run(_lhs, _rhs);
       }
 
     private:
       const LHS& _lhs;
       const RHS& _rhs;
     };
-    */
 
     // Implementation - Scalar Multiplication ////////////////////////////////
 
