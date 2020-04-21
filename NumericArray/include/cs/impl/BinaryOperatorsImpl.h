@@ -55,10 +55,9 @@ namespace cs {
 
       ~BinAdd() noexcept = default;
 
-      template<size_type i, size_type j>
-      constexpr value_type eval() const
+      constexpr value_type eval(const size_type i, const size_type j) const
       {
-        return _lhs.template eval<i,j>() + _rhs.template eval<i,j>();
+        return _lhs.eval(i, j) + _rhs.eval(i, j);
       }
 
     private:
@@ -83,10 +82,9 @@ namespace cs {
 
       ~BinSDiv() noexcept = default;
 
-      template<size_type i, size_type j>
-      constexpr value_type eval() const
+      constexpr value_type eval(const size_type i, const size_type j) const
       {
-        return _op.template eval<i,j>()/_scalar;
+        return _op.eval(i, j)/_scalar;
       }
 
     private:
@@ -95,28 +93,6 @@ namespace cs {
     };
 
     // Implementation - Multiplication ///////////////////////////////////////
-
-    template<typename value_T, auto I, auto J, auto k, auto INNER, typename LHS, typename RHS>
-    struct BinMulProduct {
-      static constexpr auto K = INNER - 1 - k;
-
-      static constexpr value_T run(const LHS& lhs, const RHS& rhs)
-      {
-        return
-            lhs.template eval<I,K>()*rhs.template eval<K,J>() +
-            BinMulProduct<value_T,I,J,k-1,INNER,LHS,RHS>::run(lhs, rhs);
-      }
-    };
-
-    template<typename value_T, auto I, auto J, auto INNER, typename LHS, typename RHS>
-    struct BinMulProduct<value_T,I,J,0,INNER,LHS,RHS> {
-      static constexpr auto K = INNER - 1;
-
-      static constexpr value_T run(const LHS& lhs, const RHS& rhs)
-      {
-        return lhs.template eval<I,K>()*rhs.template eval<K,J>();
-      }
-    };
 
     template<typename traits_T, typename traits_T::size_type INNER, typename LHS, typename RHS>
     class BinMul
@@ -133,13 +109,16 @@ namespace cs {
 
       ~BinMul() noexcept = default;
 
-      template<size_type i, size_type j>
-      constexpr value_type eval() const
+      constexpr value_type eval(const size_type i, const size_type j) const
       {
-        return BinMulProduct<value_type,i,j,INNER-1,INNER,LHS,RHS>::run(_lhs, _rhs);
+        value_type prod = 0;
+        for(size_type k = 0; k < INNER; k++) {
+          prod += _lhs.eval(i, k)*_rhs.eval(k, j);
+        }
+        return prod;
       }
 
-    private:
+    private:      
       const LHS& _lhs;
       const RHS& _rhs;
     };
@@ -161,10 +140,9 @@ namespace cs {
 
       ~BinSMul() noexcept = default;
 
-      template<size_type i, size_type j>
-      constexpr value_type eval() const
+      constexpr value_type eval(const size_type i, const size_type j) const
       {
-        return _op.template eval<i,j>()*_scalar;
+        return _op.eval(i, j)*_scalar;
       }
 
     private:
@@ -189,10 +167,9 @@ namespace cs {
 
       ~BinSub() noexcept = default;
 
-      template<size_type i, size_type j>
-      constexpr value_type eval() const
+      constexpr value_type eval(const size_type i, const size_type j) const
       {
-        return _lhs.template eval<i,j>() - _rhs.template eval<i,j>();
+        return _lhs.eval(i, j) - _rhs.eval(i, j);
       }
 
     private:

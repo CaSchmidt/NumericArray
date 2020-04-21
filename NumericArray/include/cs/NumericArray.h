@@ -33,7 +33,7 @@
 #define NUMERICARRAY_H
 
 #include <cs/Array.h>
-//#include <cs/BinaryOperators.h>
+#include <cs/BinaryOperators.h>
 //#include <cs/Functions.h>
 #include <cs/UnaryOperators.h>
 
