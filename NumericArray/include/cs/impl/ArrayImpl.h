@@ -44,72 +44,33 @@ namespace cs {
 
     // Implementation - Copy Array ///////////////////////////////////////////
 
-    template<typename T, auto i, auto SIZE>
-    struct ArrayCopy {
-      static constexpr auto I = SIZE - 1 - i;
-
-      static constexpr void run(T *dest, const T *src)
-      {
-        dest[I] = src[I];
-        ArrayCopy<T,i-1,SIZE>::run(dest, src);
+    template<typename value_T, typename size_T>
+    constexpr void copyArray(const size_T N, value_T *dest, const value_T *src)
+    {
+      for(size_T i = 0; i < N; i++) {
+        dest[i] = src[i];
       }
-    };
-
-    template<typename T, auto SIZE>
-    struct ArrayCopy<T,0,SIZE> {
-      static constexpr auto I = SIZE - 1;
-
-      static constexpr void run(T *dest, const T *src)
-      {
-        dest[I] = src[I];
-      }
-    };
+    }
 
     // Implementation - Move Array ///////////////////////////////////////////
 
-    template<typename T, auto i, auto SIZE>
-    struct ArrayMove {
-      static constexpr auto I = SIZE - 1 - i;
-
-      static constexpr void run(T *dest, const T *src)
-      {
-        dest[I] = std::move(src[I]);
-        ArrayMove<T,i-1,SIZE>::run(dest, src);
+    template<typename value_T, typename size_T>
+    constexpr void moveArray(const size_T N, value_T *dest, const value_T *src)
+    {
+      for(size_T i = 0; i < N; i++) {
+        dest[i] = std::move(src[i]);
       }
-    };
-
-    template<typename T, auto SIZE>
-    struct ArrayMove<T,0,SIZE> {
-      static constexpr auto I = SIZE - 1;
-
-      static constexpr void run(T *dest, const T *src)
-      {
-        dest[I] = std::move(src[I]);
-      }
-    };
+    }
 
     // Implementation - Set Array ////////////////////////////////////////////
 
-    template<typename T, auto i, auto SIZE>
-    struct ArraySet {
-      static constexpr auto I = SIZE - 1 - i;
-
-      static constexpr void run(T *dest, const T& value)
-      {
-        dest[I] = value;
-        ArraySet<T,i-1,SIZE>::run(dest, value);
+    template<typename value_T, typename size_T>
+    constexpr void setArray(const size_T N, value_T *dest, const value_T& value)
+    {
+      for(size_T i = 0; i < N; i++) {
+        dest[i] = value;
       }
-    };
-
-    template<typename T, auto SIZE>
-    struct ArraySet<T,0,SIZE> {
-      static constexpr auto I = SIZE - 1;
-
-      static constexpr void run(T *dest, const T& value)
-      {
-        dest[I] = value;
-      }
-    };
+    }
 
   } // namespace impl
 

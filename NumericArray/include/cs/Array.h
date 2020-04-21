@@ -68,7 +68,7 @@ namespace cs {
     Array& operator=(const Array& other) noexcept
     {
       if( this != &other ) {
-        impl::ArrayCopy<value_type,Size-1,Size>::run(_data, other._data);
+        impl::copyArray<value_type,size_type>(Size, _data, other._data);
       }
       return *this;
     }
@@ -83,7 +83,7 @@ namespace cs {
     Array& operator=(Array&& other) noexcept
     {
       if( this != &other ) {
-        impl::ArrayMove<value_type,Size-1,Size>::run(_data, other._data);
+        impl::moveArray<value_type,size_type>(Size, _data, other._data);
       }
       return *this;
     }
@@ -97,7 +97,7 @@ namespace cs {
 
     Array& operator=(const value_type& value) noexcept
     {
-      impl::ArraySet<value_type,Size-1,Size>::run(_data, value);
+      impl::setArray<value_type,size_type>(Size, _data, value);
       return *this;
     }
 
@@ -178,16 +178,14 @@ namespace cs {
 
     // Compile-Time Element Access ///////////////////////////////////////////
 
-    template<size_type i, size_type j>
-    constexpr value_type eval() const
+    constexpr value_type eval(const size_type i, const size_type j) const
     {
-      return _data[policy_type::template index<i,j>()];
+      return _data[policy_type::index(i, j)];
     }
 
-    template<size_type i, size_type j>
-    inline value_type& ref()
+    inline value_type& ref(const size_type i, const size_type j)
     {
-      return _data[policy_type::template index<i,j>()];
+      return _data[policy_type::index(i, j)];
     }
 
   private:

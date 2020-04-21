@@ -73,12 +73,6 @@ namespace cs {
       return l%Columns;
     }
 
-    template<size_type i, size_type j>
-    static constexpr size_type index()
-    {
-      return i*Columns + j;
-    }
-
     static constexpr size_type index(const size_type i, const size_type j)
     {
       return i*Columns + j;
@@ -89,11 +83,13 @@ namespace cs {
       return l/Columns;
     }
 
+    /*
     template<typename dest_T, typename src_T>
     static constexpr void assign(dest_T& dest, const src_T& src)
     {
       impl::RowMajorRowIter<Rows-1,Rows,Columns,dest_T,src_T>::run(dest, src);
     }
+    */
   };
 
 } // namespace cs
