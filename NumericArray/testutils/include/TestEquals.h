@@ -48,7 +48,7 @@ template<typename T>
 constexpr bool equals(const T& a, const T& b,
                       const T& epsilon0 = Konst<T>::epsilon0)
 {
-  return std::abs(a - b) <= epsilon0;
+  return std::fabs(a - b) <= epsilon0;
 }
 
 template<typename T>
