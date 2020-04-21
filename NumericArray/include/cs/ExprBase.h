@@ -32,16 +32,15 @@
 #ifndef EXPRBASE_H
 #define EXPRBASE_H
 
-#include <cs/ArrayTraits.h>
+#include <cs/TypeTraits.h>
 
 namespace cs {
 
   template<typename traits_T, typename derived_T>
   class ExprBase {
   public:
-    using   size_type = if_size_type<typename traits_T::size_type>;
-    using traits_type = traits_T;
-    using  value_type = if_float_type<typename traits_T::value_type>;
+    using  size_type = if_size_type<typename traits_T::size_type>;
+    using value_type = if_float_type<typename traits_T::value_type>;
 
     ExprBase() noexcept = default;
     ~ExprBase() noexcept = default;
@@ -49,12 +48,6 @@ namespace cs {
     constexpr const derived_T& as_derived() const
     {
       return static_cast<const derived_T&>(*this);
-    }
-
-    template<size_type i, size_type j>
-    constexpr value_type eval() const
-    {
-      return as_derived().template eval<i,j>();
     }
   };
 

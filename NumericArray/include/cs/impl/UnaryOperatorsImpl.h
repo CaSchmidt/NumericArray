@@ -55,10 +55,9 @@ namespace cs {
 
       ~UnaMinus() noexcept = default;
 
-      template<size_type i, size_type j>
-      constexpr value_type eval() const
+      constexpr value_type eval(const size_type i, const size_type j) const
       {
-        return -_op.template eval<i,j>();
+        return -_op.eval(i, j);
       }
 
     private:
@@ -82,10 +81,9 @@ namespace cs {
 
       ~UnaPlus() noexcept = default;
 
-      template<size_type i, size_type j>
-      constexpr value_type eval() const
+      constexpr value_type eval(const size_type i, const size_type j) const
       {
-        return _op.template eval<i,j>();
+        return _op.eval(i, j);
       }
 
     private:

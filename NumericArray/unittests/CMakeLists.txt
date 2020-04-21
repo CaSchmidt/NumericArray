@@ -31,6 +31,6 @@ cs_unittest(unittest_assign src/unittest_assign.cpp
 #  ../testutils/include/TestEquals.h ../testutils/include/TestFormatter.h
 #  )
 
-#cs_unittest(unittest_unary src/unittest_unary.cpp
-#  ../testutils/include/TestArrayEqual.h ../testutils/include/TestEquals.h
-#  )
+cs_unittest(unittest_unary src/unittest_unary.cpp
+  ../testutils/include/TestArrayEqual.h ../testutils/include/TestEquals.h
+  )

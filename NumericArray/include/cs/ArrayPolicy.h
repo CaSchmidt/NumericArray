@@ -83,13 +83,15 @@ namespace cs {
       return l/Columns;
     }
 
-    /*
     template<typename dest_T, typename src_T>
     static constexpr void assign(dest_T& dest, const src_T& src)
     {
-      impl::RowMajorRowIter<Rows-1,Rows,Columns,dest_T,src_T>::run(dest, src);
+      for(size_type i = 0; i < Rows; i++) {
+        for(size_type j = 0; j < Columns; j++) {
+          dest.ref(i, j) = src.eval(i, j);
+        }
+      }
     }
-    */
   };
 
 } // namespace cs
