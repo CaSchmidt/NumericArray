@@ -38,4 +38,5 @@ add_custom_target(NumericArray
 
 ### Tests ####################################################################
 
+add_subdirectory(tests)
 add_subdirectory(unittests)
