@@ -33,6 +33,7 @@
 #define NUMERICARRAY_H
 
 #include <cs/Array.h>
+#include <cs/ArrayPolicy.h>
 #include <cs/ArrayTraits.h>
 #include <cs/BinaryOperators.h>
 //#include <cs/Functions.h>
@@ -41,7 +42,7 @@
 namespace cs {
 
   template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
-  using NumericArray = Array<ArrayTraits<value_T,size_T,ROWS,COLS>>;
+  using NumericArray = Array<RowMajorPolicy<ArrayTraits<value_T,size_T,ROWS,COLS>>>;
 
 } // namespace cs
 
