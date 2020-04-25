@@ -32,12 +32,18 @@
 #ifndef ARRAYTRAITS_H
 #define ARRAYTRAITS_H
 
-#include <cs/TypeTraits.h>
+#include <type_traits>
 
 namespace cs {
 
   template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
   struct ArrayTraits {
+    template<typename T>
+    using if_float_type = std::enable_if_t<std::is_floating_point_v<T>,T>;
+
+    template<typename T>
+    using if_size_type = std::enable_if_t<std::is_integral_v<T>  &&  std::is_unsigned_v<T>,T>;
+
     using  size_type = if_size_type<size_T>;
     using value_type = if_float_type<value_T>;
 

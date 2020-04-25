@@ -24,7 +24,6 @@ list(APPEND NumericArray_HEADERS
   include/cs/ListAssign.h
   include/cs/Math.h
   include/cs/NumericArray.h
-  include/cs/TypeTraits.h
   include/cs/UnaryOperators.h
   include/cs/impl/ArrayImpl.h
   include/cs/impl/BinaryOperatorsImpl.h
