@@ -36,78 +36,96 @@ namespace cs {
 
   namespace impl {
 
-    /*
-     * NOTE:
-     * i := [SIZE-1,0] -> Loop Variable, Counting DOWN!
-     * I := [0,SIZE-1] -> Absolute Index
-     */
-
     // Implementation - Copy Array ///////////////////////////////////////////
 
-    template<typename T, auto i, auto SIZE>
+    template<typename traits_T, auto COUNT>
     struct ArrayCopy {
-      static constexpr auto I = SIZE - 1 - i;
+      using   size_type = typename traits_T::size_type;
+      using traits_type = traits_T;
+      using  value_type = typename traits_T::value_type;
 
-      static constexpr void run(T *dest, const T *src)
+      static constexpr size_type i = traits_type::Size - 1 - COUNT;
+
+      static constexpr void run(value_type *dest, const value_type *src)
       {
-        dest[I] = src[I];
-        ArrayCopy<T,i-1,SIZE>::run(dest, src);
+        dest[i] = src[i];
+        ArrayCopy<traits_type,COUNT-1>::run(dest, src);
       }
     };
 
-    template<typename T, auto SIZE>
-    struct ArrayCopy<T,0,SIZE> {
-      static constexpr auto I = SIZE - 1;
+    template<typename traits_T>
+    struct ArrayCopy<traits_T,0> {
+      using   size_type = typename traits_T::size_type;
+      using traits_type = traits_T;
+      using  value_type = typename traits_T::value_type;
 
-      static constexpr void run(T *dest, const T *src)
+      static constexpr size_type i = traits_type::Size - 1;
+
+      static constexpr void run(value_type *dest, const value_type *src)
       {
-        dest[I] = src[I];
+        dest[i] = src[i];
       }
     };
 
     // Implementation - Move Array ///////////////////////////////////////////
 
-    template<typename T, auto i, auto SIZE>
+    template<typename traits_T, auto COUNT>
     struct ArrayMove {
-      static constexpr auto I = SIZE - 1 - i;
+      using   size_type = typename traits_T::size_type;
+      using traits_type = traits_T;
+      using  value_type = typename traits_T::value_type;
 
-      static constexpr void run(T *dest, const T *src)
+      static constexpr size_type i = traits_type::Size - 1 - COUNT;
+
+      static constexpr void run(value_type *dest, value_type *src)
       {
-        dest[I] = std::move(src[I]);
-        ArrayMove<T,i-1,SIZE>::run(dest, src);
+        dest[i] = std::move(src[i]);
+        ArrayMove<traits_type,COUNT-1>::run(dest, src);
       }
     };
 
-    template<typename T, auto SIZE>
-    struct ArrayMove<T,0,SIZE> {
-      static constexpr auto I = SIZE - 1;
+    template<typename traits_T>
+    struct ArrayMove<traits_T,0> {
+      using   size_type = typename traits_T::size_type;
+      using traits_type = traits_T;
+      using  value_type = typename traits_T::value_type;
 
-      static constexpr void run(T *dest, const T *src)
+      static constexpr size_type i = traits_type::Size - 1;
+
+      static constexpr void run(value_type *dest, value_type *src)
       {
-        dest[I] = std::move(src[I]);
+        dest[i] = std::move(src[i]);
       }
     };
 
     // Implementation - Set Array ////////////////////////////////////////////
 
-    template<typename T, auto i, auto SIZE>
+    template<typename traits_T, auto COUNT>
     struct ArraySet {
-      static constexpr auto I = SIZE - 1 - i;
+      using   size_type = typename traits_T::size_type;
+      using traits_type = traits_T;
+      using  value_type = typename traits_T::value_type;
 
-      static constexpr void run(T *dest, const T& value)
+      static constexpr size_type i = traits_type::Size - 1 - COUNT;
+
+      static constexpr void run(value_type *dest, const value_type value)
       {
-        dest[I] = value;
-        ArraySet<T,i-1,SIZE>::run(dest, value);
+        dest[i] = value;
+        ArraySet<traits_type,COUNT-1>::run(dest, value);
       }
     };
 
-    template<typename T, auto SIZE>
-    struct ArraySet<T,0,SIZE> {
-      static constexpr auto I = SIZE - 1;
+    template<typename traits_T>
+    struct ArraySet<traits_T,0> {
+      using   size_type = typename traits_T::size_type;
+      using traits_type = traits_T;
+      using  value_type = typename traits_T::value_type;
 
-      static constexpr void run(T *dest, const T& value)
+      static constexpr size_type i = traits_type::Size - 1;
+
+      static constexpr void run(value_type *dest, const value_type value)
       {
-        dest[I] = value;
+        dest[i] = value;
       }
     };
 
