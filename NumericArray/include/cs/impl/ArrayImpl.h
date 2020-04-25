@@ -32,9 +32,52 @@
 #ifndef ARRAYIMPL_H
 #define ARRAYIMPL_H
 
+#include <cs/ExprBase.h>
+
 namespace cs {
 
   namespace impl {
+
+    // Implementation - Assign Array /////////////////////////////////////////
+
+    template<typename policy_T, auto COUNT>
+    struct ArrayAssign {
+      using policy_type = policy_T;
+      using   size_type = typename policy_T::size_type;
+      using traits_type = typename policy_T::traits_type;
+      using  value_type = typename traits_type::value_type;
+
+      static constexpr size_type l = traits_type::Size - 1 - COUNT;
+
+      template<typename derived_T>
+      static constexpr void run(value_type *dest, const ExprBase<traits_type,derived_T>& src)
+      {
+        constexpr size_type i = policy_type::template row<l>();
+        constexpr size_type j = policy_type::template column<l>();
+
+        dest[l] = src.as_derived().template eval<i,j>();
+        ArrayAssign<policy_type,COUNT-1>::run(dest, src);
+      }
+    };
+
+    template<typename policy_T>
+    struct ArrayAssign<policy_T,0> {
+      using policy_type = policy_T;
+      using   size_type = typename policy_T::size_type;
+      using traits_type = typename policy_T::traits_type;
+      using  value_type = typename traits_type::value_type;
+
+      static constexpr size_type l = traits_type::Size - 1;
+
+      template<typename derived_T>
+      static constexpr void run(value_type *dest, const ExprBase<traits_type,derived_T>& src)
+      {
+        constexpr size_type i = policy_type::template row<l>();
+        constexpr size_type j = policy_type::template column<l>();
+
+        dest[l] = src.as_derived().template eval<i,j>();
+      }
+    };
 
     // Implementation - Copy Array ///////////////////////////////////////////
 

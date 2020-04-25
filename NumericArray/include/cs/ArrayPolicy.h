@@ -32,15 +32,12 @@
 #ifndef ARRAYPOLICY_H
 #define ARRAYPOLICY_H
 
-#include <cs/impl/ArrayPolicyImpl.h>
-
 namespace cs {
 
   template<typename traits_T>
   struct RowMajorPolicy {
     using   size_type = typename traits_T::size_type;
     using traits_type = traits_T;
-    using  value_type = typename traits_T::value_type;
 
     template<size_type l>
     static constexpr size_type column()
@@ -63,12 +60,6 @@ namespace cs {
     static constexpr size_type row()
     {
       return l/traits_type::Columns;
-    }
-
-    template<typename derived_T>
-    static constexpr void assign(value_type *dest, const ExprBase<traits_type,derived_T>& src)
-    {
-      impl::RowMajorIter<RowMajorPolicy<traits_type>,traits_type::Size-1>::run(dest, src);
     }
   };
 

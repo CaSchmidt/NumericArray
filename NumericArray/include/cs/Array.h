@@ -127,7 +127,7 @@ namespace cs {
     template<typename derived_T>
     Array& operator=(const ExprBase<traits_type,derived_T>& expr) noexcept
     {
-      policy_type::assign(_data, expr);
+      impl::ArrayAssign<policy_type,traits_type::Size-1>::run(_data, expr);
       return *this;
     }
 
