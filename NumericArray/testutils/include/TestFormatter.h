@@ -62,7 +62,8 @@ public:
     }
     if( format == static_cast<CharT>('A')  ||
         format == static_cast<CharT>('E')  ||
-        format == static_cast<CharT>('F') ) {
+        format == static_cast<CharT>('F')  ||
+        format == static_cast<CharT>('G') ) {
       _format |= std::ios_base::uppercase;
     }
   }
