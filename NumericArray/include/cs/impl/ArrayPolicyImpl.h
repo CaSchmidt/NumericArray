@@ -32,67 +32,48 @@
 #ifndef ARRAYPOLICYIMPL_H
 #define ARRAYPOLICYIMPL_H
 
+#include <cs/ExprBase.h>
+
 namespace cs {
 
   namespace impl {
 
-    /*
-     * NOTE:
-     * i,j := [ROWS-1,0], [COLS-1,0] -> Loop Variable, Counting DOWN!
-     * I,J := [0,ROWS-1], [0,COLS-1] -> Absolute Row/Column
-     */
+    template<typename policy_T, auto COUNT>
+    struct RowMajorIter {
+      using policy_type = policy_T;
+      using   size_type = typename policy_T::size_type;
+      using traits_type = typename policy_T::traits_type;
+      using  value_type = typename policy_T::value_type;
 
-    /*************************************************************************
-     * Implementation - Row Major Traits *************************************
-     *************************************************************************/
+      static constexpr size_type l = traits_type::Size - 1 - COUNT;
 
-    // Row Major Traits - Inner Loop: Iterate Columns ////////////////////////
-
-    template<auto I, auto j, auto ROWS, auto COLS, typename dest_T, typename src_T>
-    struct RowMajorColumnIter {
-      static constexpr auto J = COLS - 1 - j;
-
-      static constexpr void run(dest_T& dest, const src_T& src)
+      template<typename derived_T>
+      static constexpr void run(value_type *dest, const ExprBase<traits_type,derived_T>& src)
       {
-        dest.template ref<I,J>() = src.template eval<I,J>();
-        RowMajorColumnIter<I,j-1,ROWS,COLS,dest_T,src_T>::run(dest, src);
+        constexpr size_type i = policy_type::template row<l>();
+        constexpr size_type j = policy_type::template column<l>();
+
+        dest[l] = src.as_derived().template eval<i,j>();
+        RowMajorIter<policy_type,COUNT-1>::run(dest, src);
       }
     };
 
-    // Row Major Traits - Inner Loop: Iterate Columns (Last Column) //////////
+    template<typename policy_T>
+    struct RowMajorIter<policy_T,0> {
+      using policy_type = policy_T;
+      using   size_type = typename policy_T::size_type;
+      using traits_type = typename policy_T::traits_type;
+      using  value_type = typename policy_T::value_type;
 
-    template<auto I, auto ROWS, auto COLS, typename dest_T, typename src_T>
-    struct RowMajorColumnIter<I,0,ROWS,COLS,dest_T,src_T> {
-      static constexpr auto J = COLS - 1;
+      static constexpr size_type l = traits_type::Size - 1;
 
-      static constexpr void run(dest_T& dest, const src_T& src)
+      template<typename derived_T>
+      static constexpr void run(value_type *dest, const ExprBase<traits_type,derived_T>& src)
       {
-        dest.template ref<I,J>() = src.template eval<I,J>();
-      }
-    };
+        constexpr size_type i = policy_type::template row<l>();
+        constexpr size_type j = policy_type::template column<l>();
 
-    // Row Major Traits - Outer Loop: Iterate Rows ///////////////////////////
-
-    template<auto i, auto ROWS, auto COLS, typename dest_T, typename src_T>
-    struct RowMajorRowIter {
-      static const auto I = ROWS - 1 - i;
-
-      static constexpr void run(dest_T& dest, const src_T& src)
-      {
-        RowMajorColumnIter<I,COLS-1,ROWS,COLS,dest_T,src_T>::run(dest, src);
-        RowMajorRowIter<i-1,ROWS,COLS,dest_T,src_T>::run(dest, src);
-      }
-    };
-
-    // Row Major Traits - Outer Loop: Iterate Rows (Last Row) ////////////////
-
-    template<auto ROWS, auto COLS, typename dest_T, typename src_T>
-    struct RowMajorRowIter<0,ROWS,COLS,dest_T,src_T> {
-      static constexpr auto I = ROWS - 1;
-
-      static constexpr void run(dest_T& dest, const src_T& src)
-      {
-        RowMajorColumnIter<I,COLS-1,ROWS,COLS,dest_T,src_T>::run(dest, src);
+        dest[l] = src.as_derived().template eval<i,j>();
       }
     };
 

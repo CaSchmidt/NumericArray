@@ -21,6 +21,7 @@ list(APPEND NumericArray_HEADERS
   include/cs/BinaryOperators.h
   include/cs/ExprBase.h
   include/cs/Functions.h
+  include/cs/ListAssign.h
   include/cs/Math.h
   include/cs/NumericArray.h
   include/cs/TypeTraits.h
@@ -42,4 +43,4 @@ add_custom_target(NumericArray
 ### Tests ####################################################################
 
 add_subdirectory(tests)
-#add_subdirectory(unittests)
+add_subdirectory(unittests)

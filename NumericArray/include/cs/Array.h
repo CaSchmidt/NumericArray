@@ -36,8 +36,7 @@
 
 #include <cs/impl/ArrayImpl.h>
 #include <cs/ArrayPolicy.h>
-#include <cs/ArrayTraits.h>
-#include <cs/ExprBase.h>
+#include <cs/ListAssign.h>
 
 namespace cs {
 
@@ -45,16 +44,11 @@ namespace cs {
   class Array
       : public ExprBase<traits_T,Array<traits_T,policy_T>> {
   public:
+    using   list_type = ListAssign<traits_T>;
     using policy_type = policy_T;
-    using   size_type = if_size_type<typename traits_T::size_type>;
+    using   size_type = typename traits_T::size_type;
     using traits_type = traits_T;
-    using  value_type = if_float_type<typename traits_T::value_type>;
-
-    enum : size_type {
-      Columns = traits_type::Columns,
-      Rows    = traits_type::Rows,
-      Size    = traits_type::Size
-    };
+    using  value_type = typename traits_T::value_type;
 
     ~Array() noexcept = default;
 
@@ -68,7 +62,7 @@ namespace cs {
     Array& operator=(const Array& other) noexcept
     {
       if( this != &other ) {
-        impl::ArrayCopy<value_type,Size-1,Size>::run(_data, other._data);
+        impl::ArrayCopy<value_type,traits_type::Size-1,traits_type::Size>::run(_data, other._data);
       }
       return *this;
     }
@@ -83,7 +77,7 @@ namespace cs {
     Array& operator=(Array&& other) noexcept
     {
       if( this != &other ) {
-        impl::ArrayMove<value_type,Size-1,Size>::run(_data, other._data);
+        impl::ArrayMove<value_type,traits_type::Size-1,traits_type::Size>::run(_data, other._data);
       }
       return *this;
     }
@@ -97,7 +91,7 @@ namespace cs {
 
     Array& operator=(const value_type& value) noexcept
     {
-      impl::ArraySet<value_type,Size-1,Size>::run(_data, value);
+      impl::ArraySet<value_type,traits_type::Size-1,traits_type::Size>::run(_data, value);
       return *this;
     }
 
@@ -110,13 +104,13 @@ namespace cs {
 
     Array& operator=(const std::initializer_list<value_type>& list) noexcept
     {
-      const std::size_t max = std::min<std::size_t>(list.size(), Size);
+      const std::size_t max = std::min<std::size_t>(list.size(), traits_type::Size);
       for(std::size_t index = 0; index < max; index++) {
-        const size_type i = policy_type::row(static_cast<size_type>(index));
-        const size_type j = policy_type::column(static_cast<size_type>(index));
+        const size_type i = list_type::row(static_cast<size_type>(index));
+        const size_type j = list_type::column(static_cast<size_type>(index));
         operator()(i, j) = list.begin()[index];
       }
-      for(std::size_t index = max; index < static_cast<std::size_t>(Size); index++) {
+      for(std::size_t index = max; index < static_cast<std::size_t>(traits_type::Size); index++) {
         _data[index] = value_type{0};
       }
       return *this;
@@ -133,7 +127,7 @@ namespace cs {
     template<typename derived_T>
     Array& operator=(const ExprBase<traits_type,derived_T>& expr) noexcept
     {
-      policy_type::assign(*this, expr.as_derived());
+      policy_type::assign(_data, expr);
       return *this;
     }
 
@@ -163,17 +157,17 @@ namespace cs {
 
     constexpr size_type rows() const
     {
-      return Rows;
+      return traits_type::Rows;
     }
 
     constexpr size_type columns() const
     {
-      return Columns;
+      return traits_type::Columns;
     }
 
     constexpr size_type size() const
     {
-      return Size;
+      return traits_type::Size;
     }
 
     // Compile-Time Element Access ///////////////////////////////////////////
@@ -184,14 +178,8 @@ namespace cs {
       return _data[policy_type::template index<i,j>()];
     }
 
-    template<size_type i, size_type j>
-    inline value_type& ref()
-    {
-      return _data[policy_type::template index<i,j>()];
-    }
-
   private:
-    value_type _data[Size];
+    value_type _data[traits_type::Size];
   };
 
 } // namespace cs

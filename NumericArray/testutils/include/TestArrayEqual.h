@@ -46,8 +46,8 @@ inline bool equals(const array_T& A,
     return false;
   }
   for(std::size_t index = 0; index < list.size(); index++) {
-    const size_type i = array_T::policy_type::row(static_cast<size_type>(index));
-    const size_type j = array_T::policy_type::column(static_cast<size_type>(index));
+    const size_type i = array_T::list_type::row(static_cast<size_type>(index));
+    const size_type j = array_T::list_type::column(static_cast<size_type>(index));
     if( !equals(A(i, j), list.begin()[index], epsilon0) ) {
       return false;
     }

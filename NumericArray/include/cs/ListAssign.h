@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (c) 2019, Carsten Schmidt. All rights reserved.
+** Copyright (c) 2020, Carsten Schmidt. All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
 ** modification, are permitted provided that the following conditions
@@ -29,49 +29,37 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef ARRAYPOLICY_H
-#define ARRAYPOLICY_H
-
-#include <cs/impl/ArrayPolicyImpl.h>
+#ifndef LISTASSIGN_H
+#define LISTASSIGN_H
 
 namespace cs {
 
+  /*
+   * Explanation of Row-Major List Index:
+   *
+   * {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+   * ->
+   * [ 0  1   2   3 ]
+   * [ 4  5   6   7 ]
+   * [ 8  9  10  11 ]
+   */
+
   template<typename traits_T>
-  struct RowMajorPolicy {
+  struct ListAssign {
     using   size_type = typename traits_T::size_type;
     using traits_type = traits_T;
-    using  value_type = typename traits_T::value_type;
 
-    template<size_type l>
-    static constexpr size_type column()
+    static constexpr size_type column(const size_type l)
     {
       return l%traits_type::Columns;
     }
 
-    template<size_type i, size_type j>
-    static constexpr size_type index()
-    {
-      return i*traits_type::Columns + j;
-    }
-
-    static constexpr size_type index(const size_type i, const size_type j)
-    {
-      return i*traits_type::Columns + j;
-    }
-
-    template<size_type l>
-    static constexpr size_type row()
+    static constexpr size_type row(const size_type l)
     {
       return l/traits_type::Columns;
-    }
-
-    template<typename derived_T>
-    static constexpr void assign(value_type *dest, const ExprBase<traits_type,derived_T>& src)
-    {
-      impl::RowMajorIter<RowMajorPolicy<traits_type>,traits_type::Size-1>::run(dest, src);
     }
   };
 
 } // namespace cs
 
-#endif // ARRAYPOLICY_H
+#endif // LISTASSIGN_H
