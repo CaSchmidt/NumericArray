@@ -86,17 +86,15 @@ namespace cs {
 
   // Distance ////////////////////////////////////////////////////////////////
 
-  /*
-  template<typename scalar_T, dim_T ROWS, typename FROM, typename TO>
-  constexpr scalar_T distance(
-      const ExprBase<scalar_T,ROWS,1,FROM>& from,
-      const ExprBase<scalar_T,ROWS,1,TO>& to
-      )
+  template<typename value_T, typename size_T, size_T ROWS,
+           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+           typename FROM, typename TO>
+  constexpr value_T distance(const ExprBase<traits_T<value_T,size_T,ROWS,1>,FROM>& from,
+                             const ExprBase<traits_T<value_T,size_T,ROWS,1>,TO>& to)
   {
-    using SUB = impl::BinSub<scalar_T,ROWS,1,TO,FROM>;
-    return cs::length(SUB(to.as_derived(), from.as_derived()));
+    using SUB = impl::BinSub<traits_T<value_T,size_T,ROWS,1>,TO,FROM>;
+    return ::cs::length(SUB(to.as_derived(), from.as_derived()));
   }
-  */
 
   // Dot Product /////////////////////////////////////////////////////////////
 
