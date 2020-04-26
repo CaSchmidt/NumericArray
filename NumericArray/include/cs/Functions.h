@@ -41,22 +41,25 @@ namespace cs {
 
   // Forward Declarations ////////////////////////////////////////////////////
 
+  /*
   template<typename scalar_T, dim_T ROWS, typename ARG>
   constexpr scalar_T length(const ExprBase<scalar_T,ROWS,1,ARG>& arg);
+  */
 
   // Cross Product ///////////////////////////////////////////////////////////
 
-  template<typename scalar_T, typename ARG1, typename ARG2>
-  constexpr impl::Cross<scalar_T,ARG1,ARG2> cross(
-      const ExprBase<scalar_T,3,1,ARG1>& arg1,
-      const ExprBase<scalar_T,3,1,ARG2>& arg2
-      )
+  template<typename value_T, typename size_T,
+           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+           typename ARG1, typename ARG2>
+  constexpr auto cross(const ExprBase<traits_T<value_T,size_T,3,1>,ARG1>& arg1,
+                       const ExprBase<traits_T<value_T,size_T,3,1>,ARG2>& arg2)
   {
-    return impl::Cross<scalar_T,ARG1,ARG2>(arg1.as_derived(), arg2.as_derived());
+    return impl::Cross<traits_T<value_T,size_T,3,1>,ARG1,ARG2>(arg1.as_derived(), arg2.as_derived());
   }
 
   // Determinant /////////////////////////////////////////////////////////////
 
+  /*
   template<typename scalar_T, typename ARG>
   constexpr scalar_T determinant(
       const ExprBase<scalar_T,3,3,ARG>& arg
@@ -65,9 +68,11 @@ namespace cs {
     using COFACTOR = impl::Cofactor3x3<scalar_T,ARG>;
     return COFACTOR(arg.as_derived()).determinant();
   }
+  */
 
   // Direction ///////////////////////////////////////////////////////////////
 
+  /*
   template<typename scalar_T, dim_T ROWS, typename FROM, typename TO>
   constexpr impl::Normalize<scalar_T,ROWS,impl::BinSub<scalar_T,ROWS,1,TO,FROM>> direction(
       const ExprBase<scalar_T,ROWS,1,FROM>& from,
@@ -78,9 +83,11 @@ namespace cs {
     return impl::Normalize<scalar_T,ROWS,SUB>(SUB(to.as_derived(), from.as_derived()),
                                               cs::length(SUB(to.as_derived(), from.as_derived())));
   }
+  */
 
   // Distance ////////////////////////////////////////////////////////////////
 
+  /*
   template<typename scalar_T, dim_T ROWS, typename FROM, typename TO>
   constexpr scalar_T distance(
       const ExprBase<scalar_T,ROWS,1,FROM>& from,
@@ -90,9 +97,11 @@ namespace cs {
     using SUB = impl::BinSub<scalar_T,ROWS,1,TO,FROM>;
     return cs::length(SUB(to.as_derived(), from.as_derived()));
   }
+  */
 
   // Dot Product /////////////////////////////////////////////////////////////
 
+  /*
   template<typename scalar_T, dim_T ROWS, typename ARG1, typename ARG2>
   constexpr scalar_T dot(
       const ExprBase<scalar_T,ROWS,1,ARG1>& arg1,
@@ -103,9 +112,11 @@ namespace cs {
     using       MUL = impl::BinMul<scalar_T,1,ROWS,1,TRANSPOSE,ARG2>;
     return MUL(arg1.as_derived(), arg2.as_derived()).template eval<0,0>();
   }
+  */
 
   // Inverse /////////////////////////////////////////////////////////////////
 
+  /*
   template<typename scalar_T, typename ARG>
   constexpr impl::BinSDiv<scalar_T,3,3,impl::Transpose<scalar_T,3,3,impl::Cofactor3x3<scalar_T,ARG>>> inverse(
       const ExprBase<scalar_T,3,3,ARG>& arg
@@ -117,9 +128,11 @@ namespace cs {
     return SDIV(TRANSPOSE(COFACTOR(arg.as_derived())),
                 COFACTOR(arg.as_derived()).determinant());
   }
+  */
 
   // Length //////////////////////////////////////////////////////////////////
 
+  /*
   template<typename scalar_T, dim_T ROWS, typename ARG>
   constexpr scalar_T length(
       const ExprBase<scalar_T,ROWS,1,ARG>& arg
@@ -127,9 +140,11 @@ namespace cs {
   {
     return std::sqrt(dot(arg, arg));
   }
+  */
 
   // Vector Normalization ////////////////////////////////////////////////////
 
+  /*
   template<typename scalar_T, dim_T ROWS, typename ARG>
   constexpr impl::Normalize<scalar_T,ROWS,ARG> normalize(
       const ExprBase<scalar_T,ROWS,1,ARG>& arg
@@ -138,15 +153,16 @@ namespace cs {
     return impl::Normalize<scalar_T,ROWS,ARG>(arg.as_derived(),
                                               cs::length(arg.as_derived()));
   }
+  */
 
   // Vector/Matrix Transposition /////////////////////////////////////////////
 
-  template<typename scalar_T, dim_T ROWS, dim_T COLS, typename ARG>
-  constexpr impl::Transpose<scalar_T,COLS,ROWS,ARG> transpose(
-      const ExprBase<scalar_T,ROWS,COLS,ARG>& arg
-      )
+  template<typename value_T, typename size_T, size_T ROWS, size_T COLS,
+           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+           typename ARG>
+  constexpr auto transpose(const ExprBase<traits_T<value_T,size_T,ROWS,COLS>,ARG>& arg)
   {
-    return impl::Transpose<scalar_T,COLS,ROWS,ARG>(arg.as_derived());
+    return impl::Transpose<traits_T<value_T,size_T,COLS,ROWS>,ARG>(arg.as_derived());
   }
 
 } // namespace cs

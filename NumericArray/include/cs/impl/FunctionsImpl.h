@@ -32,6 +32,8 @@
 #ifndef FUNCTIONSIMPL_H
 #define FUNCTIONSIMPL_H
 
+#include <type_traits>
+
 #include <cs/impl/Indexing.h>
 #include <cs/ExprBase.h>
 
@@ -39,8 +41,14 @@ namespace cs {
 
   namespace impl {
 
+    template<typename traits_T,
+             typename traits_T::size_type ROWS, typename traits_T::size_type COLS,
+             typename T>
+    using if_dim_t = std::enable_if_t<traits_T::Rows == ROWS  &&  traits_T::Columns == COLS,T>;
+
     // Implementation - 3x3 Cofactor Matrix //////////////////////////////////
 
+    /*
     template<typename scalar_T, typename ARG>
     class Cofactor3x3
         : public ExprBase<scalar_T,3,3,Cofactor3x3<scalar_T,ARG>> {
@@ -88,13 +96,17 @@ namespace cs {
 
       const ARG& _arg;
     };
+    */
 
     // Implementation - Vector Cross Product /////////////////////////////////
 
-    template<typename scalar_T, typename ARG1, typename ARG2>
-    class Cross
-        : public ExprBase<scalar_T,3,1,Cross<scalar_T,ARG1,ARG2>> {
+    template<typename traits_T, typename ARG1, typename ARG2>
+    class Cross : public ExprBase<traits_T,Cross<traits_T,ARG1,ARG2>> {
     public:
+      using typename ExprBase<traits_T,Cross<traits_T,ARG1,ARG2>>::size_type;
+      using typename ExprBase<traits_T,Cross<traits_T,ARG1,ARG2>>::traits_type;
+      using typename ExprBase<traits_T,Cross<traits_T,ARG1,ARG2>>::value_type;
+
       Cross(const ARG1& arg1, const ARG2& arg2) noexcept
         : _arg1(arg1)
         , _arg2(arg2)
@@ -103,21 +115,25 @@ namespace cs {
 
       ~Cross() noexcept = default;
 
-      template<dim_T i, dim_T /*j*/>
-      constexpr scalar_T eval() const
+      template<size_type i, size_type /*j*/>
+      constexpr if_dim_t<traits_type,3,1,value_type> eval() const
       {
         return
-            _arg1.template eval<CI3<i>::J,0>()*_arg2.template eval<CI3<i>::K,0>() -
-            _arg1.template eval<CI3<i>::K,0>()*_arg2.template eval<CI3<i>::J,0>();
+            _arg1.template eval<NI<i>::j,0>()*_arg2.template eval<NI<i>::k,0>() -
+            _arg1.template eval<NI<i>::k,0>()*_arg2.template eval<NI<i>::j,0>();
       }
 
     private:
+      template<size_type i>
+      using NI = NI3<size_type,i>;
+
       const ARG1& _arg1;
       const ARG2& _arg2;
     };
 
     // Implementation - Vector Normalization /////////////////////////////////
 
+    /*
     template<typename scalar_T, dim_T ROWS, typename ARG>
     class Normalize
         : public ExprBase<scalar_T,ROWS,1,Normalize<scalar_T,ROWS,ARG>> {
@@ -140,13 +156,16 @@ namespace cs {
       const ARG&     _arg;
       const scalar_T _length{};
     };
+    */
 
     // Implementation - Matrix/Vector Transposition //////////////////////////
 
-    template<typename scalar_T, dim_T ROWS, dim_T COLS, typename ARG>
-    class Transpose
-        : public ExprBase<scalar_T,ROWS,COLS,Transpose<scalar_T,ROWS,COLS,ARG>> {
+    template<typename traits_T, typename ARG>
+    class Transpose : public ExprBase<traits_T,Transpose<traits_T,ARG>> {
     public:
+      using typename ExprBase<traits_T,Transpose<traits_T,ARG>>::size_type;
+      using typename ExprBase<traits_T,Transpose<traits_T,ARG>>::value_type;
+
       Transpose(const ARG& arg) noexcept
         : _arg(arg)
       {
@@ -154,8 +173,8 @@ namespace cs {
 
       ~Transpose() noexcept = default;
 
-      template<dim_T i, dim_T j>
-      constexpr scalar_T eval() const
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
       {
         return _arg.template eval<j,i>();
       }

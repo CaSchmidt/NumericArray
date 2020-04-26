@@ -32,25 +32,26 @@
 #ifndef INDEXING_H
 #define INDEXING_H
 
-#include <cs/Types.h>
-
 namespace cs {
 
   namespace impl {
 
     // Implementation - Cyclic Index Computation /////////////////////////////
 
-    template<dim_T i, dim_T N>
-    struct CyclicIndex {
-      static constexpr dim_T J = (i + 1)%N;
-      static constexpr dim_T K = (i + 2)%N;
+    template<typename size_T, size_T i, size_T N>
+    struct NextIndex {
+      using size_type = size_T;
+
+      static constexpr size_type j = (i + 1)%N;
+      static constexpr size_type k = (i + 2)%N;
     };
 
-    template<dim_T i>
-    using CI3 = CyclicIndex<i,3>;
+    template<typename size_T, size_T i>
+    using NI3 = NextIndex<size_T,i,3>;
 
     // Implementation - 3x3 Adjoint Index Computation ////////////////////////
 
+    /*
     template<dim_T i>
     struct AdjointIndex3x3 {
       // SFINAE
@@ -76,6 +77,7 @@ namespace cs {
 
     template<dim_T i>
     using AI3 = AdjointIndex3x3<i>;
+    */
 
   } // namespace impl
 

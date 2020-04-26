@@ -36,7 +36,7 @@
 #include <cs/ArrayPolicy.h>
 #include <cs/ArrayTraits.h>
 #include <cs/BinaryOperators.h>
-//#include <cs/Functions.h>
+#include <cs/Functions.h>
 #include <cs/UnaryOperators.h>
 
 namespace cs {
