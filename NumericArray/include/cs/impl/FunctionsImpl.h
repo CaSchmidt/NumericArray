@@ -44,7 +44,11 @@ namespace cs {
     template<typename traits_T,
              typename traits_T::size_type ROWS, typename traits_T::size_type COLS,
              typename T>
-    using if_dim_t = std::enable_if_t<traits_T::Rows == ROWS  &&  traits_T::Columns == COLS,T>;
+    using if_size_t = std::enable_if_t<traits_T::Rows == ROWS  &&  traits_T::Columns == COLS,T>;
+
+    template<typename traits_T,
+             typename T>
+    using if_column_t = std::enable_if_t<traits_T::Columns == 1,T>;
 
     // Implementation - 3x3 Cofactor Matrix //////////////////////////////////
 
@@ -116,7 +120,7 @@ namespace cs {
       ~Cross() noexcept = default;
 
       template<size_type i, size_type /*j*/>
-      constexpr if_dim_t<traits_type,3,1,value_type> eval() const
+      constexpr if_size_t<traits_type,3,1,value_type> eval() const
       {
         return
             _arg1.template eval<NI<i>::j,0>()*_arg2.template eval<NI<i>::k,0>() -
