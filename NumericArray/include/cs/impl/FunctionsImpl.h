@@ -137,12 +137,14 @@ namespace cs {
 
     // Implementation - Vector Normalization /////////////////////////////////
 
-    /*
-    template<typename scalar_T, dim_T ROWS, typename ARG>
-    class Normalize
-        : public ExprBase<scalar_T,ROWS,1,Normalize<scalar_T,ROWS,ARG>> {
+    template<typename traits_T, typename ARG>
+    class Normalize : public ExprBase<traits_T,Normalize<traits_T,ARG>> {
     public:
-      Normalize(const ARG& arg, const scalar_T length)
+      using typename ExprBase<traits_T,Normalize<traits_T,ARG>>::size_type;
+      using typename ExprBase<traits_T,Normalize<traits_T,ARG>>::traits_type;
+      using typename ExprBase<traits_T,Normalize<traits_T,ARG>>::value_type;
+
+      Normalize(const ARG& arg, const value_type length)
         : _arg(arg)
         , _length{length}
       {
@@ -150,17 +152,16 @@ namespace cs {
 
       ~Normalize() noexcept = default;
 
-      template<dim_T i, dim_T j>
-      constexpr scalar_T eval() const
+      template<size_type i, size_type j>
+      constexpr if_column_t<traits_type,value_type> eval() const
       {
         return _arg.template eval<i,j>()/_length;
       }
 
     private:
-      const ARG&     _arg;
-      const scalar_T _length{};
+      const ARG&       _arg;
+      const value_type _length{};
     };
-    */
 
     // Implementation - Matrix/Vector Transposition //////////////////////////
 

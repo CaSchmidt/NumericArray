@@ -137,16 +137,14 @@ namespace cs {
 
   // Vector Normalization ////////////////////////////////////////////////////
 
-  /*
-  template<typename scalar_T, dim_T ROWS, typename ARG>
-  constexpr impl::Normalize<scalar_T,ROWS,ARG> normalize(
-      const ExprBase<scalar_T,ROWS,1,ARG>& arg
-      )
+  template<typename value_T, typename size_T, size_T ROWS,
+           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+           typename ARG>
+  constexpr auto normalize(const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG>& arg)
   {
-    return impl::Normalize<scalar_T,ROWS,ARG>(arg.as_derived(),
-                                              cs::length(arg.as_derived()));
+    return impl::Normalize<traits_T<value_T,size_T,ROWS,1>,ARG>(arg.as_derived(),
+                                                                cs::length(arg.as_derived()));
   }
-  */
 
   // Vector/Matrix Transposition /////////////////////////////////////////////
 
