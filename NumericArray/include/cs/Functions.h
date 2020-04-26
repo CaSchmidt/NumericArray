@@ -71,18 +71,18 @@ namespace cs {
 
   // Direction ///////////////////////////////////////////////////////////////
 
-  /*
-  template<typename scalar_T, dim_T ROWS, typename FROM, typename TO>
-  constexpr impl::Normalize<scalar_T,ROWS,impl::BinSub<scalar_T,ROWS,1,TO,FROM>> direction(
-      const ExprBase<scalar_T,ROWS,1,FROM>& from,
-      const ExprBase<scalar_T,ROWS,1,TO>& to
-      )
+  template<typename value_T, typename size_T, size_T ROWS,
+           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+           typename FROM, typename TO>
+  constexpr auto direction(const ExprBase<traits_T<value_T,size_T,ROWS,1>,FROM>& from,
+                           const ExprBase<traits_T<value_T,size_T,ROWS,1>,TO>& to)
   {
-    using SUB = impl::BinSub<scalar_T,ROWS,1,TO,FROM>;
-    return impl::Normalize<scalar_T,ROWS,SUB>(SUB(to.as_derived(), from.as_derived()),
-                                              cs::length(SUB(to.as_derived(), from.as_derived())));
+    using SUB = impl::BinSub<traits_T<value_T,size_T,ROWS,1>,TO,FROM>;
+    return impl::Normalize<traits_T<value_T,size_T,ROWS,1>,SUB>(SUB(to.as_derived(),
+                                                                    from.as_derived()),
+                                                                ::cs::length(SUB(to.as_derived(),
+                                                                                 from.as_derived())));
   }
-  */
 
   // Distance ////////////////////////////////////////////////////////////////
 
@@ -143,7 +143,7 @@ namespace cs {
   constexpr auto normalize(const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG>& arg)
   {
     return impl::Normalize<traits_T<value_T,size_T,ROWS,1>,ARG>(arg.as_derived(),
-                                                                cs::length(arg.as_derived()));
+                                                                ::cs::length(arg.as_derived()));
   }
 
   // Vector/Matrix Transposition /////////////////////////////////////////////
