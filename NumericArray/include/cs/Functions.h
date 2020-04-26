@@ -32,19 +32,18 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-#include <cmath>
-
 #include <cs/impl/BinaryOperatorsImpl.h>
 #include <cs/impl/FunctionsImpl.h>
+#include <cs/Math.h>
 
 namespace cs {
 
   // Forward Declarations ////////////////////////////////////////////////////
 
-  /*
-  template<typename scalar_T, dim_T ROWS, typename ARG>
-  constexpr scalar_T length(const ExprBase<scalar_T,ROWS,1,ARG>& arg);
-  */
+  template<typename value_T, typename size_T, size_T ROWS,
+           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+           typename ARG>
+  constexpr value_T length(const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG>& arg);
 
   // Cross Product ///////////////////////////////////////////////////////////
 
@@ -130,15 +129,13 @@ namespace cs {
 
   // Length //////////////////////////////////////////////////////////////////
 
-  /*
-  template<typename scalar_T, dim_T ROWS, typename ARG>
-  constexpr scalar_T length(
-      const ExprBase<scalar_T,ROWS,1,ARG>& arg
-      )
+  template<typename value_T, typename size_T, size_T ROWS,
+           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+           typename ARG>
+  constexpr value_T length(const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG>& arg)
   {
-    return std::sqrt(dot(arg, arg));
+    return ::csSqrt(::cs::dot(arg, arg));
   }
-  */
 
   // Vector Normalization ////////////////////////////////////////////////////
 
