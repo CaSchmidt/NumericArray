@@ -35,28 +35,24 @@
 #include <emmintrin.h> // SSE2
 #include <xmmintrin.h> // SSE
 
-namespace cs {
+inline double csInvSqrt(const double& x)
+{
+  return _mm_cvtsd_f64(_mm_div_sd(_mm_set_sd(1), _mm_sqrt_sd(_mm_set1_pd(x), _mm_set1_pd(x))));
+}
 
-  inline double invSqrt(const double& x)
-  {
-    return _mm_cvtsd_f64(_mm_div_sd(_mm_set_sd(1), _mm_sqrt_sd(_mm_set1_pd(x), _mm_set1_pd(x))));
-  }
+inline float csInvSqrt(const float& x)
+{
+  return _mm_cvtss_f32(_mm_rsqrt_ss(_mm_set_ss(x)));
+}
 
-  inline float invSqrt(const float& x)
-  {
-    return _mm_cvtss_f32(_mm_rsqrt_ss(_mm_set_ss(x)));
-  }
+inline double csSqrt(const double& x)
+{
+  return _mm_cvtsd_f64(_mm_sqrt_sd(_mm_set1_pd(x), _mm_set1_pd(x)));
+}
 
-  inline double sqrt(const double& x)
-  {
-    return _mm_cvtsd_f64(_mm_sqrt_sd(_mm_set1_pd(x), _mm_set1_pd(x)));
-  }
-
-  inline float sqrt(const float& x)
-  {
-    return _mm_cvtss_f32(_mm_sqrt_ss(_mm_set_ss(x)));
-  }
-
-} // namespace cs
+inline float csSqrt(const float& x)
+{
+  return _mm_cvtss_f32(_mm_sqrt_ss(_mm_set_ss(x)));
+}
 
 #endif // NA_MATH_H
