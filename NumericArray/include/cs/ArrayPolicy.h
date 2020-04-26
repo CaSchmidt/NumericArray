@@ -36,8 +36,8 @@ namespace cs {
 
   template<typename traits_T>
   struct RowMajorPolicy {
-    using   size_type = typename traits_T::size_type;
     using traits_type = traits_T;
+    using   size_type = typename traits_type::size_type;
 
     template<size_type l>
     static constexpr size_type column()

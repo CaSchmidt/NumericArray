@@ -43,9 +43,9 @@ namespace cs {
   class Array
       : public ExprBase<typename policy_T::traits_type,Array<policy_T>> {
   public:
-    using traits_type = typename policy_T::traits_type;
-    using   list_type = ListAssign<traits_type>;
     using policy_type = policy_T;
+    using traits_type = typename policy_type::traits_type;
+    using   list_type = ListAssign<traits_type>;
     using   size_type = typename traits_type::size_type;
     using  value_type = typename traits_type::value_type;
 

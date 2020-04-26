@@ -37,9 +37,9 @@ namespace cs {
   template<typename traits_T, typename derived_T>
   class ExprBase {
   public:
-    using   size_type = typename traits_T::size_type;
     using traits_type = traits_T;
-    using  value_type = typename traits_T::value_type;
+    using   size_type = typename traits_type::size_type;
+    using  value_type = typename traits_type::value_type;
 
     ExprBase() noexcept = default;
     ~ExprBase() noexcept = default;
