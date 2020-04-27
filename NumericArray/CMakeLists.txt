@@ -28,7 +28,7 @@ list(APPEND NumericArray_HEADERS
   include/cs/impl/ArrayImpl.h
   include/cs/impl/BinaryOperatorsImpl.h
   include/cs/impl/FunctionsImpl.h
-  include/cs/impl/Indexing.h
+  include/cs/impl/IndexingImpl.h
   include/cs/impl/UnaryOperatorsImpl.h
   )
 

@@ -29,8 +29,8 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef INDEXING_H
-#define INDEXING_H
+#ifndef INDEXINGIMPL_H
+#define INDEXINGIMPL_H
 
 namespace cs {
 
@@ -83,4 +83,4 @@ namespace cs {
 
 } // namespace cs
 
-#endif // INDEXING_H
+#endif // INDEXINGIMPL_H

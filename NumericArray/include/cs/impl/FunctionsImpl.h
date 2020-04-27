@@ -34,7 +34,7 @@
 
 #include <type_traits>
 
-#include <cs/impl/Indexing.h>
+#include <cs/impl/IndexingImpl.h>
 #include <cs/ExprBase.h>
 
 namespace cs {
