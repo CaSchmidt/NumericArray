@@ -1,3 +1,4 @@
+//#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 
@@ -9,9 +10,26 @@ template<typename value_T>
 using _Matrix = cs::NumericArray<value_T,size_T,3,3>;
 template<typename value_T>
 using _Vector = cs::NumericArray<value_T,size_T,3,1>;
+template<typename value_T>
+using _VectorT = cs::NumericArray<value_T,size_T,1,3>;
 
 template<typename value_T>
 using _Values = std::initializer_list<value_T>;
+
+template<typename T>
+struct FloatInfo {
+  // SFINAE
+};
+
+template<>
+struct FloatInfo<float> {
+  static constexpr float epsilon0 = Konst<float>::epsilon0;
+};
+
+template<>
+struct FloatInfo<double> {
+  static constexpr double epsilon0 = Konst<double>::epsilon0;
+};
 
 namespace impl {
 
@@ -150,6 +168,121 @@ namespace test_binary {
   }
 
 } // namespace test_binary
+
+namespace test_function {
+
+  TEMPLATE_TEST_CASE("cs::Array<> function cross().", "[function][cross]", float, double) {
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vector x{1, 2, 3};
+    const Vector y{4, 5, 6};
+
+    const Vector z = cs::cross(x, y);
+    REQUIRE( equals0(z, _Values<TestType>{-3, 6, -3}) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> function determinant().", "[function][determinant]", float, double) {
+    using Matrix = _Matrix<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Matrix M{3, 1, 1, 5, 2, 1, 3, 1, 2};
+
+    const TestType y = cs::determinant(M);
+    REQUIRE( equals0(y, TestType{1}) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> function direction().", "[function][direction]", float, double) {
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vector o{1, 2, 3};
+    const Vector x{1, 2, 2};
+
+    const Vector y = cs::direction(o, o + x);
+    REQUIRE( equals(y, _Values<TestType>{.333333333, .666666666, .666666666},
+                    FloatInfo<TestType>::epsilon0) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> function distance().", "[function][distance]", float, double) {
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vector o{1, 2, 3};
+    const Vector x{1, 2, 2};
+
+    const TestType y = cs::distance(o, o + x);
+    REQUIRE( equals(y, TestType{3}, FloatInfo<TestType>::epsilon0) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> function dot().", "[function][dot]", float, double) {
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vector x{1, 2, 2};
+
+    const TestType y = cs::dot(x, x);
+    REQUIRE( y == TestType{9} );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> function inverse().", "[function][inverse]", float, double) {
+    using Matrix = _Matrix<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Matrix M{3, 1, 1, 5, 2, 1, 3, 1, 2};
+
+    const Matrix Minv = cs::inverse(M);
+    REQUIRE( equals(Minv, _Values<TestType>{3, -1, -1, -7, 3, 2, -1, 0, 1},
+                    FloatInfo<TestType>::epsilon0) );
+
+    const Matrix I = M*Minv;
+    REQUIRE( equals(I, _Values<TestType>{1, 0, 0, 0, 1, 0, 0, 0, 1},
+                    FloatInfo<TestType>::epsilon0) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> function length().", "[function][length]", float, double) {
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vector x{1, 2, 2};
+
+    const TestType y = cs::length(x);
+    REQUIRE( equals(y, TestType{3}, FloatInfo<TestType>::epsilon0) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> function normalize().", "[function][normalize]", float, double) {
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vector x{1, 2, 2};
+
+    const Vector y = cs::normalize(x);
+    REQUIRE( equals(y, _Values<TestType>{.333333333, .666666666, .666666666},
+                    FloatInfo<TestType>::epsilon0) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> function transpose().", "[function][transpose]", float, double) {
+    using  Vector = _Vector<TestType>;
+    using VectorT = _VectorT<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vector x{1, 2, 3};
+
+    const VectorT y = cs::transpose(x);
+    REQUIRE( (y.rows() == x.columns()  &&  y.columns() == x.rows()  &&
+              equals0(y, _Values<TestType>{1, 2, 3}) ) );
+  }
+
+} // namespace test_function
 
 namespace test_unary {
 
