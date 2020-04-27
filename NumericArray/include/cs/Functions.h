@@ -58,16 +58,14 @@ namespace cs {
 
   // Determinant /////////////////////////////////////////////////////////////
 
-  /*
-  template<typename scalar_T, typename ARG>
-  constexpr scalar_T determinant(
-      const ExprBase<scalar_T,3,3,ARG>& arg
-      )
+  template<typename value_T, typename size_T,
+           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+           typename ARG>
+  constexpr value_T determinant(const ExprBase<traits_T<value_T,size_T,3,3>,ARG>& arg)
   {
-    using COFACTOR = impl::Cofactor3x3<scalar_T,ARG>;
+    using COFACTOR = impl::Cofactor3x3<traits_T<value_T,size_T,3,3>,ARG>;
     return COFACTOR(arg.as_derived()).determinant();
   }
-  */
 
   // Direction ///////////////////////////////////////////////////////////////
 

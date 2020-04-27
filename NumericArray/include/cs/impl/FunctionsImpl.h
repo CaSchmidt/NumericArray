@@ -52,11 +52,13 @@ namespace cs {
 
     // Implementation - 3x3 Cofactor Matrix //////////////////////////////////
 
-    /*
-    template<typename scalar_T, typename ARG>
-    class Cofactor3x3
-        : public ExprBase<scalar_T,3,3,Cofactor3x3<scalar_T,ARG>> {
+    template<typename traits_T, typename ARG>
+    class Cofactor3x3 : public ExprBase<traits_T,Cofactor3x3<traits_T,ARG>> {
     public:
+      using typename ExprBase<traits_T,Cofactor3x3<traits_T,ARG>>::size_type;
+      using typename ExprBase<traits_T,Cofactor3x3<traits_T,ARG>>::traits_type;
+      using typename ExprBase<traits_T,Cofactor3x3<traits_T,ARG>>::value_type;
+
       Cofactor3x3(const ARG& arg) noexcept
         : _arg(arg)
       {
@@ -64,7 +66,7 @@ namespace cs {
 
       ~Cofactor3x3() noexcept = default;
 
-      constexpr scalar_T determinant() const
+      constexpr if_size_t<traits_type,3,3,value_type> determinant() const
       {
         return
             _arg.template eval<0,0>()*eval<0,0>() +
@@ -72,26 +74,29 @@ namespace cs {
             _arg.template eval<0,2>()*eval<0,2>();
       }
 
-      template<dim_T i, dim_T j>
-      constexpr scalar_T eval() const
+      template<size_type i, size_type j>
+      constexpr if_size_t<traits_type,3,3,value_type> eval() const
       {
         return sign<i,j>()*(
-              _arg.template eval<AI3<i>::J,AI3<j>::J>()*
-              _arg.template eval<AI3<i>::K,AI3<j>::K>() -
-              _arg.template eval<AI3<i>::K,AI3<j>::J>()*
-              _arg.template eval<AI3<i>::J,AI3<j>::K>()
+              _arg.template eval<AI<i>::j,AI<j>::j>()*
+              _arg.template eval<AI<i>::k,AI<j>::k>() -
+              _arg.template eval<AI<i>::k,AI<j>::j>()*
+              _arg.template eval<AI<i>::j,AI<j>::k>()
               );
       }
 
     private:
-      static constexpr dim_T bitZERO = 0;
-      static constexpr dim_T  bitONE = 1;
+      template<size_type i>
+      using AI = AdjointIndex3x3<size_type,i>;
 
-      static constexpr scalar_T  PLUS =  1;
-      static constexpr scalar_T MINUS = -1;
+      static constexpr size_type bitZERO = 0;
+      static constexpr size_type  bitONE = 1;
 
-      template<dim_T i, dim_T j>
-      constexpr scalar_T sign() const
+      static constexpr value_type  PLUS =  1;
+      static constexpr value_type MINUS = -1;
+
+      template<size_type i, size_type j>
+      constexpr value_type sign() const
       {
         return ((i ^ j) & bitONE) != bitZERO
             ? MINUS
@@ -100,7 +105,6 @@ namespace cs {
 
       const ARG& _arg;
     };
-    */
 
     // Implementation - Vector Cross Product /////////////////////////////////
 
