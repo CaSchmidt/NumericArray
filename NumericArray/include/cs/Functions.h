@@ -109,19 +109,18 @@ namespace cs {
 
   // Inverse /////////////////////////////////////////////////////////////////
 
-  /*
-  template<typename scalar_T, typename ARG>
-  constexpr impl::BinSDiv<scalar_T,3,3,impl::Transpose<scalar_T,3,3,impl::Cofactor3x3<scalar_T,ARG>>> inverse(
-      const ExprBase<scalar_T,3,3,ARG>& arg
-      )
+  template<typename value_T, typename size_T,
+           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+           typename ARG>
+  constexpr auto inverse(const ExprBase<traits_T<value_T,size_T,3,3>,ARG>& arg)
   {
-    using  COFACTOR = impl::Cofactor3x3<scalar_T,ARG>;
-    using TRANSPOSE = impl::Transpose<scalar_T,3,3,COFACTOR>;
-    using      SDIV = impl::BinSDiv<scalar_T,3,3,TRANSPOSE>;
+    using traits_type = traits_T<value_T,size_T,3,3>;
+    using    COFACTOR = impl::Cofactor3x3<traits_type,ARG>;
+    using   TRANSPOSE = impl::Transpose<traits_type,COFACTOR>;
+    using        SDIV = impl::BinSDiv<traits_type,TRANSPOSE>;
     return SDIV(TRANSPOSE(COFACTOR(arg.as_derived())),
                 COFACTOR(arg.as_derived()).determinant());
   }
-  */
 
   // Length //////////////////////////////////////////////////////////////////
 
