@@ -36,7 +36,7 @@ namespace cs {
 
   namespace impl {
 
-    // Implementation - Cyclic Index Computation /////////////////////////////
+    // Implementation - Next Index Computation ///////////////////////////////
 
     template<typename size_T, size_T i, size_T N>
     struct NextIndex {
@@ -46,38 +46,21 @@ namespace cs {
       static constexpr size_type k = (i + 2)%N;
     };
 
-    template<typename size_T, size_T i>
-    using NI3 = NextIndex<size_T,i,3>;
-
     // Implementation - 3x3 Adjoint Index Computation ////////////////////////
 
-    /*
-    template<dim_T i>
+    template<typename size_T, size_T i>
     struct AdjointIndex3x3 {
-      // SFINAE
-    };
+      using size_type = size_T;
 
-    template<>
-    struct AdjointIndex3x3<0> {
-      static constexpr dim_T J = 1;
-      static constexpr dim_T K = 2;
+      static constexpr size_type j = i == 0 ? 1
+                                            : i == 1 ? 0
+                                                     : i == 2 ? 0
+                                                              : 3;
+      static constexpr size_type k = i == 0 ? 2
+                                            : i == 1 ? 2
+                                                     : i == 2 ? 1
+                                                              : 3;
     };
-
-    template<>
-    struct AdjointIndex3x3<1> {
-      static constexpr dim_T J = 0;
-      static constexpr dim_T K = 2;
-    };
-
-    template<>
-    struct AdjointIndex3x3<2> {
-      static constexpr dim_T J = 0;
-      static constexpr dim_T K = 1;
-    };
-
-    template<dim_T i>
-    using AI3 = AdjointIndex3x3<i>;
-    */
 
   } // namespace impl
 

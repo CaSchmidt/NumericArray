@@ -129,7 +129,7 @@ namespace cs {
 
     private:
       template<size_type i>
-      using NI = NI3<size_type,i>;
+      using NI = NextIndex<size_type,i,3>;
 
       const ARG1& _arg1;
       const ARG2& _arg2;
