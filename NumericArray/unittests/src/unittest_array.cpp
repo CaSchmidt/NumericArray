@@ -106,6 +106,21 @@ namespace test_assign {
 
 namespace test_binary {
 
+  TEMPLATE_TEST_CASE("cs::Array<> all binary operations.", "[binary][all]", float, double) {
+    using Matrix = _Matrix<TestType>;
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Matrix I{1,  0, 0, 0, 1, 0, 0, 0, 1};
+    const Matrix M{0, -2, 2, 1, 0, 1, 2, 2, 0};
+    const Vector x{1, 2, 3};
+    const TestType alpha = 2;
+
+    const Vector y = (I*(M*x))/alpha - alpha*x + x;
+    REQUIRE( equals0(y, _Values<TestType>{0, 0, 0}) );
+  }
+
   TEMPLATE_TEST_CASE("cs::Array<> binary addition.", "[binary][add]", float, double) {
     using Vector = _Vector<TestType>;
 
