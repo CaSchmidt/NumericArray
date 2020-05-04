@@ -12,6 +12,9 @@ include(FormatOutputName)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+option(ENABLE_TESTS "Enable tests" OFF)
+option(ENABLE_UNITTESTS "Enable unit tests" OFF)
+
 ### NumericArray #############################################################
 
 list(APPEND NumericArray_HEADERS
@@ -40,5 +43,10 @@ add_custom_target(NumericArray
 
 ### Tests ####################################################################
 
-add_subdirectory(tests)
-add_subdirectory(unittests)
+if(ENABLE_TESTS)
+  add_subdirectory(tests)
+endif()
+
+if(ENABLE_UNITTESTS)
+  add_subdirectory(unittests)
+endif()
