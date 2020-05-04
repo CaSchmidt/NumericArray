@@ -54,6 +54,11 @@ namespace cs {
       return l%traits_type::Columns;
     }
 
+    static constexpr size_type index(const size_type i, const size_type j)
+    {
+      return i*traits_type::Columns + j;
+    }
+
     static constexpr size_type row(const size_type l)
     {
       return l/traits_type::Columns;
