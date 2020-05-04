@@ -10,8 +10,6 @@ template<typename value_T>
 using _Matrix = cs::NumericArray<value_T,size_T,3,3>;
 template<typename value_T>
 using _Vector = cs::NumericArray<value_T,size_T,3,1>;
-template<typename value_T>
-using _VectorT = cs::NumericArray<value_T,size_T,1,3>;
 
 template<typename value_T>
 using _Values = std::initializer_list<value_T>;
@@ -285,16 +283,16 @@ namespace test_function {
   }
 
   TEMPLATE_TEST_CASE("cs::Array<> function transpose().", "[function][transpose]", float, double) {
-    using  Vector = _Vector<TestType>;
-    using VectorT = _VectorT<TestType>;
+    using Matrix23 = cs::NumericArray<TestType,size_T,2,3>;
+    using Matrix32 = cs::NumericArray<TestType,size_T,3,2>;
 
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
-    const Vector x{1, 2, 3};
+    const Matrix23 X{1, 2, 3, 4, 5, 6};
 
-    const VectorT y = cs::transpose(x);
-    REQUIRE( (y.rows() == x.columns()  &&  y.columns() == x.rows()  &&
-              equals0(y, _Values<TestType>{1, 2, 3}) ) );
+    const Matrix32 Y = cs::transpose(X);
+    REQUIRE( (Y.rows() == X.columns()  &&  Y.columns() == X.rows()  &&
+              equals0(Y, _Values<TestType>{1, 4, 2, 5, 3, 6}) ) );
   }
 
 } // namespace test_function
