@@ -29,8 +29,8 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef NA_MATH_H
-#define NA_MATH_H
+#ifndef CSMATH_H
+#define CSMATH_H
 
 #include <emmintrin.h> // SSE2
 #include <xmmintrin.h> // SSE
@@ -55,4 +55,4 @@ inline float csSqrt(const float& x)
   return _mm_cvtss_f32(_mm_sqrt_ss(_mm_set_ss(x)));
 }
 
-#endif // NA_MATH_H
+#endif // CSMATH_H
