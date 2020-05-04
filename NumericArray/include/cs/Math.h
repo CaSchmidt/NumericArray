@@ -37,7 +37,7 @@
 
 inline double csInvSqrt(const double& x)
 {
-  return _mm_cvtsd_f64(_mm_div_sd(_mm_set_sd(1), _mm_sqrt_sd(_mm_set1_pd(x), _mm_set1_pd(x))));
+  return _mm_cvtsd_f64(_mm_div_sd(_mm_set_sd(1), _mm_sqrt_sd(_mm_set_sd(x), _mm_set_sd(x))));
 }
 
 inline float csInvSqrt(const float& x)
@@ -47,7 +47,7 @@ inline float csInvSqrt(const float& x)
 
 inline double csSqrt(const double& x)
 {
-  return _mm_cvtsd_f64(_mm_sqrt_sd(_mm_set1_pd(x), _mm_set1_pd(x)));
+  return _mm_cvtsd_f64(_mm_sqrt_sd(_mm_set_sd(x), _mm_set_sd(x)));
 }
 
 inline float csSqrt(const float& x)
