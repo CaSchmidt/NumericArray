@@ -89,6 +89,19 @@ namespace cs {
            typename T>
   using if_dimensions_t = std::enable_if_t<if_dimensions_v<traits_T,ROWS,COLS>,T>;
 
+
+  // type_traits are identical ///////////////////////////////////////////////
+
+  template<typename traits_A, typename traits_B>
+  inline constexpr bool if_identical_v = if_traits_v<traits_A>  &&  if_traits_v<traits_B>  &&
+      std::is_same_v<typename traits_A::size_type,typename traits_B::size_type>  &&
+  std::is_same_v<typename traits_A::value_type,typename traits_B::value_type>  &&
+  traits_A::Columns == traits_B::Columns  &&  traits_A::Rows == traits_B::Rows;
+
+  template<typename traits_A, typename traits_B,
+           typename T>
+  using if_identical_t = std::enable_if_t<if_identical_v<traits_A,traits_B>,T>;
+
 } // namespace cs
 
 #endif // TYPETRAITS_H
