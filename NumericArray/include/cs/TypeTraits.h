@@ -62,6 +62,10 @@ namespace cs {
       traits_T::Columns > 0  &&  traits_T::Rows > 0  &&
       traits_T::Columns*traits_T::Rows == traits_T::Size;
 
+  template<typename traits_T,
+           typename T>
+  using if_traits_t = std::enable_if_t<if_traits_v<traits_T>,T>;
+
 
   // type_traits represents a column vector //////////////////////////////////
 

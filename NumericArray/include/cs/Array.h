@@ -36,6 +36,7 @@
 
 #include <cs/impl/ArrayImpl.h>
 #include <cs/ListAssign.h>
+#include <cs/TypeTraits.h>
 
 namespace cs {
 
@@ -178,7 +179,7 @@ namespace cs {
     }
 
   private:
-    value_type _data[traits_type::Size];
+    if_traits_t<traits_type,value_type> _data[traits_type::Size];
   };
 
 } // namespace cs
