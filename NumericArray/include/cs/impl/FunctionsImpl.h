@@ -32,23 +32,13 @@
 #ifndef FUNCTIONSIMPL_H
 #define FUNCTIONSIMPL_H
 
-#include <type_traits>
-
 #include <cs/impl/IndexingImpl.h>
 #include <cs/ExprBase.h>
+#include <cs/TypeTraits.h>
 
 namespace cs {
 
   namespace impl {
-
-    template<typename traits_T,
-             typename traits_T::size_type ROWS, typename traits_T::size_type COLS,
-             typename T>
-    using if_dimensions_t = std::enable_if_t<traits_T::Rows == ROWS  &&  traits_T::Columns == COLS,T>;
-
-    template<typename traits_T,
-             typename T>
-    using if_column_t = std::enable_if_t<traits_T::Columns == 1,T>;
 
     // Implementation - 3x3 Cofactor Matrix //////////////////////////////////
 

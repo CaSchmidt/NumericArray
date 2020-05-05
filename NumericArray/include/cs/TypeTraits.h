@@ -36,6 +36,8 @@
 
 namespace cs {
 
+  // traits_type::size_type //////////////////////////////////////////////////
+
   template<typename T>
   inline constexpr bool if_size_v = std::is_integral_v<T>  &&  std::is_unsigned_v<T>;
 
@@ -43,11 +45,45 @@ namespace cs {
   using if_size_t = std::enable_if_t<if_size_v<T>,T>;
 
 
+  // traits_type::value_type /////////////////////////////////////////////////
+
   template<typename T>
   inline constexpr bool if_value_v = std::is_floating_point_v<T>;
 
   template<typename T>
   using if_value_t = std::enable_if_t<if_value_v<T>,T>;
+
+
+  // traits_type /////////////////////////////////////////////////////////////
+
+  template<typename traits_T>
+  inline constexpr bool if_traits_v = std::is_class_v<traits_T>  &&
+      if_size_v<typename traits_T::size_type>  &&  if_value_v<typename traits_T::value_type>  &&
+      traits_T::Columns > 0  &&  traits_T::Rows > 0  &&
+      traits_T::Columns*traits_T::Rows == traits_T::Size;
+
+
+  // type_traits represents a column vector //////////////////////////////////
+
+  template<typename traits_T>
+  inline constexpr bool if_column_v = if_traits_v<traits_T>  &&  traits_T::Columns == 1;
+
+  template<typename traits_T,
+           typename T>
+  using if_column_t = std::enable_if_t<if_column_v<traits_T>,T>;
+
+
+  // type_traits has required dimensions /////////////////////////////////////
+
+  template<typename traits_T,
+           typename traits_T::size_type ROWS, typename traits_T::size_type COLS>
+  inline constexpr bool if_dimensions_v = if_traits_v<traits_T>  &&
+      traits_T::Rows == ROWS  &&  traits_T::Columns == COLS;
+
+  template<typename traits_T,
+           typename traits_T::size_type ROWS, typename traits_T::size_type COLS,
+           typename T>
+  using if_dimensions_t = std::enable_if_t<if_dimensions_v<traits_T,ROWS,COLS>,T>;
 
 } // namespace cs
 
