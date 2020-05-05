@@ -41,7 +41,7 @@ namespace cs {
     using  size_type = if_size_t<size_T>;
     using value_type = if_value_t<value_T>;
 
-    enum : size_type {
+    enum Dimensions : size_type {
       Columns = COLS,
       Rows    = ROWS,
       Size    = COLS*ROWS
