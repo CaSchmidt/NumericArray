@@ -44,7 +44,7 @@ namespace cs {
     template<typename traits_T,
              typename traits_T::size_type ROWS, typename traits_T::size_type COLS,
              typename T>
-    using if_size_t = std::enable_if_t<traits_T::Rows == ROWS  &&  traits_T::Columns == COLS,T>;
+    using if_dimensions_t = std::enable_if_t<traits_T::Rows == ROWS  &&  traits_T::Columns == COLS,T>;
 
     template<typename traits_T,
              typename T>
@@ -66,7 +66,7 @@ namespace cs {
 
       ~Cofactor3x3() noexcept = default;
 
-      constexpr if_size_t<traits_type,3,3,value_type> determinant() const
+      constexpr if_dimensions_t<traits_type,3,3,value_type> determinant() const
       {
         return
             _arg.template eval<0,0>()*eval<0,0>() +
@@ -75,7 +75,7 @@ namespace cs {
       }
 
       template<size_type i, size_type j>
-      constexpr if_size_t<traits_type,3,3,value_type> eval() const
+      constexpr if_dimensions_t<traits_type,3,3,value_type> eval() const
       {
         return sign<i,j>()*(
               _arg.template eval<AI<i>::j,AI<j>::j>()*
@@ -124,7 +124,7 @@ namespace cs {
       ~Cross() noexcept = default;
 
       template<size_type i, size_type /*j*/>
-      constexpr if_size_t<traits_type,3,1,value_type> eval() const
+      constexpr if_dimensions_t<traits_type,3,1,value_type> eval() const
       {
         return
             _arg1.template eval<NI<i>::j,0>()*_arg2.template eval<NI<i>::k,0>() -
