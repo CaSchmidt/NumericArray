@@ -29,25 +29,26 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef ARRAYTRAITS_H
-#define ARRAYTRAITS_H
+#ifndef TYPETRAITS_H
+#define TYPETRAITS_H
 
-#include <cs/TypeTraits.h>
+#include <type_traits>
 
 namespace cs {
 
-  template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
-  struct ArrayTraits {
-    using  size_type = if_size_t<size_T>;
-    using value_type = if_value_t<value_T>;
+  template<typename T>
+  inline constexpr bool if_size_v = std::is_integral_v<T>  &&  std::is_unsigned_v<T>;
 
-    enum : size_type {
-      Columns = COLS,
-      Rows    = ROWS,
-      Size    = COLS*ROWS
-    };
-  };
+  template<typename T>
+  using if_size_t = std::enable_if_t<if_size_v<T>,T>;
+
+
+  template<typename T>
+  inline constexpr bool if_value_v = std::is_floating_point_v<T>;
+
+  template<typename T>
+  using if_value_t = std::enable_if_t<if_value_v<T>,T>;
 
 } // namespace cs
 
-#endif // ARRAYTRAITS_H
+#endif // TYPETRAITS_H
