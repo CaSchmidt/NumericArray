@@ -47,11 +47,10 @@ namespace cs {
       using traits_type = typename policy_T::traits_type;
       using  value_type = typename traits_type::value_type;
 
-      static constexpr size_type l = traits_type::Size - 1 - COUNT;
-
       template<typename derived_T>
       static constexpr void run(value_type *dest, const ExprBase<traits_type,derived_T>& src)
       {
+        constexpr size_type l = traits_type::Size - 1 - COUNT;
         constexpr size_type i = policy_type::template row<l>();
         constexpr size_type j = policy_type::template column<l>();
 
@@ -67,11 +66,10 @@ namespace cs {
       using traits_type = typename policy_T::traits_type;
       using  value_type = typename traits_type::value_type;
 
-      static constexpr size_type l = traits_type::Size - 1;
-
       template<typename derived_T>
       static constexpr void run(value_type *dest, const ExprBase<traits_type,derived_T>& src)
       {
+        constexpr size_type l = traits_type::Size - 1;
         constexpr size_type i = policy_type::template row<l>();
         constexpr size_type j = policy_type::template column<l>();
 
@@ -87,11 +85,11 @@ namespace cs {
       using traits_type = traits_T;
       using  value_type = typename traits_T::value_type;
 
-      static constexpr size_type i = traits_type::Size - 1 - COUNT;
-
       static constexpr void run(value_type *dest, const value_type *src)
       {
-        dest[i] = src[i];
+        constexpr size_type l = traits_type::Size - 1 - COUNT;
+
+        dest[l] = src[l];
         ArrayCopy<traits_type,COUNT-1>::run(dest, src);
       }
     };
@@ -102,11 +100,11 @@ namespace cs {
       using traits_type = traits_T;
       using  value_type = typename traits_T::value_type;
 
-      static constexpr size_type i = traits_type::Size - 1;
-
       static constexpr void run(value_type *dest, const value_type *src)
       {
-        dest[i] = src[i];
+        constexpr size_type l = traits_type::Size - 1;
+
+        dest[l] = src[l];
       }
     };
 
@@ -118,11 +116,11 @@ namespace cs {
       using traits_type = traits_T;
       using  value_type = typename traits_T::value_type;
 
-      static constexpr size_type i = traits_type::Size - 1 - COUNT;
-
       static constexpr void run(value_type *dest, value_type *src)
       {
-        dest[i] = std::move(src[i]);
+        constexpr size_type l = traits_type::Size - 1 - COUNT;
+
+        dest[l] = std::move(src[l]);
         ArrayMove<traits_type,COUNT-1>::run(dest, src);
       }
     };
@@ -133,11 +131,11 @@ namespace cs {
       using traits_type = traits_T;
       using  value_type = typename traits_T::value_type;
 
-      static constexpr size_type i = traits_type::Size - 1;
-
       static constexpr void run(value_type *dest, value_type *src)
       {
-        dest[i] = std::move(src[i]);
+        constexpr size_type l = traits_type::Size - 1;
+
+        dest[l] = std::move(src[l]);
       }
     };
 
@@ -149,11 +147,11 @@ namespace cs {
       using traits_type = traits_T;
       using  value_type = typename traits_T::value_type;
 
-      static constexpr size_type i = traits_type::Size - 1 - COUNT;
-
       static constexpr void run(value_type *dest, const value_type value)
       {
-        dest[i] = value;
+        constexpr size_type l = traits_type::Size - 1 - COUNT;
+
+        dest[l] = value;
         ArraySet<traits_type,COUNT-1>::run(dest, value);
       }
     };
@@ -164,11 +162,11 @@ namespace cs {
       using traits_type = traits_T;
       using  value_type = typename traits_T::value_type;
 
-      static constexpr size_type i = traits_type::Size - 1;
-
       static constexpr void run(value_type *dest, const value_type value)
       {
-        dest[i] = value;
+        constexpr size_type l = traits_type::Size - 1;
+
+        dest[l] = value;
       }
     };
 
