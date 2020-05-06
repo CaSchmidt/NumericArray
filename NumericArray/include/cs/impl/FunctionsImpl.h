@@ -34,7 +34,6 @@
 
 #include <cs/impl/IndexingImpl.h>
 #include <cs/ExprBase.h>
-#include <cs/TypeTraits.h>
 
 namespace cs {
 

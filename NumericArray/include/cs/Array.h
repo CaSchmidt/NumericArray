@@ -36,7 +36,6 @@
 
 #include <cs/impl/ArrayImpl.h>
 #include <cs/ListAssign.h>
-#include <cs/TypeTraits.h>
 
 namespace cs {
 
