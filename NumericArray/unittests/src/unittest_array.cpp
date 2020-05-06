@@ -14,6 +14,18 @@ using _Vector = cs::NumericArray<value_T,size_T,3,1>;
 template<typename value_T>
 using _Values = std::initializer_list<value_T>;
 
+template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
+struct MyTraits {
+  using  size_type = cs::if_size_t<size_T>;
+  using value_type = cs::if_value_t<value_T>;
+
+  enum Dimensions : size_type {
+    Columns = COLS,
+    Rows    = ROWS,
+    Size    = COLS*ROWS
+  };
+};
+
 template<typename T>
 struct FloatInfo {
   // SFINAE
@@ -183,6 +195,19 @@ namespace test_binary {
 } // namespace test_binary
 
 namespace test_function {
+
+  TEMPLATE_TEST_CASE("cs::Array<> function array_cast().", "[function][cast]", float, double) {
+    using Vector = _Vector<TestType>;
+    using MyVector = cs::Array<cs::RowMajorPolicy<MyTraits<TestType,size_T,3,1>>>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const MyVector x1{1, 2, 3};
+    const Vector x2{1, 2, 3};
+
+    const Vector y2 = cs::array_cast<Vector::traits_type>(x1) + x2;
+    REQUIRE( equals0(y2, _Values<TestType>{2, 4, 6}) );
+  }
 
   TEMPLATE_TEST_CASE("cs::Array<> function cross().", "[function][cross]", float, double) {
     using Vector = _Vector<TestType>;
