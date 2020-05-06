@@ -54,7 +54,6 @@ namespace cs {
     constexpr value_type as_scalar() const
     {
       static_assert(if_dimensions_v<traits_type,1,1>);
-
       return as_derived().template eval<0,0>();
     }
   };
