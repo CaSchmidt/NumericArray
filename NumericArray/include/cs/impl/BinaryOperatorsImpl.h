@@ -45,6 +45,7 @@ namespace cs {
         : public ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>> {
     public:
       using typename ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>>::size_type;
+      using typename ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>>::traits_type;
       using typename ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>>::value_type;
 
       BinAdd(const LHS& lhs, const RHS& rhs) noexcept
@@ -73,6 +74,7 @@ namespace cs {
         : public ExprBase<traits_T,BinSDiv<traits_T,OP>> {
     public:
       using typename ExprBase<traits_T,BinSDiv<traits_T,OP>>::size_type;
+      using typename ExprBase<traits_T,BinSDiv<traits_T,OP>>::traits_type;
       using typename ExprBase<traits_T,BinSDiv<traits_T,OP>>::value_type;
 
       BinSDiv(const OP& op, const value_type scalar) noexcept
@@ -123,6 +125,7 @@ namespace cs {
         : public ExprBase<traits_T,BinMul<traits_T,INNER,LHS,RHS>> {
     public:
       using typename ExprBase<traits_T,BinMul<traits_T,INNER,LHS,RHS>>::size_type;
+      using typename ExprBase<traits_T,BinMul<traits_T,INNER,LHS,RHS>>::traits_type;
       using typename ExprBase<traits_T,BinMul<traits_T,INNER,LHS,RHS>>::value_type;
 
       BinMul(const LHS& lhs, const RHS& rhs) noexcept
@@ -151,6 +154,7 @@ namespace cs {
         : public ExprBase<traits_T,BinSMul<traits_T,OP>> {
     public:
       using typename ExprBase<traits_T,BinSMul<traits_T,OP>>::size_type;
+      using typename ExprBase<traits_T,BinSMul<traits_T,OP>>::traits_type;
       using typename ExprBase<traits_T,BinSMul<traits_T,OP>>::value_type;
 
       BinSMul(const OP& op, const value_type scalar) noexcept
@@ -179,6 +183,7 @@ namespace cs {
         : public ExprBase<traits_T,BinSub<traits_T,LHS,RHS>> {
     public:
       using typename ExprBase<traits_T,BinSub<traits_T,LHS,RHS>>::size_type;
+      using typename ExprBase<traits_T,BinSub<traits_T,LHS,RHS>>::traits_type;
       using typename ExprBase<traits_T,BinSub<traits_T,LHS,RHS>>::value_type;
 
       BinSub(const LHS& lhs, const RHS& rhs) noexcept

@@ -46,6 +46,7 @@ namespace cs {
     {
     public:
       using typename ExprBase<traits_T,UnaMinus<traits_T,OP>>::size_type;
+      using typename ExprBase<traits_T,UnaMinus<traits_T,OP>>::traits_type;
       using typename ExprBase<traits_T,UnaMinus<traits_T,OP>>::value_type;
 
       UnaMinus(const OP& op) noexcept
@@ -73,6 +74,7 @@ namespace cs {
     {
     public:
       using typename ExprBase<traits_T,UnaPlus<traits_T,OP>>::size_type;
+      using typename ExprBase<traits_T,UnaPlus<traits_T,OP>>::traits_type;
       using typename ExprBase<traits_T,UnaPlus<traits_T,OP>>::value_type;
 
       UnaPlus(const OP& op) noexcept

@@ -169,6 +169,7 @@ namespace cs {
     class Transpose : public ExprBase<traits_T,Transpose<traits_T,ARG>> {
     public:
       using typename ExprBase<traits_T,Transpose<traits_T,ARG>>::size_type;
+      using typename ExprBase<traits_T,Transpose<traits_T,ARG>>::traits_type;
       using typename ExprBase<traits_T,Transpose<traits_T,ARG>>::value_type;
 
       Transpose(const ARG& arg) noexcept
