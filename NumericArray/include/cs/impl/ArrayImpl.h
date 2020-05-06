@@ -43,8 +43,8 @@ namespace cs {
     template<typename policy_T, auto COUNT>
     struct ArrayAssign {
       using policy_type = policy_T;
-      using   size_type = typename policy_T::size_type;
-      using traits_type = typename policy_T::traits_type;
+      using   size_type = typename policy_type::size_type;
+      using traits_type = typename policy_type::traits_type;
       using  value_type = typename traits_type::value_type;
 
       template<typename derived_T>
@@ -62,8 +62,8 @@ namespace cs {
     template<typename policy_T>
     struct ArrayAssign<policy_T,0> {
       using policy_type = policy_T;
-      using   size_type = typename policy_T::size_type;
-      using traits_type = typename policy_T::traits_type;
+      using   size_type = typename policy_type::size_type;
+      using traits_type = typename policy_type::traits_type;
       using  value_type = typename traits_type::value_type;
 
       template<typename derived_T>
@@ -81,9 +81,9 @@ namespace cs {
 
     template<typename traits_T, auto COUNT>
     struct ArrayCopy {
-      using   size_type = typename traits_T::size_type;
       using traits_type = traits_T;
-      using  value_type = typename traits_T::value_type;
+      using   size_type = typename traits_type::size_type;
+      using  value_type = typename traits_type::value_type;
 
       static constexpr void run(value_type *dest, const value_type *src)
       {
@@ -96,9 +96,9 @@ namespace cs {
 
     template<typename traits_T>
     struct ArrayCopy<traits_T,0> {
-      using   size_type = typename traits_T::size_type;
       using traits_type = traits_T;
-      using  value_type = typename traits_T::value_type;
+      using   size_type = typename traits_type::size_type;
+      using  value_type = typename traits_type::value_type;
 
       static constexpr void run(value_type *dest, const value_type *src)
       {
@@ -112,9 +112,9 @@ namespace cs {
 
     template<typename traits_T, auto COUNT>
     struct ArrayMove {
-      using   size_type = typename traits_T::size_type;
       using traits_type = traits_T;
-      using  value_type = typename traits_T::value_type;
+      using   size_type = typename traits_type::size_type;
+      using  value_type = typename traits_type::value_type;
 
       static constexpr void run(value_type *dest, value_type *src)
       {
@@ -127,9 +127,9 @@ namespace cs {
 
     template<typename traits_T>
     struct ArrayMove<traits_T,0> {
-      using   size_type = typename traits_T::size_type;
       using traits_type = traits_T;
-      using  value_type = typename traits_T::value_type;
+      using   size_type = typename traits_type::size_type;
+      using  value_type = typename traits_type::value_type;
 
       static constexpr void run(value_type *dest, value_type *src)
       {
@@ -143,9 +143,9 @@ namespace cs {
 
     template<typename traits_T, auto COUNT>
     struct ArraySet {
-      using   size_type = typename traits_T::size_type;
       using traits_type = traits_T;
-      using  value_type = typename traits_T::value_type;
+      using   size_type = typename traits_type::size_type;
+      using  value_type = typename traits_type::value_type;
 
       static constexpr void run(value_type *dest, const value_type value)
       {
@@ -158,9 +158,9 @@ namespace cs {
 
     template<typename traits_T>
     struct ArraySet<traits_T,0> {
-      using   size_type = typename traits_T::size_type;
       using traits_type = traits_T;
-      using  value_type = typename traits_T::value_type;
+      using   size_type = typename traits_type::size_type;
+      using  value_type = typename traits_type::value_type;
 
       static constexpr void run(value_type *dest, const value_type value)
       {
