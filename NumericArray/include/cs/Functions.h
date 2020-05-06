@@ -104,7 +104,7 @@ namespace cs {
   {
     using TRANSPOSE = impl::Transpose<traits_T<value_T,size_T,1,ROWS>,ARG1>;
     using       MUL = impl::BinMul<traits_T<value_T,size_T,1,1>,ROWS,TRANSPOSE,ARG2>;
-    return MUL(arg1.as_derived(), arg2.as_derived()).template eval<0,0>();
+    return MUL(arg1.as_derived(), arg2.as_derived()).as_scalar();
   }
 
   // Inverse /////////////////////////////////////////////////////////////////
