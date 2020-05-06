@@ -49,6 +49,8 @@ namespace cs {
       using typename ExprBase<traits_T,Cofactor3x3<traits_T,ARG>>::traits_type;
       using typename ExprBase<traits_T,Cofactor3x3<traits_T,ARG>>::value_type;
 
+      static_assert(if_dimensions_v<traits_type,3,3>);
+
       Cofactor3x3(const ARG& arg) noexcept
         : _arg(arg)
       {
@@ -56,7 +58,7 @@ namespace cs {
 
       ~Cofactor3x3() noexcept = default;
 
-      constexpr if_dimensions_t<traits_type,3,3,value_type> determinant() const
+      constexpr value_type determinant() const
       {
         return
             _arg.template eval<0,0>()*eval<0,0>() +
@@ -65,7 +67,7 @@ namespace cs {
       }
 
       template<size_type i, size_type j>
-      constexpr if_dimensions_t<traits_type,3,3,value_type> eval() const
+      constexpr value_type eval() const
       {
         return sign<i,j>()*(
               _arg.template eval<AI<i>::j,AI<j>::j>()*
@@ -105,6 +107,8 @@ namespace cs {
       using typename ExprBase<traits_T,Cross<traits_T,ARG1,ARG2>>::traits_type;
       using typename ExprBase<traits_T,Cross<traits_T,ARG1,ARG2>>::value_type;
 
+      static_assert(if_dimensions_v<traits_type,3,1>);
+
       Cross(const ARG1& arg1, const ARG2& arg2) noexcept
         : _arg1(arg1)
         , _arg2(arg2)
@@ -114,7 +118,7 @@ namespace cs {
       ~Cross() noexcept = default;
 
       template<size_type i, size_type /*j*/>
-      constexpr if_dimensions_t<traits_type,3,1,value_type> eval() const
+      constexpr value_type eval() const
       {
         return
             _arg1.template eval<NI<i>::j,0>()*_arg2.template eval<NI<i>::k,0>() -
@@ -138,6 +142,8 @@ namespace cs {
       using typename ExprBase<traits_T,Normalize<traits_T,ARG>>::traits_type;
       using typename ExprBase<traits_T,Normalize<traits_T,ARG>>::value_type;
 
+      static_assert(if_column_v<traits_type>);
+
       Normalize(const ARG& arg, const value_type length)
         : _arg(arg)
         , _length{length}
@@ -147,7 +153,7 @@ namespace cs {
       ~Normalize() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr if_column_t<traits_type,value_type> eval() const
+      constexpr value_type eval() const
       {
         return _arg.template eval<i,j>()/_length;
       }

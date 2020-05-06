@@ -50,6 +50,8 @@ namespace cs {
     using   size_type = typename traits_type::size_type;
     using  value_type = typename traits_type::value_type;
 
+    static_assert(if_traits_v<traits_type>);
+
     ~Array() noexcept = default;
 
     // Copy Assignment ///////////////////////////////////////////////////////
@@ -179,7 +181,7 @@ namespace cs {
     }
 
   private:
-    if_traits_t<traits_type,value_type> _data[traits_type::Size];
+    value_type _data[traits_type::Size];
   };
 
 } // namespace cs
