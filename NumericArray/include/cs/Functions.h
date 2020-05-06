@@ -43,6 +43,15 @@ namespace cs {
   template<typename traits_T, typename ARG>
   constexpr typename traits_T::value_type length(const ExprBase<traits_T,ARG>& arg);
 
+  // Cast ////////////////////////////////////////////////////////////////////
+
+  template<typename to_T, typename from_T, typename ARG>
+  constexpr auto array_cast(const ExprBase<from_T,ARG>& arg)
+  {
+    static_assert(if_identical_v<to_T,from_T>);
+    return impl::Cast<to_T,ARG>(arg.as_derived());
+  }
+
   // Cross Product ///////////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG1, typename ARG2>

@@ -40,6 +40,34 @@ namespace cs {
 
   namespace impl {
 
+    // Implementation - Cast /////////////////////////////////////////////////
+
+    template<typename traits_T, typename ARG>
+    class Cast : public ExprBase<traits_T,Cast<traits_T,ARG>> {
+    public:
+      using typename ExprBase<traits_T,Cast<traits_T,ARG>>::size_type;
+      using typename ExprBase<traits_T,Cast<traits_T,ARG>>::traits_type;
+      using typename ExprBase<traits_T,Cast<traits_T,ARG>>::value_type;
+
+      static_assert(if_identical_v<traits_type,typename ARG::traits_type>);
+
+      Cast(const ARG& arg) noexcept
+        : _arg(arg)
+      {
+      }
+
+      ~Cast() noexcept = default;
+
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
+      {
+        return _arg.template eval<i,j>();
+      }
+
+    private:
+      const ARG& _arg;
+    };
+
     // Implementation - 3x3 Cofactor Matrix //////////////////////////////////
 
     template<typename traits_T, typename ARG>
