@@ -41,11 +41,9 @@ namespace cs {
     using  size_type = if_size_t<size_T>;
     using value_type = if_value_t<value_T>;
 
-    enum Dimensions : size_type {
-      Columns = COLS,
-      Rows    = ROWS,
-      Size    = COLS*ROWS
-    };
+    static constexpr size_type Columns = COLS;
+    static constexpr size_type    Rows = ROWS;
+    static constexpr size_type    Size = COLS*ROWS;
   };
 
 } // namespace cs

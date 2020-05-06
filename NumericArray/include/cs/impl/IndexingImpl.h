@@ -36,16 +36,6 @@ namespace cs {
 
   namespace impl {
 
-    // Implementation - Next Index Computation ///////////////////////////////
-
-    template<typename size_T, size_T i, size_T N>
-    struct NextIndex {
-      using size_type = size_T;
-
-      static constexpr size_type j = (i + 1)%N;
-      static constexpr size_type k = (i + 2)%N;
-    };
-
     // Implementation - 3x3 Adjoint Index Computation ////////////////////////
 
     template<typename size_T, size_T i>
@@ -60,6 +50,16 @@ namespace cs {
                                             : i == 1 ? 2
                                                      : i == 2 ? 1
                                                               : 3;
+    };
+
+    // Implementation - Next Index Computation ///////////////////////////////
+
+    template<typename size_T, size_T i, size_T N>
+    struct NextIndex {
+      using size_type = size_T;
+
+      static constexpr size_type j = (i + 1)%N;
+      static constexpr size_type k = (i + 2)%N;
     };
 
   } // namespace impl
