@@ -44,7 +44,32 @@ value_T test_distance(const Vector& a, const Vector& b)
   return cs::distance(a, b);
 }
 
+void test_identity()
+{
+  M = cs::identity<Matrix::traits_type>();
+}
+
+void test_identity(const Vector& x)
+{
+  v = cs::identity<Matrix::traits_type>()*x;
+}
+
+void test_scale(const value_T sx, const value_T sy, const value_T sz)
+{
+  M = cs::scale<Matrix::traits_type>(sx, sy, sz);
+}
+
 int main(int /*argc*/, char ** /*argv*/)
 {
+  //test_identity();
+  //test_scale(1, 2, 3);
+  /*
+  for(size_T i = 0; i < M.rows(); i++) {
+    for(size_T j = 0; j < M.columns(); j++) {
+      printf("  %.1f", M(i, j));
+    }
+    printf("\n");
+  }
+  */
   return EXIT_SUCCESS;
 }

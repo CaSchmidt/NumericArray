@@ -19,11 +19,9 @@ struct MyTraits {
   using  size_type = cs::if_size_t<size_T>;
   using value_type = cs::if_value_t<value_T>;
 
-  enum Dimensions : size_type {
-    Columns = COLS,
-    Rows    = ROWS,
-    Size    = COLS*ROWS
-  };
+  static constexpr size_type Columns = COLS;
+  static constexpr size_type    Rows = ROWS;
+  static constexpr size_type    Size = COLS*ROWS;
 };
 
 template<typename T>
@@ -321,6 +319,36 @@ namespace test_function {
   }
 
 } // namespace test_function
+
+namespace test_geometry {
+
+  TEMPLATE_TEST_CASE("cs::Array<> identity() matrix.", "[geometry][identity]", float, double) {
+    using Matrix = _Matrix<TestType>;
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Matrix M = cs::identity<Matrix::traits_type>();
+    const Vector x{1, 2, 3};
+
+    const Vector y = M*x;
+    REQUIRE( equals0(y, _Values<TestType>{1, 2, 3}) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> scale() matrix.", "[geometry][scale]", float, double) {
+    using Matrix = _Matrix<TestType>;
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Matrix M = cs::scale<Matrix::traits_type>(2, 3, 4);
+    const Vector x{1, 2, 3};
+
+    const Vector y = M*x;
+    REQUIRE( equals0(y, _Values<TestType>{2, 6, 12}) );
+  }
+
+} // namespace test_geometry
 
 namespace test_unary {
 
