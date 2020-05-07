@@ -33,6 +33,7 @@
 #define GEOMETRY_H
 
 #include <cs/impl/GeometryImpl.h>
+#include <cs/Math.h>
 
 namespace cs {
 
@@ -43,6 +44,33 @@ namespace cs {
   {
     static_assert(if_quadratic_v<traits_T>);
     return impl::Identity<traits_T>();
+  }
+
+  // 3x3 Rotation About X Axis ///////////////////////////////////////////////
+
+  template<typename traits_T>
+  constexpr auto rotateX(const typename traits_T::value_type angle)
+  {
+    static_assert(if_dimensions_v<traits_T,3,3>);
+    return impl::RotateX<traits_T>(csCos(angle), csSin(angle));
+  }
+
+  // 3x3 Rotation About Y Axis ///////////////////////////////////////////////
+
+  template<typename traits_T>
+  constexpr auto rotateY(const typename traits_T::value_type angle)
+  {
+    static_assert(if_dimensions_v<traits_T,3,3>);
+    return impl::RotateY<traits_T>(csCos(angle), csSin(angle));
+  }
+
+  // 3x3 Rotation About Z Axis ///////////////////////////////////////////////
+
+  template<typename traits_T>
+  constexpr auto rotateZ(const typename traits_T::value_type angle)
+  {
+    static_assert(if_dimensions_v<traits_T,3,3>);
+    return impl::RotateZ<traits_T>(csCos(angle), csSin(angle));
   }
 
   // 3x3 Scaling Matrix //////////////////////////////////////////////////////

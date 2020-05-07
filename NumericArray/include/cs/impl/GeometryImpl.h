@@ -68,6 +68,127 @@ namespace cs {
       static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
     };
 
+    // Implementation - Rotation about x axis ////////////////////////////////
+
+    template<typename traits_T>
+    class RotateX : public ExprBase<traits_T,RotateX<traits_T>> {
+    public:
+      using typename ExprBase<traits_T,RotateX<traits_T>>::size_type;
+      using typename ExprBase<traits_T,RotateX<traits_T>>::traits_type;
+      using typename ExprBase<traits_T,RotateX<traits_T>>::value_type;
+
+      static_assert(if_dimensions_v<traits_T,3,3>);
+
+      RotateX(const value_type COS, const value_type SIN) noexcept
+        : _COS{COS}
+        , _SIN{SIN}
+      {
+      }
+
+      ~RotateX() noexcept = default;
+
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
+      {
+        if constexpr( II<i,j,0,0> ) {
+          return value_type{1};
+        } else if constexpr( II<i,j,j,i> ) {
+          return _COS;
+        } else if constexpr( II<i,j,1,2> ) {
+          return -_SIN;
+        } else if constexpr( II<i,j,2,1> ) {
+          return _SIN;
+        }
+        return value_type{0};
+      }
+
+    private:
+      template<size_type i1, size_type j1, size_type i2, size_type j2>
+      static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
+
+      const value_type _COS{}, _SIN{};
+    };
+
+    // Implementation - Rotation about y axis ////////////////////////////////
+
+    template<typename traits_T>
+    class RotateY : public ExprBase<traits_T,RotateY<traits_T>> {
+    public:
+      using typename ExprBase<traits_T,RotateY<traits_T>>::size_type;
+      using typename ExprBase<traits_T,RotateY<traits_T>>::traits_type;
+      using typename ExprBase<traits_T,RotateY<traits_T>>::value_type;
+
+      static_assert(if_dimensions_v<traits_T,3,3>);
+
+      RotateY(const value_type COS, const value_type SIN) noexcept
+        : _COS{COS}
+        , _SIN{SIN}
+      {
+      }
+
+      ~RotateY() noexcept = default;
+
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
+      {
+        if constexpr( II<i,j,1,1> ) {
+          return value_type{1};
+        } else if constexpr( II<i,j,j,i> ) {
+          return _COS;
+        } else if constexpr( II<i,j,0,2> ) {
+          return _SIN;
+        } else if constexpr( II<i,j,2,0> ) {
+          return -_SIN;
+        }
+        return value_type{0};
+      }
+
+    private:
+      template<size_type i1, size_type j1, size_type i2, size_type j2>
+      static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
+
+      const value_type _COS{}, _SIN{};
+    };
+
+    // Implementation - Rotation about z axis ////////////////////////////////
+
+    template<typename traits_T>
+    class RotateZ : public ExprBase<traits_T,RotateZ<traits_T>> {
+    public:
+      using typename ExprBase<traits_T,RotateZ<traits_T>>::size_type;
+      using typename ExprBase<traits_T,RotateZ<traits_T>>::traits_type;
+      using typename ExprBase<traits_T,RotateZ<traits_T>>::value_type;
+
+      static_assert(if_dimensions_v<traits_T,3,3>);
+
+      RotateZ(const value_type COS, const value_type SIN) noexcept
+        : _COS{COS}
+        , _SIN{SIN}
+      {
+      }
+
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
+      {
+        if constexpr( II<i,j,2,2> ) {
+          return value_type{1};
+        } else if constexpr( II<i,j,j,i> ) {
+          return _COS;
+        } else if constexpr( II<i,j,0,1> ) {
+          return -_SIN;
+        } else if constexpr( II<i,j,1,0> ) {
+          return _SIN;
+        }
+        return value_type{0};
+      }
+
+    private:
+      template<size_type i1, size_type j1, size_type i2, size_type j2>
+      static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
+
+      const value_type _COS{}, _SIN{};
+    };
+
     // Implementation - 3x3 scaling along elementary axes ////////////////////
 
     template<typename traits_T>
