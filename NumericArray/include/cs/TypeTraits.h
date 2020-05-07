@@ -102,6 +102,16 @@ namespace cs {
            typename T>
   using if_identical_t = std::enable_if_t<if_identical_v<traits_A,traits_B>,T>;
 
+  // type_traits represents a quadratic matrix ///////////////////////////////
+
+  template<typename traits_T>
+  inline constexpr bool if_quadratic_v = if_traits_v<traits_T>  &&
+      traits_T::Rows == traits_T::Columns;
+
+  template<typename traits_T,
+           typename T>
+  using if_quadratic_t = std::enable_if_t<if_quadratic_v<traits_T>,T>;
+
 } // namespace cs
 
 #endif // TYPETRAITS_H
