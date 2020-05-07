@@ -335,6 +335,57 @@ namespace test_geometry {
     REQUIRE( equals0(y, _Values<TestType>{1, 2, 3}) );
   }
 
+  TEMPLATE_TEST_CASE("cs::Array<> rotateX() matrix.", "[geometry][rotatex]", float, double) {
+    using Matrix = _Matrix<TestType>;
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Matrix Rx = cs::rotateX<Matrix::traits_type>(Konst<TestType>::PI/2);
+    const Vector y0{0,1,0};
+    const Vector z0{0,0,1};
+
+    const Vector a = Rx*y0;
+    REQUIRE( equals(a, _Values<TestType>{0, 0, 1}, FloatInfo<TestType>::epsilon0) );
+
+    const Vector b = Rx*z0;
+    REQUIRE( equals(b, _Values<TestType>{0, -1, 0}, FloatInfo<TestType>::epsilon0) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> rotateY() matrix.", "[geometry][rotatey]", float, double) {
+    using Matrix = _Matrix<TestType>;
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Matrix Ry = cs::rotateY<Matrix::traits_type>(Konst<TestType>::PI/2);
+    const Vector x0{1,0,0};
+    const Vector z0{0,0,1};
+
+    const Vector a = Ry*x0;
+    REQUIRE( equals(a, _Values<TestType>{0, 0, -1}, FloatInfo<TestType>::epsilon0) );
+
+    const Vector b = Ry*z0;
+    REQUIRE( equals(b, _Values<TestType>{1, 0, 0}, FloatInfo<TestType>::epsilon0) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> rotateZ() matrix.", "[geometry][rotatez]", float, double) {
+    using Matrix = _Matrix<TestType>;
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Matrix Rz = cs::rotateZ<Matrix::traits_type>(Konst<TestType>::PI/2);
+    const Vector x0{1,0,0};
+    const Vector y0{0,1,0};
+
+    const Vector a = Rz*x0;
+    REQUIRE( equals(a, _Values<TestType>{0, 1, 0}, FloatInfo<TestType>::epsilon0) );
+
+    const Vector b = Rz*y0;
+    REQUIRE( equals(b, _Values<TestType>{-1, 0, 0}, FloatInfo<TestType>::epsilon0) );
+  }
+
   TEMPLATE_TEST_CASE("cs::Array<> scale() matrix.", "[geometry][scale]", float, double) {
     using Matrix = _Matrix<TestType>;
     using Vector = _Vector<TestType>;
