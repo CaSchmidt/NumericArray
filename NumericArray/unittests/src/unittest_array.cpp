@@ -342,8 +342,8 @@ namespace test_geometry {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
     const Matrix Rx = cs::rotateX<Matrix::traits_type>(Konst<TestType>::PI/2);
-    const Vector y0{0,1,0};
-    const Vector z0{0,0,1};
+    const Vector y0 = cs::yAxis<Vector::traits_type>();
+    const Vector z0 = cs::zAxis<Vector::traits_type>();
 
     const Vector a = Rx*y0;
     REQUIRE( equals(a, _Values<TestType>{0, 0, 1}, FloatInfo<TestType>::epsilon0) );
@@ -359,8 +359,8 @@ namespace test_geometry {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
     const Matrix Ry = cs::rotateY<Matrix::traits_type>(Konst<TestType>::PI/2);
-    const Vector x0{1,0,0};
-    const Vector z0{0,0,1};
+    const Vector x0 = cs::xAxis<Vector::traits_type>();
+    const Vector z0 = cs::zAxis<Vector::traits_type>();
 
     const Vector a = Ry*x0;
     REQUIRE( equals(a, _Values<TestType>{0, 0, -1}, FloatInfo<TestType>::epsilon0) );
@@ -376,8 +376,8 @@ namespace test_geometry {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
     const Matrix Rz = cs::rotateZ<Matrix::traits_type>(Konst<TestType>::PI/2);
-    const Vector x0{1,0,0};
-    const Vector y0{0,1,0};
+    const Vector x0 = cs::xAxis<Vector::traits_type>();
+    const Vector y0 = cs::yAxis<Vector::traits_type>();
 
     const Vector a = Rz*x0;
     REQUIRE( equals(a, _Values<TestType>{0, 1, 0}, FloatInfo<TestType>::epsilon0) );
