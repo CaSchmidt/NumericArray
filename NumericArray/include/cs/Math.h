@@ -32,8 +32,20 @@
 #ifndef CSMATH_H
 #define CSMATH_H
 
+#include <cmath>
+
 #include <emmintrin.h> // SSE2
 #include <xmmintrin.h> // SSE
+
+inline double csCos(const double& x)
+{
+  return std::cos(x);
+}
+
+inline float csCos(const float& x)
+{
+  return std::cosf(x);
+}
 
 inline double csInvSqrt(const double& x)
 {
@@ -43,6 +55,16 @@ inline double csInvSqrt(const double& x)
 inline float csInvSqrt(const float& x)
 {
   return _mm_cvtss_f32(_mm_rsqrt_ss(_mm_set_ss(x)));
+}
+
+inline double csSin(const double& x)
+{
+  return std::sin(x);
+}
+
+inline float csSin(const float& x)
+{
+  return std::sinf(x);
 }
 
 inline double csSqrt(const double& x)
