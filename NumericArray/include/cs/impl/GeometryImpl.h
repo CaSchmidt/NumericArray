@@ -39,6 +39,31 @@ namespace cs {
 
   namespace impl {
 
+    // Implementation - Nx1 Elementary Axis //////////////////////////////////
+
+    template<typename traits_T, typename traits_T::size_type DIM>
+    class Axis : public ExprBase<traits_T,Axis<traits_T,DIM>> {
+    public:
+      using typename ExprBase<traits_T,Axis<traits_T,DIM>>::size_type;
+      using typename ExprBase<traits_T,Axis<traits_T,DIM>>::traits_type;
+      using typename ExprBase<traits_T,Axis<traits_T,DIM>>::value_type;
+
+      static_assert(if_column_v<traits_T>  &&  DIM >= 0  &&  DIM < traits_type::Rows);
+
+      Axis() noexcept = default;
+
+      ~Axis() noexcept = default;
+
+      template<size_type i, size_type>
+      constexpr value_type eval() const
+      {
+        if constexpr( i == DIM ) {
+          return value_type{1};
+        }
+        return value_type{0};
+      }
+    };
+
     // Implementation - NxN Identity Matrix //////////////////////////////////
 
     template<typename traits_T>

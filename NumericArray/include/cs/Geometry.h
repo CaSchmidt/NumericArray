@@ -37,6 +37,29 @@
 
 namespace cs {
 
+  // Elementary Axes /////////////////////////////////////////////////////////
+
+  template<typename traits_T>
+  constexpr auto xAxis()
+  {
+    static_assert(if_column_v<traits_T>);
+    return impl::Axis<traits_T,0>();
+  }
+
+  template<typename traits_T>
+  constexpr auto yAxis()
+  {
+    static_assert(if_column_v<traits_T>);
+    return impl::Axis<traits_T,1>();
+  }
+
+  template<typename traits_T>
+  constexpr auto zAxis()
+  {
+    static_assert(if_column_v<traits_T>);
+    return impl::Axis<traits_T,2>();
+  }
+
   // NxN Identity Matrix /////////////////////////////////////////////////////
 
   template<typename traits_T>
