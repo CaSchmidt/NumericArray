@@ -52,6 +52,13 @@ namespace cs {
                                                               : 3;
     };
 
+    // Implementation - Index Comparison /////////////////////////////////////
+
+    template<typename size_T, size_T i1, size_T j1, size_T i2, size_T j2>
+    struct IsIndex {
+      static constexpr bool value = i1 == i2  &&  j1 == j2;
+    };
+
     // Implementation - Next Index Computation ///////////////////////////////
 
     template<typename size_T, size_T i, size_T N>

@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (c) 2019, Carsten Schmidt. All rights reserved.
+** Copyright (c) 2020, Carsten Schmidt. All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
 ** modification, are permitted provided that the following conditions
@@ -29,22 +29,22 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef NUMERICARRAY_H
-#define NUMERICARRAY_H
+#ifndef GEOMETRY_H
+#define GEOMETRY_H
 
-#include <cs/Array.h>
-#include <cs/ArrayPolicy.h>
-#include <cs/ArrayTraits.h>
-#include <cs/BinaryOperators.h>
-#include <cs/Functions.h>
-#include <cs/Geometry.h>
-#include <cs/UnaryOperators.h>
+#include <cs/impl/GeometryImpl.h>
 
 namespace cs {
 
-  template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
-  using NumericArray = Array<RowMajorPolicy<ArrayTraits<value_T,size_T,ROWS,COLS>>>;
+  // NxN Identity Matrix /////////////////////////////////////////////////////
+
+  template<typename traits_T>
+  constexpr auto identity()
+  {
+    static_assert(if_quadratic_v<traits_T>);
+    return impl::Identity<traits_T>();
+  }
 
 } // namespace cs
 
-#endif // NUMERICARRAY_H
+#endif // GEOMETRY_H

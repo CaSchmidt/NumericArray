@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (c) 2019, Carsten Schmidt. All rights reserved.
+** Copyright (c) 2020, Carsten Schmidt. All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
 ** modification, are permitted provided that the following conditions
@@ -29,22 +29,47 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef NUMERICARRAY_H
-#define NUMERICARRAY_H
+#ifndef GEOMETRYIMPL_H
+#define GEOMETRYIMPL_H
 
-#include <cs/Array.h>
-#include <cs/ArrayPolicy.h>
-#include <cs/ArrayTraits.h>
-#include <cs/BinaryOperators.h>
-#include <cs/Functions.h>
-#include <cs/Geometry.h>
-#include <cs/UnaryOperators.h>
+#include <cs/impl/IndexingImpl.h>
+#include <cs/ExprBase.h>
 
 namespace cs {
 
-  template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
-  using NumericArray = Array<RowMajorPolicy<ArrayTraits<value_T,size_T,ROWS,COLS>>>;
+  namespace impl {
+
+    // Implementation - NxN Identity Matrix //////////////////////////////////
+
+    template<typename traits_T>
+    class Identity : public ExprBase<traits_T,Identity<traits_T>> {
+    public:
+      using typename ExprBase<traits_T,Identity<traits_T>>::size_type;
+      using typename ExprBase<traits_T,Identity<traits_T>>::traits_type;
+      using typename ExprBase<traits_T,Identity<traits_T>>::value_type;
+
+      static_assert(if_quadratic_v<traits_type>);
+
+      Identity() noexcept = default;
+
+      ~Identity() noexcept = default;
+
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
+      {
+        if constexpr( II<i,j,j,i> ) {
+          return value_type{1};
+        }
+        return value_type{0};
+      }
+
+    private:
+      template<size_type i1, size_type j1, size_type i2, size_type j2>
+      static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
+    };
+
+  } // namespace impl
 
 } // namespace cs
 
-#endif // NUMERICARRAY_H
+#endif // GEOMETRYIMPL_H

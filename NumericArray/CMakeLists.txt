@@ -24,6 +24,7 @@ list(APPEND NumericArray_HEADERS
   include/cs/BinaryOperators.h
   include/cs/ExprBase.h
   include/cs/Functions.h
+  include/cs/Geometry.h
   include/cs/ListAssign.h
   include/cs/Math.h
   include/cs/NumericArray.h
@@ -32,6 +33,7 @@ list(APPEND NumericArray_HEADERS
   include/cs/impl/ArrayImpl.h
   include/cs/impl/BinaryOperatorsImpl.h
   include/cs/impl/FunctionsImpl.h
+  include/cs/impl/GeometryImpl.h
   include/cs/impl/IndexingImpl.h
   include/cs/impl/UnaryOperatorsImpl.h
   )
