@@ -31,7 +31,7 @@ struct FloatInfo {
 
 template<>
 struct FloatInfo<float> {
-  static constexpr float epsilon0 = Konst<float>::epsilon0;
+  static constexpr float epsilon0 = static_cast<float>(0x1p-20);
 };
 
 template<>

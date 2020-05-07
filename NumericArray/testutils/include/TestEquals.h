@@ -40,8 +40,9 @@ template<typename T>
 struct Konst {
   using fp_T = std::enable_if_t<std::is_floating_point_v<T>,T>;
 
-  static constexpr fp_T epsilon0 = static_cast<T>(0x1p-30); // approx. 10^-9
-  static constexpr fp_T     ZERO = static_cast<T>(0);
+  static constexpr fp_T epsilon0 = static_cast<fp_T>(0x1p-30); // approx. 10^-9
+  static constexpr fp_T       PI = static_cast<fp_T>(3.141592653);
+  static constexpr fp_T     ZERO = static_cast<fp_T>(0);
 };
 
 template<typename T>
