@@ -45,6 +45,17 @@ namespace cs {
     return impl::Identity<traits_T>();
   }
 
+  // 3x3 Scaling Matrix //////////////////////////////////////////////////////
+
+  template<typename traits_T>
+  constexpr auto scale(const typename traits_T::value_type sx,
+                       const typename traits_T::value_type sy,
+                       const typename traits_T::value_type sz)
+  {
+    static_assert(if_dimensions_v<traits_T,3,3>);
+    return impl::Scale<traits_T>(sx, sy, sz);
+  }
+
 } // namespace cs
 
 #endif // GEOMETRY_H

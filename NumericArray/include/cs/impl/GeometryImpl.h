@@ -68,6 +68,46 @@ namespace cs {
       static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
     };
 
+    // Implementation - 3x3 scaling along elementary axes ////////////////////
+
+    template<typename traits_T>
+    class Scale : public ExprBase<traits_T,Scale<traits_T>> {
+    public:
+      using typename ExprBase<traits_T,Scale<traits_T>>::size_type;
+      using typename ExprBase<traits_T,Scale<traits_T>>::traits_type;
+      using typename ExprBase<traits_T,Scale<traits_T>>::value_type;
+
+      static_assert(if_dimensions_v<traits_T,3,3>);
+
+      Scale(const value_type sx, const value_type sy, const value_type sz) noexcept
+        : _sx{sx}
+        , _sy{sy}
+        , _sz{sz}
+      {
+      }
+
+      ~Scale() noexcept = default;
+
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
+      {
+        if constexpr( II<i,j,0,0> ) {
+          return _sx;
+        } else if constexpr( II<i,j,1,1> ) {
+          return _sy;
+        } else if constexpr( II<i,j,2,2> ) {
+          return _sz;
+        }
+        return value_type{0};
+      }
+
+    private:
+      template<size_type i1, size_type j1, size_type i2, size_type j2>
+      static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
+
+      const value_type _sx{}, _sy{}, _sz{};
+    };
+
   } // namespace impl
 
 } // namespace cs
