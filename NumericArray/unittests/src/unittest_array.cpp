@@ -190,6 +190,18 @@ namespace test_binary {
     REQUIRE( equals0(y, _Values<TestType>{0.5, 1, 1.5}) );
   }
 
+  TEMPLATE_TEST_CASE("cs::Array<> binary element-wise product.", "[binary][product]", float, double) {
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vector a{1, 2, 3};
+    const Vector b{2, 3, 4};
+
+    const Vector y = a%b;
+    REQUIRE( equals0(y, _Values<TestType>{2, 6, 12}) );
+  }
+
 } // namespace test_binary
 
 namespace test_function {

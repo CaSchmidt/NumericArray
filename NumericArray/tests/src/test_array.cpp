@@ -59,6 +59,21 @@ void test_scale(const value_T sx, const value_T sy, const value_T sz)
   M = cs::scale<Matrix::traits_type>(sx, sy, sz);
 }
 
+value_T test_max(const value_T a, const value_T b)
+{
+  return csMax(a, b);
+}
+
+value_T test_min(const value_T a, const value_T b)
+{
+  return csMin(a, b);
+}
+
+value_T test_dot1(const Vector& a, const Vector& b)
+{
+  return cs::dot1(a, b);
+}
+
 int main(int /*argc*/, char ** /*argv*/)
 {
   //test_identity();
