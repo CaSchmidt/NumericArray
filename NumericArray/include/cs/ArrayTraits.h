@@ -32,14 +32,12 @@
 #ifndef ARRAYTRAITS_H
 #define ARRAYTRAITS_H
 
-#include <cs/TypeTraits.h>
-
 namespace cs {
 
   template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
   struct ArrayTraits {
-    using  size_type = if_size_t<size_T>;
-    using value_type = if_value_t<value_T>;
+    using  size_type = size_T;
+    using value_type = value_T;
 
     static constexpr size_type Columns = COLS;
     static constexpr size_type    Rows = ROWS;
