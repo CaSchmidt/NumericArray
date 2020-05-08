@@ -179,7 +179,7 @@ namespace cs {
       return _data[policy_type::template index<i,j>()];
     }
 
-  private:
+  protected:
     value_type _data[traits_type::Size];
   };
 
