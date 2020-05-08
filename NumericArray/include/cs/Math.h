@@ -37,6 +37,28 @@
 #include <emmintrin.h> // SSE2
 #include <xmmintrin.h> // SSE
 
+////// Min & Max /////////////////////////////////////////////////////////////
+
+inline double csMax(const double& a, const double& b)
+{
+  return _mm_cvtsd_f64(_mm_max_sd(_mm_set_sd(a), _mm_set_sd(b)));
+}
+
+inline float csMax(const float& a, const float& b)
+{
+  return _mm_cvtss_f32(_mm_max_ss(_mm_set_ss(a), _mm_set_ss(b)));
+}
+
+inline double csMin(const double& a, const double& b)
+{
+  return _mm_cvtsd_f64(_mm_min_sd(_mm_set_sd(a), _mm_set_sd(b)));
+}
+
+inline float csMin(const float& a, const float& b)
+{
+  return _mm_cvtss_f32(_mm_min_ss(_mm_set_ss(a), _mm_set_ss(b)));
+}
+
 ////// Square Root ///////////////////////////////////////////////////////////
 
 inline double csInvSqrt(const double& x)
