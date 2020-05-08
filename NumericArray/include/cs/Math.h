@@ -37,15 +37,7 @@
 #include <emmintrin.h> // SSE2
 #include <xmmintrin.h> // SSE
 
-inline double csCos(const double& x)
-{
-  return std::cos(x);
-}
-
-inline float csCos(const float& x)
-{
-  return std::cosf(x);
-}
+////// Square Root ///////////////////////////////////////////////////////////
 
 inline double csInvSqrt(const double& x)
 {
@@ -57,16 +49,6 @@ inline float csInvSqrt(const float& x)
   return _mm_cvtss_f32(_mm_rsqrt_ss(_mm_set_ss(x)));
 }
 
-inline double csSin(const double& x)
-{
-  return std::sin(x);
-}
-
-inline float csSin(const float& x)
-{
-  return std::sinf(x);
-}
-
 inline double csSqrt(const double& x)
 {
   return _mm_cvtsd_f64(_mm_sqrt_sd(_mm_set_sd(x), _mm_set_sd(x)));
@@ -75,6 +57,28 @@ inline double csSqrt(const double& x)
 inline float csSqrt(const float& x)
 {
   return _mm_cvtss_f32(_mm_sqrt_ss(_mm_set_ss(x)));
+}
+
+////// Trigonometric Functions ///////////////////////////////////////////////
+
+inline double csCos(const double& x)
+{
+  return std::cos(x);
+}
+
+inline float csCos(const float& x)
+{
+  return std::cosf(x);
+}
+
+inline double csSin(const double& x)
+{
+  return std::sin(x);
+}
+
+inline float csSin(const float& x)
+{
+  return std::sinf(x);
 }
 
 #endif // CSMATH_H
