@@ -108,6 +108,14 @@ namespace cs {
     return MUL(arg1.as_derived(), arg2.as_derived()).as_scalar();
   }
 
+  template<typename traits_T, typename ARG1, typename ARG2>
+  constexpr typename traits_T::value_type dot1(const ExprBase<traits_T,ARG1>& arg1,
+                                               const ExprBase<traits_T,ARG2>& arg2)
+  {
+    static_assert(if_column_v<traits_T>);
+    return csMax(typename traits_T::value_type{0}, dot(arg1, arg2));
+  }
+
   // Inverse /////////////////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG>
