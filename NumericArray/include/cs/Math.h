@@ -37,6 +37,18 @@
 #include <emmintrin.h> // SSE2
 #include <xmmintrin.h> // SSE
 
+////// Clamp /////////////////////////////////////////////////////////////////
+
+inline double csClamp(const double& v, const double& lo, const double& hi)
+{
+  return _mm_cvtsd_f64(_mm_max_sd(_mm_set_sd(lo), _mm_min_sd(_mm_set_sd(v), _mm_set_sd(hi))));
+}
+
+inline float csClamp(const float& v, const float& lo, const float& hi)
+{
+  return _mm_cvtss_f32(_mm_max_ss(_mm_set_ss(lo), _mm_min_ss(_mm_set_ss(v), _mm_set_ss(hi))));
+}
+
 ////// Min & Max /////////////////////////////////////////////////////////////
 
 inline double csMax(const double& a, const double& b)
