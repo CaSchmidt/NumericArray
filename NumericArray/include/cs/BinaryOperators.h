@@ -78,6 +78,12 @@ namespace cs {
     return impl::BinSDiv<traits_T,OP>(op.as_derived(), scalar);
   }
 
+  template<typename traits_T, typename LHS, typename RHS>
+  constexpr auto operator%(const ExprBase<traits_T,LHS>& a, const ExprBase<traits_T,RHS>& b)
+  {
+    return impl::BinProduct<traits_T,LHS,RHS>(a.as_derived(), b.as_derived());
+  }
+
 } // namespace cs
 
 #endif // BINARYOPERATORS_H

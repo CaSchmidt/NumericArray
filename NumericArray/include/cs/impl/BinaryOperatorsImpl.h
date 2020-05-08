@@ -176,6 +176,35 @@ namespace cs {
       const value_type _scalar;
     };
 
+    // Implementation - Element-Wise Product /////////////////////////////////
+
+    template<typename traits_T, typename LHS, typename RHS>
+    class BinProduct
+        : public ExprBase<traits_T,BinProduct<traits_T,LHS,RHS>> {
+    public:
+      using typename ExprBase<traits_T,BinProduct<traits_T,LHS,RHS>>::size_type;
+      using typename ExprBase<traits_T,BinProduct<traits_T,LHS,RHS>>::traits_type;
+      using typename ExprBase<traits_T,BinProduct<traits_T,LHS,RHS>>::value_type;
+
+      BinProduct(const LHS& lhs, const RHS& rhs) noexcept
+        : _lhs(lhs)
+        , _rhs(rhs)
+      {
+      }
+
+      ~BinProduct() noexcept = default;
+
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
+      {
+        return _lhs.template eval<i,j>()*_rhs.template eval<i,j>();
+      }
+
+    private:
+      const LHS& _lhs;
+      const RHS& _rhs;
+    };
+
     // Implementation - Subtraction //////////////////////////////////////////
 
     template<typename traits_T, typename LHS, typename RHS>
