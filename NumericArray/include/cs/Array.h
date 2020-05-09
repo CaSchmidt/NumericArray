@@ -119,14 +119,14 @@ namespace cs {
 
     // Expression Assignment /////////////////////////////////////////////////
 
-    template<typename derived_T>
-    Array(const ExprBase<traits_type,derived_T>& expr)
+    template<typename EXPR>
+    Array(const ExprBase<traits_type,EXPR>& expr)
     {
       operator=(expr);
     }
 
-    template<typename derived_T>
-    Array& operator=(const ExprBase<traits_type,derived_T>& expr) noexcept
+    template<typename EXPR>
+    Array& operator=(const ExprBase<traits_type,EXPR>& expr) noexcept
     {
       impl::ArrayAssign<policy_type,traits_type::Size-1>::run(_data, expr);
       return *this;

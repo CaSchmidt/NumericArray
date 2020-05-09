@@ -47,8 +47,8 @@ namespace cs {
       using traits_type = typename policy_type::traits_type;
       using  value_type = typename traits_type::value_type;
 
-      template<typename derived_T>
-      static constexpr void run(value_type *dest, const ExprBase<traits_type,derived_T>& src)
+      template<typename EXPR>
+      static constexpr void run(value_type *dest, const ExprBase<traits_type,EXPR>& src)
       {
         constexpr size_type l = traits_type::Size - 1 - COUNT;
         constexpr size_type i = policy_type::template row<l>();
@@ -66,8 +66,8 @@ namespace cs {
       using traits_type = typename policy_type::traits_type;
       using  value_type = typename traits_type::value_type;
 
-      template<typename derived_T>
-      static constexpr void run(value_type *dest, const ExprBase<traits_type,derived_T>& src)
+      template<typename EXPR>
+      static constexpr void run(value_type *dest, const ExprBase<traits_type,EXPR>& src)
       {
         constexpr size_type l = traits_type::Size - 1;
         constexpr size_type i = policy_type::template row<l>();
