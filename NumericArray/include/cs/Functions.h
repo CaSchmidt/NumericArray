@@ -52,6 +52,16 @@ namespace cs {
     return impl::Cast<to_T,ARG>(arg.as_derived());
   }
 
+  // Clamp ///////////////////////////////////////////////////////////////////
+
+  template<typename traits_T, typename ARG>
+  constexpr auto clamp(const ExprBase<traits_T,ARG>& arg,
+                       const typename traits_T::value_type lo,
+                       const typename traits_T::value_type hi)
+  {
+    return impl::Clamp<traits_T,ARG>(arg, lo, hi);
+  }
+
   // Cross Product ///////////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG1, typename ARG2>

@@ -34,6 +34,7 @@
 
 #include <cs/impl/IndexingImpl.h>
 #include <cs/ExprBase.h>
+#include <cs/Math.h>
 
 namespace cs {
 
@@ -65,6 +66,35 @@ namespace cs {
 
     private:
       const ARG& _arg;
+    };
+
+    // Implementation - Clamp ////////////////////////////////////////////////
+
+    template<typename traits_T, typename ARG>
+    class Clamp : public ExprBase<traits_T,Clamp<traits_T,ARG>> {
+    public:
+      using typename ExprBase<traits_T,Clamp<traits_T,ARG>>::size_type;
+      using typename ExprBase<traits_T,Clamp<traits_T,ARG>>::traits_type;
+      using typename ExprBase<traits_T,Clamp<traits_T,ARG>>::value_type;
+
+      Clamp(const ARG& arg, const value_type lo, const value_type hi) noexcept
+        : _arg(arg)
+        , _lo{lo}
+        , _hi{hi}
+      {
+      }
+
+      ~Clamp() noexcept = default;
+
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
+      {
+        return csClamp(_arg.template eval<i,j>(), _lo, _hi);
+      }
+
+    private:
+      const ARG& _arg;
+      const value_type _lo{}, _hi{};
     };
 
     // Implementation - 3x3 Cofactor Matrix //////////////////////////////////
