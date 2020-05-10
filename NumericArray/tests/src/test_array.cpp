@@ -12,6 +12,18 @@ using Vector = cs::NumericArray<value_T,size_T,3,1>;
 Matrix M;
 Vector v;
 
+template<typename array_T>
+void print(const array_T& array)
+{
+  using size_type = typename array_T::size_type;
+  for(size_type i = 0; i < array.rows(); i++) {
+    for(size_type j = 0; j < array.columns(); j++) {
+      printf("  %.1f", array(i, j));
+    }
+    printf("\n");
+  }
+}
+
 void test_gemm(const value_T alpha, const Matrix& A, const Matrix& B,
                const value_T beta, const Matrix& C)
 {
@@ -84,17 +96,29 @@ void test_direction(const Vector& from, const Vector& to)
   v = cs::direction(from, to);
 }
 
+#if 1
+namespace test_manip {
+
+  using Vector3 = cs::Array<cs::Vector3Manip<cs::RowMajorPolicy<cs::ArrayTraits<double,uint8_t,3,1>>>>;
+
+  Vector3 v;
+
+  void test_manip_1()
+  {
+    v.x = 1;
+    v.y = 2;
+    v.z = 3;
+    //print(v);
+  }
+
+} // namespace test_manip
+#endif
+
 int main(int /*argc*/, char ** /*argv*/)
 {
+  //test_manip::test_manip_1();
   //test_identity();
   //test_scale(1, 2, 3);
-  /*
-  for(size_T i = 0; i < M.rows(); i++) {
-    for(size_T j = 0; j < M.columns(); j++) {
-      printf("  %.1f", M(i, j));
-    }
-    printf("\n");
-  }
-  */
+  //print(M);
   return EXIT_SUCCESS;
 }

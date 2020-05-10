@@ -228,7 +228,7 @@ namespace test_function {
 
   TEMPLATE_TEST_CASE("cs::Array<> function array_cast().", "[function][cast]", float, double) {
     using Vector = _Vector<TestType>;
-    using MyVector = cs::Array<cs::RowMajorPolicy<MyTraits<TestType,size_T,3,1>>>;
+    using MyVector = cs::Array<cs::NoManipulator<cs::RowMajorPolicy<MyTraits<TestType,size_T,3,1>>>>;
 
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
