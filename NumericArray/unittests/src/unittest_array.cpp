@@ -136,8 +136,12 @@ namespace test_binary {
 
     const Vector x{1, 2, 3};
 
-    const Vector y = x + x;
-    REQUIRE( equals0(y, _Values<TestType>{2, 4, 6}) );
+    const Vector y1 = x + x;
+    REQUIRE( equals0(y1, _Values<TestType>{2, 4, 6}) );
+
+    Vector y2{1, 2, 3};
+    y2 += x;
+    REQUIRE( equals0(y2, _Values<TestType>{2, 4, 6}) );
   }
 
   TEMPLATE_TEST_CASE("cs::Array<> binary subtraction.", "[binary][sub]", float, double) {
@@ -147,8 +151,12 @@ namespace test_binary {
 
     const Vector x{1, 2, 3};
 
-    const Vector y = x - x;
-    REQUIRE( equals0(y, _Values<TestType>{0, 0, 0}) );
+    const Vector y1 = x - x;
+    REQUIRE( equals0(y1, _Values<TestType>{0, 0, 0}) );
+
+    Vector y2{1, 2, 3};
+    y2 -= x;
+    REQUIRE( equals0(y2, _Values<TestType>{0, 0, 0}) );
   }
 
   TEMPLATE_TEST_CASE("cs::Array<> binary multiplication.", "[binary][mul]", float, double) {
@@ -176,6 +184,10 @@ namespace test_binary {
 
     y = s*x;
     REQUIRE( equals0(y, _Values<TestType>{1.5, 3, 4.5}) );
+
+    y = x;
+    y *= s;
+    REQUIRE( equals0(y, _Values<TestType>{1.5, 3, 4.5}) );
   }
 
   TEMPLATE_TEST_CASE("cs::Array<> binary scalar division.", "[binary][sdiv]", float, double) {
@@ -186,8 +198,12 @@ namespace test_binary {
     const Vector x{1, 2, 3};
     const TestType s{2};
 
-    const Vector y = x/s;
-    REQUIRE( equals0(y, _Values<TestType>{0.5, 1, 1.5}) );
+    const Vector y1 = x/s;
+    REQUIRE( equals0(y1, _Values<TestType>{0.5, 1, 1.5}) );
+
+    Vector y2{1, 2, 3};
+    y2 /= s;
+    REQUIRE( equals0(y2, _Values<TestType>{0.5, 1, 1.5}) );
   }
 
   TEMPLATE_TEST_CASE("cs::Array<> binary element-wise product.", "[binary][product]", float, double) {
@@ -198,8 +214,12 @@ namespace test_binary {
     const Vector a{1, 2, 3};
     const Vector b{2, 3, 4};
 
-    const Vector y = a%b;
-    REQUIRE( equals0(y, _Values<TestType>{2, 6, 12}) );
+    const Vector y1 = a%b;
+    REQUIRE( equals0(y1, _Values<TestType>{2, 6, 12}) );
+
+    Vector y2{1, 2, 3};
+    y2 %= b;
+    REQUIRE( equals0(y2, _Values<TestType>{2, 6, 12}) );
   }
 
 } // namespace test_binary
@@ -217,6 +237,18 @@ namespace test_function {
 
     const Vector y2 = cs::array_cast<Vector::traits_type>(x1) + x2;
     REQUIRE( equals0(y2, _Values<TestType>{2, 4, 6}) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> function clamp().", "[function][clamp]", float, double) {
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vector x{1, 2, 3};
+    const TestType lo{1.5}, hi{2.5};
+
+    const Vector y = cs::clamp(x, lo, hi);
+    REQUIRE( equals0(y, _Values<TestType>{1.5, 2, 2.5}) );
   }
 
   TEMPLATE_TEST_CASE("cs::Array<> function cross().", "[function][cross]", float, double) {

@@ -74,6 +74,16 @@ value_T test_dot1(const Vector& a, const Vector& b)
   return cs::dot1(a, b);
 }
 
+void test_clamp(const Vector& x, const value_T lo, const value_T hi)
+{
+  v = cs::clamp(x, lo, hi);
+}
+
+void test_direction(const Vector& from, const Vector& to)
+{
+  v = cs::direction(from, to);
+}
+
 int main(int /*argc*/, char ** /*argv*/)
 {
   //test_identity();
