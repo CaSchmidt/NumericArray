@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (c) 2019, Carsten Schmidt. All rights reserved.
+** Copyright (c) 2020, Carsten Schmidt. All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
 ** modification, are permitted provided that the following conditions
@@ -29,23 +29,82 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef NUMERICARRAY_H
-#define NUMERICARRAY_H
+#ifndef MANIPULATOR_H
+#define MANIPULATOR_H
 
-#include <cs/Array.h>
-#include <cs/ArrayPolicy.h>
-#include <cs/ArrayTraits.h>
-#include <cs/BinaryOperators.h>
-#include <cs/Functions.h>
-#include <cs/Geometry.h>
-#include <cs/Manipulator.h>
-#include <cs/UnaryOperators.h>
+#include <cs/TypeTraits.h>
 
 namespace cs {
 
-  template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
-  using NumericArray = Array<NoManipulator<RowMajorPolicy<ArrayTraits<value_T,size_T,ROWS,COLS>>>>;
+  template<typename policy_T>
+  class NoManipulator {
+  public:
+    using policy_type = policy_T;
+    using traits_type = typename policy_type::traits_type;
+    using  value_type = typename traits_type::value_type;
+
+    static_assert(if_traits_v<traits_type>);
+
+    NoManipulator(value_type *) noexcept
+    {
+    }
+
+    ~NoManipulator() noexcept = default;
+
+  private:
+    NoManipulator() noexcept = delete;
+  };
+
+  template<typename policy_T>
+  class Vector3Manip {
+  public:
+    using policy_type = policy_T;
+    using traits_type = typename policy_type::traits_type;
+    using  value_type = typename traits_type::value_type;
+
+    static_assert(if_dimensions_v<traits_type,3,1>);
+
+    Vector3Manip(value_type *data) noexcept
+      : x(data + 0)
+      , y(data + 1)
+      , z(data + 2)
+    {
+    }
+
+    ~Vector3Manip() noexcept = default;
+
+    class Property {
+    public:
+      Property(value_type *data) noexcept
+        : _data{data}
+      {
+      }
+
+      ~Property() noexcept = default;
+
+      constexpr operator value_type() const
+      {
+        return *_data;
+      }
+
+      inline value_type operator=(const value_type value)
+      {
+        *_data = value;
+        return *_data;
+      }
+
+    private:
+      Property() noexcept = delete;
+
+      value_type *_data{nullptr};
+    };
+
+    Property x, y, z;
+
+  private:
+    Vector3Manip() noexcept = delete;
+  };
 
 } // namespace cs
 
-#endif // NUMERICARRAY_H
+#endif // MANIPULATOR_H

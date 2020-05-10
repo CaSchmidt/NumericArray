@@ -26,6 +26,7 @@ list(APPEND NumericArray_HEADERS
   include/cs/Functions.h
   include/cs/Geometry.h
   include/cs/ListAssign.h
+  include/cs/Manipulator.h
   include/cs/Math.h
   include/cs/NumericArray.h
   include/cs/TypeTraits.h

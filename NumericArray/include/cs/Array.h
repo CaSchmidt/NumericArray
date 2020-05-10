@@ -40,11 +40,13 @@
 
 namespace cs {
 
-  template<typename policy_T>
+  template<typename manip_T>
   class Array
-      : public ExprBase<typename policy_T::traits_type,Array<policy_T>> {
+      : public ExprBase<typename manip_T::traits_type,Array<manip_T>>
+      , public manip_T {
   public:
-    using policy_type = policy_T;
+    using  manip_type = manip_T;
+    using policy_type = typename manip_T::policy_type;
     using traits_type = typename policy_type::traits_type;
     using   list_type = ListAssign<traits_type>;
     using   size_type = typename traits_type::size_type;
@@ -57,6 +59,7 @@ namespace cs {
     // Copy Assignment ///////////////////////////////////////////////////////
 
     Array(const Array& other) noexcept
+      : manip_type(_data)
     {
       operator=(other);
     }
@@ -72,6 +75,7 @@ namespace cs {
     // Move Assignment ///////////////////////////////////////////////////////
 
     Array(Array&& other) noexcept
+      : manip_type(_data)
     {
       operator=(std::move(other));
     }
@@ -87,6 +91,7 @@ namespace cs {
     // Scalar Assignment /////////////////////////////////////////////////////
 
     Array(const value_type& value = value_type{0}) noexcept
+      : manip_type(_data)
     {
       operator=(value);
     }
@@ -100,6 +105,7 @@ namespace cs {
     // List Assignment ///////////////////////////////////////////////////////
 
     Array(const std::initializer_list<value_type>& list) noexcept
+      : manip_type(_data)
     {
       operator=(list);
     }
@@ -122,6 +128,7 @@ namespace cs {
 
     template<typename EXPR>
     Array(const ExprBase<traits_type,EXPR>& expr)
+      : manip_type(_data)
     {
       operator=(expr);
     }
