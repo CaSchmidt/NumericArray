@@ -32,6 +32,7 @@
 #ifndef MANIPULATOR_H
 #define MANIPULATOR_H
 
+#include <cs/Math.h>
 #include <cs/TypeTraits.h>
 
 namespace cs {
@@ -91,6 +92,80 @@ namespace cs {
     ArrayProperty() noexcept = delete;
 
     value_type *_data{nullptr};
+  };
+
+
+  ////// RGB Color Manipulator ///////////////////////////////////////////////
+
+  template<typename policy_T, typename policy_T::size_type i>
+  class RGBProperty {
+  public:
+    template<typename T>
+    static inline constexpr bool if_rgb_v =
+        std::is_integral_v<T>  &&  std::is_unsigned_v<T>  &&  sizeof(T) == 1;
+
+    template<typename T>
+    using if_rgb_t = std::enable_if_t<if_rgb_v<T>,T>;
+
+    using policy_type = policy_T;
+    using    rgb_type = if_rgb_t<unsigned char>;
+    using traits_type = typename policy_type::traits_type;
+    using  value_type = typename traits_type::value_type;
+
+    static_assert(if_index_v<traits_type,i,0>);
+
+    RGBProperty(value_type *data) noexcept
+      : _data{data}
+    {
+    }
+
+    ~RGBProperty() noexcept = default;
+
+    constexpr operator rgb_type() const
+    {
+      constexpr value_type  ONE = 1;
+      constexpr value_type ZERO = 0;
+      return static_cast<rgb_type>(csClamp(_data[policy_type::template index<i,0>()], ZERO, ONE)*RGB_MAX);
+    }
+
+    inline rgb_type operator=(const rgb_type value)
+    {
+      _data[policy_type::template index<i,0>()] = static_cast<value_type>(value)/RGB_MAX;
+      return operator rgb_type();
+    }
+
+  private:
+    static constexpr value_type RGB_MAX = 255;
+
+    RGBProperty() noexcept = delete;
+
+    value_type *_data{nullptr};
+  };
+
+  template<typename policy_T>
+  class Color3Manip {
+  public:
+    using policy_type = policy_T;
+    using traits_type = typename policy_type::traits_type;
+    using  value_type = typename policy_type::value_type;
+
+    static_assert(if_dimensions_v<traits_type,3,1>);
+
+    Color3Manip(value_type *data) noexcept
+      : r(data)
+      , g(data)
+      , b(data)
+    {
+    }
+
+    ~Color3Manip() noexcept = default;
+
+    RGBProperty<policy_T,0> r;
+    RGBProperty<policy_T,1> g;
+    RGBProperty<policy_T,2> b;
+
+  private:
+    Color3Manip() noexcept = delete;
   };
 
 
