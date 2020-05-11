@@ -43,6 +43,18 @@ namespace impl {
     return M;
   }
 
+  template<typename array_T>
+  void print(const array_T& array)
+  {
+    using size_type = typename array_T::size_type;
+    for(size_type i = 0; i < array.rows(); i++) {
+      for(size_type j = 0; j < array.columns(); j++) {
+        printf("  %.10f", array(i, j));
+      }
+      printf("\n");
+    }
+  }
+
 } // namespace impl
 
 
@@ -492,7 +504,7 @@ namespace test_manipulator {
   };
 
   TEMPLATE_TEST_CASE("cs::Array<> with cs::ArrayProperty<> manipulator.", "[manipulator][property]", float, double) {
-    using Matrix23 = cs::Array<Matrix23Manip<cs::RowMajorPolicy<cs::ArrayTraits<TestType,uint8_t,2,3>>>>;
+    using Matrix23 = cs::Array<Matrix23Manip<cs::RowMajorPolicy<cs::ArrayTraits<TestType,size_T,2,3>>>>;
 
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
@@ -504,6 +516,21 @@ namespace test_manipulator {
     M.m11 = 5;
     M.m12 = 6;
     REQUIRE( equals0(M, _Values<TestType>{1, 2, 3, 4, 5, 6}) );
+  }
+
+  template<typename T>
+  using _Color = cs::Array<cs::Color3Manip<cs::RowMajorPolicy<cs::ArrayTraits<T,size_T,3,1>>>>;
+
+  TEMPLATE_TEST_CASE("cs::Array<> with color manipulator.", "[manipulator][color]", float, double) {
+    using Color = _Color<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    Color c;
+    c.r = 0x40;
+    c.g = 0x80;
+    c.b = 0xFF;
+    REQUIRE( equals(c, _Values<TestType>{0.25, 0.5, 1}, 0.0025) );
   }
 
 } // namespace test_manipulator
