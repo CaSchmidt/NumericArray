@@ -102,6 +102,19 @@ namespace cs {
            typename T>
   using if_identical_t = std::enable_if_t<if_identical_v<traits_A,traits_B>,T>;
 
+
+  // type_traits with index (i,j) ////////////////////////////////////////////
+
+  template<typename traits_T, typename traits_T::size_type i, typename traits_T::size_type j>
+  inline constexpr bool if_index_v = if_traits_v<traits_T>  &&
+      0 <= i  &&  i < traits_T::Rows  &&
+      0 <= j  &&  j < traits_T::Columns;
+
+  template<typename traits_T, typename traits_T::size_type i, typename traits_T::size_type j,
+           typename T>
+  using if_index_t = std::enable_if_t<if_index_v<traits_T,i,j>,T>;
+
+
   // type_traits represents a quadratic matrix ///////////////////////////////
 
   template<typename traits_T>

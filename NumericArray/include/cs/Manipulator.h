@@ -36,6 +36,8 @@
 
 namespace cs {
 
+  ////// No Data Manipulator /////////////////////////////////////////////////
+
   template<typename policy_T>
   class NoManipulator {
   public:
@@ -55,6 +57,45 @@ namespace cs {
     NoManipulator() noexcept = delete;
   };
 
+
+  ////// Generic Array<i,j> Property /////////////////////////////////////////
+
+  template<typename policy_T, typename policy_T::size_type i, typename policy_T::size_type j>
+  class ArrayProperty {
+  public:
+    using policy_type = policy_T;
+    using traits_type = typename policy_type::traits_type;
+    using  value_type = typename traits_type::value_type;
+
+    static_assert(if_index_v<traits_type,i,j>);
+
+    ArrayProperty(value_type *data) noexcept
+      : _data{data}
+    {
+    }
+
+    ~ArrayProperty() noexcept = default;
+
+    constexpr operator value_type() const
+    {
+      return _data[policy_type::template index<i,j>()];
+    }
+
+    inline value_type operator=(const value_type value)
+    {
+      _data[policy_type::template index<i,j>()] = value;
+      return _data[policy_type::template index<i,j>()];
+    }
+
+  private:
+    ArrayProperty() noexcept = delete;
+
+    value_type *_data{nullptr};
+  };
+
+
+  ////// 3x1 Column Vector Manipulator ///////////////////////////////////////
+
   template<typename policy_T>
   class Vector3Manip {
   public:
@@ -65,41 +106,17 @@ namespace cs {
     static_assert(if_dimensions_v<traits_type,3,1>);
 
     Vector3Manip(value_type *data) noexcept
-      : x(data + 0)
-      , y(data + 1)
-      , z(data + 2)
+      : x(data)
+      , y(data)
+      , z(data)
     {
     }
 
     ~Vector3Manip() noexcept = default;
 
-    class Property {
-    public:
-      Property(value_type *data) noexcept
-        : _data{data}
-      {
-      }
-
-      ~Property() noexcept = default;
-
-      constexpr operator value_type() const
-      {
-        return *_data;
-      }
-
-      inline value_type operator=(const value_type value)
-      {
-        *_data = value;
-        return *_data;
-      }
-
-    private:
-      Property() noexcept = delete;
-
-      value_type *_data{nullptr};
-    };
-
-    Property x, y, z;
+    ArrayProperty<policy_type,0,0> x;
+    ArrayProperty<policy_type,1,0> y;
+    ArrayProperty<policy_type,2,0> z;
 
   private:
     Vector3Manip() noexcept = delete;
