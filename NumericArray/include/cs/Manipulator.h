@@ -71,7 +71,7 @@ namespace cs {
     static_assert(if_index_v<traits_type,i,j>);
 
     ArrayProperty(value_type *data) noexcept
-      : _data{data}
+      : _data{&data[policy_type::template index<i,j>()]}
     {
     }
 
@@ -79,13 +79,13 @@ namespace cs {
 
     constexpr operator value_type() const
     {
-      return _data[policy_type::template index<i,j>()];
+      return *_data;
     }
 
     inline value_type operator=(const value_type value)
     {
-      _data[policy_type::template index<i,j>()] = value;
-      return _data[policy_type::template index<i,j>()];
+      *_data = value;
+      return *_data;
     }
 
   private:
@@ -115,7 +115,7 @@ namespace cs {
     static_assert(if_index_v<traits_type,i,0>);
 
     RGBProperty(value_type *data) noexcept
-      : _data{data}
+      : _data{&data[policy_type::template index<i,0>()]}
     {
     }
 
@@ -125,12 +125,12 @@ namespace cs {
     {
       constexpr value_type  ONE = 1;
       constexpr value_type ZERO = 0;
-      return static_cast<rgb_type>(csClamp(_data[policy_type::template index<i,0>()], ZERO, ONE)*RGB_MAX);
+      return static_cast<rgb_type>(csClamp(*_data, ZERO, ONE)*RGB_MAX);
     }
 
     inline rgb_type operator=(const rgb_type value)
     {
-      _data[policy_type::template index<i,0>()] = static_cast<value_type>(value)/RGB_MAX;
+      *_data = static_cast<value_type>(value)/RGB_MAX;
       return operator rgb_type();
     }
 
@@ -147,7 +147,7 @@ namespace cs {
   public:
     using policy_type = policy_T;
     using traits_type = typename policy_type::traits_type;
-    using  value_type = typename policy_type::value_type;
+    using  value_type = typename traits_type::value_type;
 
     static_assert(if_dimensions_v<traits_type,3,1>);
 
