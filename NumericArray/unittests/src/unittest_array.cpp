@@ -14,16 +14,6 @@ using _Vector = cs::NumericArray<value_T,size_T,3,1>;
 template<typename value_T>
 using _Values = std::initializer_list<value_T>;
 
-template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
-struct MyTraits {
-  using  size_type = cs::if_size_t<size_T>;
-  using value_type = cs::if_value_t<value_T>;
-
-  static constexpr size_type Columns = COLS;
-  static constexpr size_type    Rows = ROWS;
-  static constexpr size_type    Size = COLS*ROWS;
-};
-
 template<typename T>
 struct FloatInfo {
   // SFINAE
@@ -39,6 +29,8 @@ struct FloatInfo<double> {
   static constexpr double epsilon0 = Konst<double>::epsilon0;
 };
 
+
+
 namespace impl {
 
   template<typename value_T>
@@ -52,6 +44,8 @@ namespace impl {
   }
 
 } // namespace impl
+
+
 
 namespace test_assign {
 
@@ -111,6 +105,8 @@ namespace test_assign {
   }
 
 } // namespace test_assign
+
+
 
 namespace test_binary {
 
@@ -224,7 +220,19 @@ namespace test_binary {
 
 } // namespace test_binary
 
+
+
 namespace test_function {
+
+  template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
+  struct MyTraits {
+    using  size_type = size_T;
+    using value_type = value_T;
+
+    static constexpr size_type Columns = COLS;
+    static constexpr size_type    Rows = ROWS;
+    static constexpr size_type    Size = COLS*ROWS;
+  };
 
   TEMPLATE_TEST_CASE("cs::Array<> function array_cast().", "[function][cast]", float, double) {
     using Vector = _Vector<TestType>;
@@ -364,6 +372,8 @@ namespace test_function {
 
 } // namespace test_function
 
+
+
 namespace test_geometry {
 
   TEMPLATE_TEST_CASE("cs::Array<> identity() matrix.", "[geometry][identity]", float, double) {
@@ -444,6 +454,61 @@ namespace test_geometry {
   }
 
 } // namespace test_geometry
+
+
+
+namespace test_manipulator {
+
+  template<typename policy_T>
+  class Matrix23Manip {
+  public:
+    using policy_type = policy_T;
+    using traits_type = typename policy_type::traits_type;
+    using  value_type = typename traits_type::value_type;
+
+    static_assert(cs::if_dimensions_v<traits_type,2,3>);
+
+    Matrix23Manip(value_type *data) noexcept
+      : m00(data)
+      , m01(data)
+      , m02(data)
+      , m10(data)
+      , m11(data)
+      , m12(data)
+    {
+    }
+
+    ~Matrix23Manip() noexcept = default;
+
+    cs::ArrayProperty<policy_type,0,0> m00;
+    cs::ArrayProperty<policy_type,0,1> m01;
+    cs::ArrayProperty<policy_type,0,2> m02;
+    cs::ArrayProperty<policy_type,1,0> m10;
+    cs::ArrayProperty<policy_type,1,1> m11;
+    cs::ArrayProperty<policy_type,1,2> m12;
+
+  private:
+    Matrix23Manip() noexcept = delete;
+  };
+
+  TEMPLATE_TEST_CASE("cs::Array<> with cs::ArrayProperty<> manipulator.", "[manipulator][property]", float, double) {
+    using Matrix23 = cs::Array<Matrix23Manip<cs::RowMajorPolicy<cs::ArrayTraits<TestType,uint8_t,2,3>>>>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    Matrix23 M;
+    M.m00 = 1;
+    M.m01 = 2;
+    M.m02 = 3;
+    M.m10 = 4;
+    M.m11 = 5;
+    M.m12 = 6;
+    REQUIRE( equals0(M, _Values<TestType>{1, 2, 3, 4, 5, 6}) );
+  }
+
+} // namespace test_manipulator
+
+
 
 namespace test_unary {
 
