@@ -46,7 +46,7 @@ namespace cs {
       , public manip_T {
   public:
     using  manip_type = manip_T;
-    using policy_type = typename manip_T::policy_type;
+    using policy_type = typename manip_type::policy_type;
     using traits_type = typename policy_type::traits_type;
     using   list_type = ListAssign<traits_type>;
     using   size_type = typename traits_type::size_type;
