@@ -37,6 +37,50 @@
 #include <emmintrin.h> // SSE2
 #include <xmmintrin.h> // SSE
 
+////// Absolute Value ////////////////////////////////////////////////////////
+
+inline double csAbs(const double& x)
+{
+  return std::fabs(x);
+}
+
+inline float csAbs(const float& x)
+{
+  return std::fabsf(x);
+}
+
+////// Inverse Trigonometric Functions ///////////////////////////////////////
+
+inline double csACos(const double& x)
+{
+  return std::acos(x);
+}
+
+inline float csACos(const float& x)
+{
+  return std::acosf(x);
+}
+
+inline double csASin(const double& x)
+{
+  return std::asin(x);
+}
+
+inline float csASin(const float& x)
+{
+  return std::asinf(x);
+}
+
+inline double csATan2(const double& y, const double& x)
+{
+  return std::atan2(y, x);
+}
+
+inline float csATan2(const float& y, const float& x)
+{
+  return std::atan2f(y, x);
+}
+
 ////// Clamp /////////////////////////////////////////////////////////////////
 
 inline double csClamp(const double& v, const double& lo, const double& hi)
@@ -69,6 +113,18 @@ inline double csMin(const double& a, const double& b)
 inline float csMin(const float& a, const float& b)
 {
   return _mm_cvtss_f32(_mm_min_ss(_mm_set_ss(a), _mm_set_ss(b)));
+}
+
+////// Remainder /////////////////////////////////////////////////////////////
+
+inline double csRemndr(const double& x, const double& y)
+{
+  return std::fmod(x, y);
+}
+
+inline float csRemndr(const float& x, const float& y)
+{
+  return std::fmodf(x, y);
 }
 
 ////// Square Root ///////////////////////////////////////////////////////////
@@ -113,6 +169,16 @@ inline double csSin(const double& x)
 inline float csSin(const float& x)
 {
   return std::sinf(x);
+}
+
+inline double csTan(const double& x)
+{
+  return std::tan(x);
+}
+
+inline float csTan(const float& x)
+{
+  return std::tanf(x);
 }
 
 #endif // CSMATH_H
