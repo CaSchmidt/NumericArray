@@ -115,6 +115,18 @@ inline float csMin(const float& a, const float& b)
   return _mm_cvtss_f32(_mm_min_ss(_mm_set_ss(a), _mm_set_ss(b)));
 }
 
+////// Power /////////////////////////////////////////////////////////////////
+
+inline double csPow(const double& x, const double& y)
+{
+  return std::pow(x, y);
+}
+
+inline float csPow(const float& x, const float& y)
+{
+  return std::powf(x, y);
+}
+
 ////// Remainder /////////////////////////////////////////////////////////////
 
 inline double csRemndr(const double& x, const double& y)
