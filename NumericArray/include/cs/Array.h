@@ -67,7 +67,7 @@ namespace cs {
     Array& operator=(const Array& other) noexcept
     {
       if( this != &other ) {
-        impl::ArrayCopy<traits_type,traits_type::Size-1>::run(_data, other._data);
+        impl::ArrayCopy<traits_type,traits_type::Size>::run(_data, other._data);
       }
       return *this;
     }
@@ -83,7 +83,7 @@ namespace cs {
     Array& operator=(Array&& other) noexcept
     {
       if( this != &other ) {
-        impl::ArrayMove<traits_type,traits_type::Size-1>::run(_data, other._data);
+        impl::ArrayMove<traits_type,traits_type::Size>::run(_data, other._data);
       }
       return *this;
     }
@@ -98,7 +98,7 @@ namespace cs {
 
     Array& operator=(const value_type& value) noexcept
     {
-      impl::ArraySet<traits_type,traits_type::Size-1>::run(_data, value);
+      impl::ArraySet<traits_type,traits_type::Size>::run(_data, value);
       return *this;
     }
 
@@ -136,7 +136,7 @@ namespace cs {
     template<typename EXPR>
     Array& operator=(const ExprBase<traits_type,EXPR>& expr) noexcept
     {
-      impl::ArrayAssign<policy_type,traits_type::Size-1>::run(_data, expr);
+      impl::ArrayAssign<policy_type,traits_type::Size>::run(_data, expr);
       return *this;
     }
 
