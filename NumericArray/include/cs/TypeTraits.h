@@ -125,6 +125,31 @@ namespace cs {
            typename T>
   using if_quadratic_t = std::enable_if_t<if_quadratic_v<traits_T>,T>;
 
+
+  // SIMD interface availability /////////////////////////////////////////////
+
+  template<typename T, typename = bool>
+  struct if_simd : std::false_type {};
+
+  template<typename T>
+  struct if_simd<T,decltype((void)T::is_simd,std::declval<T>().block(0),bool())> : std::true_type {};
+
+  template<typename T>
+  inline constexpr bool if_simd_v = if_simd<T>::value;
+
+  template<typename T>
+  constexpr std::enable_if_t<if_simd_v<T>,bool> check_simd()
+  {
+    return static_cast<bool>(T::is_simd);
+  }
+
+  template<typename T>
+  constexpr std::enable_if_t<!if_simd_v<T>,bool> check_simd()
+  {
+    return false;
+  }
+
+
 } // namespace cs
 
 #endif // TYPETRAITS_H

@@ -138,7 +138,11 @@ namespace cs {
     template<typename EXPR>
     Array& operator=(const ExprBase<traits_type,EXPR>& expr) noexcept
     {
-      impl::ArrayAssign<policy_type,traits_type::Size>::run(_data, expr);
+      if constexpr( check_simd<EXPR>() ) {
+        impl::BlockAssign<policy_type,DataBlocks>::run(_data, expr);
+      } else {
+        impl::ArrayAssign<policy_type,traits_type::Size>::run(_data, expr);
+      }
       return *this;
     }
 
@@ -222,6 +226,15 @@ namespace cs {
     constexpr value_type eval() const
     {
       return _data[policy_type::template index<i,j>()];
+    }
+
+    // SIMD Interface ////////////////////////////////////////////////////////
+
+    static inline constexpr bool is_simd = true;
+
+    constexpr simd_type block(const size_type b) const
+    {
+      return simd::load(&_data[b*simd::ValueCount]);
     }
 
   protected:
