@@ -33,6 +33,7 @@
 #define ARRAYIMPL_H
 
 #include <cs/ExprBase.h>
+#include <cs/SIMD.h>
 
 namespace cs {
 
@@ -100,6 +101,34 @@ namespace cs {
       }
     };
 
+    template<typename traits_T, auto COUNT>
+    struct BlockCopy {
+      using traits_type = traits_T;
+      using   size_type = typename traits_type::size_type;
+      using  value_type = typename traits_type::value_type;
+      using        simd = SIMD<value_type>;
+
+      static constexpr void run(value_type *dest, const value_type *src)
+      {
+        constexpr size_type l = static_cast<size_type>((simd::blocks(traits_type::Size) - COUNT)*simd::ValueCount);
+
+        simd::store(dest + l, simd::load(src + l));
+        BlockCopy<traits_type,COUNT-1>::run(dest, src);
+      }
+    };
+
+    template<typename traits_T>
+    struct BlockCopy<traits_T,0> {
+      using traits_type = traits_T;
+      using   size_type = typename traits_type::size_type;
+      using  value_type = typename traits_type::value_type;
+      using        simd = SIMD<value_type>;
+
+      static constexpr void run(value_type *, const value_type *)
+      {
+      }
+    };
+
     // Implementation - Move Array ///////////////////////////////////////////
 
     template<typename traits_T, auto COUNT>
@@ -150,6 +179,34 @@ namespace cs {
       using traits_type = traits_T;
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
+
+      static constexpr void run(value_type *, const value_type)
+      {
+      }
+    };
+
+    template<typename traits_T, auto COUNT>
+    struct BlockSet {
+      using traits_type = traits_T;
+      using   size_type = typename traits_type::size_type;
+      using  value_type = typename traits_type::value_type;
+      using        simd = SIMD<value_type>;
+
+      static constexpr void run(value_type *dest, const value_type value)
+      {
+        constexpr size_type l = static_cast<size_type>((simd::blocks(traits_type::Size) - COUNT)*simd::ValueCount);
+
+        simd::store(dest + l, simd::set(value));
+        BlockSet<traits_type,COUNT-1>::run(dest, value);
+      }
+    };
+
+    template<typename traits_T>
+    struct BlockSet<traits_T,0> {
+      using traits_type = traits_T;
+      using   size_type = typename traits_type::size_type;
+      using  value_type = typename traits_type::value_type;
+      using        simd = SIMD<value_type>;
 
       static constexpr void run(value_type *, const value_type)
       {

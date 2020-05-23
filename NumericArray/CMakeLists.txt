@@ -29,6 +29,7 @@ list(APPEND NumericArray_HEADERS
   include/cs/Manipulator.h
   include/cs/Math.h
   include/cs/NumericArray.h
+  include/cs/SIMD.h
   include/cs/TypeTraits.h
   include/cs/UnaryOperators.h
   include/cs/impl/ArrayImpl.h

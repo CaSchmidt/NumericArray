@@ -51,6 +51,8 @@ namespace cs {
     using   list_type = ListAssign<traits_type>;
     using   size_type = typename traits_type::size_type;
     using  value_type = typename traits_type::value_type;
+    using        simd = SIMD<value_type>;
+    using   simd_type = typename simd::simd_type;
 
     static_assert(if_traits_v<traits_type>);
 
@@ -67,7 +69,7 @@ namespace cs {
     Array& operator=(const Array& other) noexcept
     {
       if( this != &other ) {
-        impl::ArrayCopy<traits_type,traits_type::Size>::run(_data, other._data);
+        impl::BlockCopy<traits_type,DataBlocks>::run(_data, other._data);
       }
       return *this;
     }
@@ -83,7 +85,7 @@ namespace cs {
     Array& operator=(Array&& other) noexcept
     {
       if( this != &other ) {
-        impl::ArrayMove<traits_type,traits_type::Size>::run(_data, other._data);
+        impl::BlockCopy<traits_type,DataBlocks>::run(_data, other._data);
       }
       return *this;
     }
@@ -98,7 +100,7 @@ namespace cs {
 
     Array& operator=(const value_type& value) noexcept
     {
-      impl::ArraySet<traits_type,traits_type::Size>::run(_data, value);
+      impl::BlockSet<traits_type,DataBlocks>::run(_data, value);
       return *this;
     }
 
@@ -118,7 +120,7 @@ namespace cs {
         const size_type j = list_type::column(static_cast<size_type>(index));
         operator()(i, j) = list.begin()[index];
       }
-      for(std::size_t index = max; index < static_cast<std::size_t>(traits_type::Size); index++) {
+      for(std::size_t index = max; index < static_cast<std::size_t>(DataSize); index++) {
         _data[index] = value_type{0};
       }
       return *this;
@@ -223,7 +225,10 @@ namespace cs {
     }
 
   protected:
-    value_type _data[traits_type::Size];
+    static constexpr size_type DataBlocks = static_cast<size_type>(simd::blocks(traits_type::Size));
+    static constexpr size_type   DataSize = static_cast<size_type>(simd::size(traits_type::Size));
+
+    alignas(simd::Alignment) value_type _data[DataSize];
   };
 
 } // namespace cs
