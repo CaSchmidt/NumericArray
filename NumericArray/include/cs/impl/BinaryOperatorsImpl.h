@@ -33,6 +33,7 @@
 #define BINARYOPERATORSIMPL_H
 
 #include <cs/ExprBase.h>
+#include <cs/SIMD.h>
 
 namespace cs {
 
@@ -62,6 +63,13 @@ namespace cs {
         return _lhs.template eval<i,j>() + _rhs.template eval<i,j>();
       }
 
+      static inline constexpr bool is_simd = check_simd<LHS>()  &&  check_simd<RHS>();
+
+      constexpr simd_type<value_type> block(const size_type b) const
+      {
+        return SIMD<value_type>::add(_lhs.block(b), _rhs.block(b));
+      }
+
     private:
       const LHS& _lhs;
       const RHS& _rhs;
@@ -89,6 +97,14 @@ namespace cs {
       constexpr value_type eval() const
       {
         return _op.template eval<i,j>()/_scalar;
+      }
+
+      static inline constexpr bool is_simd = check_simd<OP>();
+
+      constexpr simd_type<value_type> block(const size_type b) const
+      {
+        using simd = SIMD<value_type>;
+        return simd::div(_op.block(b), simd::set(_scalar));
       }
 
     private:
@@ -171,6 +187,14 @@ namespace cs {
         return _op.template eval<i,j>()*_scalar;
       }
 
+      static inline constexpr bool is_simd = check_simd<OP>();
+
+      constexpr simd_type<value_type> block(const size_type b) const
+      {
+        using simd = SIMD<value_type>;
+        return simd::mul(_op.block(b), simd::set(_scalar));
+      }
+
     private:
       const OP& _op;
       const value_type _scalar;
@@ -200,6 +224,13 @@ namespace cs {
         return _lhs.template eval<i,j>()*_rhs.template eval<i,j>();
       }
 
+      static inline constexpr bool is_simd = check_simd<LHS>()  &&  check_simd<RHS>();
+
+      constexpr simd_type<value_type> block(const size_type b) const
+      {
+        return SIMD<value_type>::mul(_lhs.block(b), _rhs.block(b));
+      }
+
     private:
       const LHS& _lhs;
       const RHS& _rhs;
@@ -227,6 +258,13 @@ namespace cs {
       constexpr value_type eval() const
       {
         return _lhs.template eval<i,j>() - _rhs.template eval<i,j>();
+      }
+
+      static inline constexpr bool is_simd = check_simd<LHS>()  &&  check_simd<RHS>();
+
+      constexpr simd_type<value_type> block(const size_type b) const
+      {
+        return SIMD<value_type>::sub(_lhs.block(b), _rhs.block(b));
       }
 
     private:

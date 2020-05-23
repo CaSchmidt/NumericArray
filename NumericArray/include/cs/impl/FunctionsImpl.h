@@ -35,6 +35,7 @@
 #include <cs/impl/IndexingImpl.h>
 #include <cs/ExprBase.h>
 #include <cs/Math.h>
+#include <cs/SIMD.h>
 
 namespace cs {
 
@@ -62,6 +63,13 @@ namespace cs {
       constexpr value_type eval() const
       {
         return _arg.template eval<i,j>();
+      }
+
+      static inline constexpr bool is_simd = check_simd<ARG>();
+
+      constexpr simd_type<value_type> block(const size_type b) const
+      {
+        return _arg.block(b);
       }
 
     private:

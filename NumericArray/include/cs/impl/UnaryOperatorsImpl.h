@@ -33,6 +33,7 @@
 #define UNARYOPERATORSIMPL_H
 
 #include <cs/ExprBase.h>
+#include <cs/SIMD.h>
 
 namespace cs {
 
@@ -62,6 +63,15 @@ namespace cs {
         return -_op.template eval<i,j>();
       }
 
+      static inline constexpr bool is_simd = check_simd<OP>();
+
+      constexpr simd_type<value_type> block(const size_type b) const
+      {
+        constexpr value_type mONE = static_cast<value_type>(-1);
+        using                simd = SIMD<value_type>;
+        return simd::mul(simd::set(mONE), _op.block(b));
+      }
+
     private:
       const OP& _op;
     };
@@ -88,6 +98,13 @@ namespace cs {
       constexpr value_type eval() const
       {
         return _op.template eval<i,j>();
+      }
+
+      static inline constexpr bool is_simd = check_simd<OP>();
+
+      constexpr simd_type<value_type> block(const size_type b) const
+      {
+        return _op.block(b);
       }
 
     private:
