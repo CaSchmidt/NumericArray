@@ -96,6 +96,16 @@ namespace cs {
     {
       return _mm_div_pd(a, b);
     }
+
+    inline static simd_type min(const simd_type& a, const simd_type& b)
+    {
+      return _mm_min_pd(a, b);
+    }
+
+    inline static simd_type max(const simd_type& a, const simd_type& b)
+    {
+      return _mm_max_pd(a, b);
+    }
   };
 
   template<>
@@ -149,6 +159,16 @@ namespace cs {
     inline static simd_type div(const simd_type& a, const simd_type& b)
     {
       return _mm_div_ps(a, b);
+    }
+
+    inline static simd_type min(const simd_type& a, const simd_type& b)
+    {
+      return _mm_min_ps(a, b);
+    }
+
+    inline static simd_type max(const simd_type& a, const simd_type& b)
+    {
+      return _mm_max_ps(a, b);
     }
   };
 

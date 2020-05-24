@@ -100,6 +100,14 @@ namespace cs {
         return csClamp(_arg.template eval<i,j>(), _lo, _hi);
       }
 
+      static inline constexpr bool is_simd = check_simd<ARG>();
+
+      constexpr simd_type<value_type> block(const size_type b) const
+      {
+        using simd = SIMD<value_type>;
+        return simd::max(simd::set(_lo), simd::min(_arg.block(b), simd::set(_hi)));
+      }
+
     private:
       const ARG& _arg;
       const value_type _lo{}, _hi{};
