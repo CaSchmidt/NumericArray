@@ -79,20 +79,20 @@ namespace cs {
     // Implementation - Clamp ////////////////////////////////////////////////
 
     template<typename traits_T, typename ARG>
-    class Clamp : public ExprBase<traits_T,Clamp<traits_T,ARG>> {
+    class SClamp : public ExprBase<traits_T,SClamp<traits_T,ARG>> {
     public:
-      using typename ExprBase<traits_T,Clamp<traits_T,ARG>>::size_type;
-      using typename ExprBase<traits_T,Clamp<traits_T,ARG>>::traits_type;
-      using typename ExprBase<traits_T,Clamp<traits_T,ARG>>::value_type;
+      using typename ExprBase<traits_T,SClamp<traits_T,ARG>>::size_type;
+      using typename ExprBase<traits_T,SClamp<traits_T,ARG>>::traits_type;
+      using typename ExprBase<traits_T,SClamp<traits_T,ARG>>::value_type;
 
-      Clamp(const ARG& arg, const value_type lo, const value_type hi) noexcept
+      SClamp(const ARG& arg, const value_type lo, const value_type hi) noexcept
         : _arg(arg)
         , _lo{lo}
         , _hi{hi}
       {
       }
 
-      ~Clamp() noexcept = default;
+      ~SClamp() noexcept = default;
 
       template<size_type i, size_type j>
       constexpr value_type eval() const

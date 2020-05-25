@@ -59,7 +59,7 @@ namespace cs {
                        const typename traits_T::value_type lo,
                        const typename traits_T::value_type hi)
   {
-    return impl::Clamp<traits_T,ARG>(arg.as_derived(), lo, hi);
+    return impl::SClamp<traits_T,ARG>(arg.as_derived(), lo, hi);
   }
 
   // Cross Product ///////////////////////////////////////////////////////////
