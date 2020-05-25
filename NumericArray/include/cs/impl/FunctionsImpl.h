@@ -206,6 +206,78 @@ namespace cs {
       const ARG2& _arg2;
     };
 
+    // Implementation - Maximum //////////////////////////////////////////////
+
+    template<typename traits_T, typename ARG>
+    class SMax : public ExprBase<traits_T,SMax<traits_T,ARG>> {
+    public:
+      using typename ExprBase<traits_T,SMax<traits_T,ARG>>::size_type;
+      using typename ExprBase<traits_T,SMax<traits_T,ARG>>::traits_type;
+      using typename ExprBase<traits_T,SMax<traits_T,ARG>>::value_type;
+
+      SMax(const ARG& arg, const value_type scalar) noexcept
+        : _arg(arg)
+        , _scalar(scalar)
+      {
+      }
+
+      ~SMax() noexcept = default;
+
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
+      {
+        return csMax(_arg.template eval<i,j>(), _scalar);
+      }
+
+      static inline constexpr bool is_simd = check_simd<ARG>();
+
+      constexpr simd_type<value_type> block(const size_type b) const
+      {
+        using simd = SIMD<value_type>;
+        return simd::max(_arg.block(b), simd::set(_scalar));
+      }
+
+    private:
+      const ARG& _arg;
+      const value_type _scalar{};
+    };
+
+    // Implementation - Minimum //////////////////////////////////////////////
+
+    template<typename traits_T, typename ARG>
+    class SMin : public ExprBase<traits_T,SMin<traits_T,ARG>> {
+    public:
+      using typename ExprBase<traits_T,SMin<traits_T,ARG>>::size_type;
+      using typename ExprBase<traits_T,SMin<traits_T,ARG>>::traits_type;
+      using typename ExprBase<traits_T,SMin<traits_T,ARG>>::value_type;
+
+      SMin(const ARG& arg, const value_type scalar) noexcept
+        : _arg(arg)
+        , _scalar(scalar)
+      {
+      }
+
+      ~SMin() noexcept = default;
+
+      template<size_type i, size_type j>
+      constexpr value_type eval() const
+      {
+        return csMin(_arg.template eval<i,j>(), _scalar);
+      }
+
+      static inline constexpr bool is_simd = check_simd<ARG>();
+
+      constexpr simd_type<value_type> block(const size_type b) const
+      {
+        using simd = SIMD<value_type>;
+        return simd::min(_arg.block(b), simd::set(_scalar));
+      }
+
+    private:
+      const ARG& _arg;
+      const value_type _scalar{};
+    };
+
     // Implementation - Vector Normalization /////////////////////////////////
 
     template<typename traits_T, typename ARG>

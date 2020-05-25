@@ -148,6 +148,24 @@ namespace cs {
     return csSqrt(dot(arg, arg));
   }
 
+  // Maximum /////////////////////////////////////////////////////////////////
+
+  template<typename traits_T, typename ARG>
+  constexpr auto max(const ExprBase<traits_T,ARG>& expr,
+                     const typename traits_T::value_type scalar)
+  {
+    return impl::SMax<traits_T,ARG>(expr.as_derived(), scalar);
+  }
+
+  // Minimum /////////////////////////////////////////////////////////////////
+
+  template<typename traits_T, typename ARG>
+  constexpr auto min(const ExprBase<traits_T,ARG>& expr,
+                     const typename traits_T::value_type scalar)
+  {
+    return impl::SMin<traits_T,ARG>(expr.as_derived(), scalar);
+  }
+
   // Vector Normalization ////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG>
