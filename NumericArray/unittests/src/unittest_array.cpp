@@ -357,6 +357,30 @@ namespace test_function {
     REQUIRE( equals(y, TestType{3}, FloatInfo<TestType>::epsilon0) );
   }
 
+  TEMPLATE_TEST_CASE("cs::Array<> function max().", "[function][max]", float, double) {
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vector x{1, 2, 3};
+    const TestType s{1.5};
+
+    const Vector y = cs::max(x, s);
+    REQUIRE( equals0(y, _Values<TestType>{1.5, 2, 3}) );
+  }
+
+  TEMPLATE_TEST_CASE("cs::Array<> function min().", "[function][min]", float, double) {
+    using Vector = _Vector<TestType>;
+
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vector x{1, 2, 3};
+    const TestType s{2.5};
+
+    const Vector y = cs::min(x, s);
+    REQUIRE( equals0(y, _Values<TestType>{1, 2, 2.5}) );
+  }
+
   TEMPLATE_TEST_CASE("cs::Array<> function normalize().", "[function][normalize]", float, double) {
     using Vector = _Vector<TestType>;
 
