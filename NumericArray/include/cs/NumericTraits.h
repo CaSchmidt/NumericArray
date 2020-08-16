@@ -29,8 +29,8 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef TYPETRAITS_H
-#define TYPETRAITS_H
+#ifndef NUMERICTRAITS_H
+#define NUMERICTRAITS_H
 
 #include <type_traits>
 
@@ -128,23 +128,23 @@ namespace cs {
 
   // SIMD interface availability /////////////////////////////////////////////
 
-  template<typename T, typename = bool>
+  template<typename T, typename simd_policy_T, typename = bool>
   struct if_simd : std::false_type {};
 
-  template<typename T>
-  struct if_simd<T,decltype((void)T::is_simd,std::declval<T>().block(0),bool())> : std::true_type {};
+  template<typename T, typename simd_policy_T>
+  struct if_simd<T,simd_policy_T,decltype(T::template is_simd<simd_policy_T>(),std::declval<T>().block(0),bool())> : std::true_type {};
 
-  template<typename T>
-  inline constexpr bool if_simd_v = if_simd<T>::value;
+  template<typename T, typename simd_policy_T>
+  inline constexpr bool if_simd_v = if_simd<T,simd_policy_T>::value;
 
-  template<typename T>
-  constexpr std::enable_if_t<if_simd_v<T>,bool> check_simd()
+  template<typename T, typename simd_policy_T>
+  constexpr std::enable_if_t<if_simd_v<T,simd_policy_T>,bool> check_simd()
   {
-    return static_cast<bool>(T::is_simd);
+    return static_cast<bool>(T::template is_simd<simd_policy_T>());
   }
 
-  template<typename T>
-  constexpr std::enable_if_t<!if_simd_v<T>,bool> check_simd()
+  template<typename T, typename simd_policy_T>
+  constexpr std::enable_if_t<!if_simd_v<T,simd_policy_T>,bool> check_simd()
   {
     return false;
   }
@@ -152,4 +152,4 @@ namespace cs {
 
 } // namespace cs
 
-#endif // TYPETRAITS_H
+#endif // NUMERICTRAITS_H

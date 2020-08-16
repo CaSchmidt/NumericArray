@@ -33,7 +33,7 @@
 #define MANIPULATOR_H
 
 #include <cs/Math.h>
-#include <cs/TypeTraits.h>
+#include <cs/NumericTraits.h>
 
 namespace cs {
 

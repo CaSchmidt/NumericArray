@@ -65,7 +65,11 @@ namespace cs {
         return _arg.template eval<i,j>();
       }
 
-      static inline constexpr bool is_simd = check_simd<ARG>();
+      template<typename simd_policy_T>
+      static constexpr bool is_simd()
+      {
+        return check_simd<ARG,simd_policy_T>();
+      }
 
       constexpr simd_type<value_type> block(const size_type b) const
       {
@@ -100,7 +104,11 @@ namespace cs {
         return csClamp(_arg.template eval<i,j>(), _lo, _hi);
       }
 
-      static inline constexpr bool is_simd = check_simd<ARG>();
+      template<typename simd_policy_T>
+      static constexpr bool is_simd()
+      {
+        return check_simd<ARG,simd_policy_T>();
+      }
 
       constexpr simd_type<value_type> block(const size_type b) const
       {
@@ -229,7 +237,11 @@ namespace cs {
         return csMax(_arg.template eval<i,j>(), _scalar);
       }
 
-      static inline constexpr bool is_simd = check_simd<ARG>();
+      template<typename simd_policy_T>
+      static constexpr bool is_simd()
+      {
+        return check_simd<ARG,simd_policy_T>();
+      }
 
       constexpr simd_type<value_type> block(const size_type b) const
       {
@@ -265,7 +277,11 @@ namespace cs {
         return csMin(_arg.template eval<i,j>(), _scalar);
       }
 
-      static inline constexpr bool is_simd = check_simd<ARG>();
+      template<typename simd_policy_T>
+      static constexpr bool is_simd()
+      {
+        return check_simd<ARG,simd_policy_T>();
+      }
 
       constexpr simd_type<value_type> block(const size_type b) const
       {

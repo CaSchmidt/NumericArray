@@ -63,7 +63,11 @@ namespace cs {
         return _lhs.template eval<i,j>() + _rhs.template eval<i,j>();
       }
 
-      static inline constexpr bool is_simd = check_simd<LHS>()  &&  check_simd<RHS>();
+      template<typename simd_policy_T>
+      static constexpr bool is_simd()
+      {
+        return check_simd<LHS,simd_policy_T>()  &&  check_simd<RHS,simd_policy_T>();
+      }
 
       constexpr simd_type<value_type> block(const size_type b) const
       {
@@ -99,7 +103,11 @@ namespace cs {
         return _op.template eval<i,j>()/_scalar;
       }
 
-      static inline constexpr bool is_simd = check_simd<OP>();
+      template<typename simd_policy_T>
+      static constexpr bool is_simd()
+      {
+        return check_simd<OP,simd_policy_T>();
+      }
 
       constexpr simd_type<value_type> block(const size_type b) const
       {
@@ -187,7 +195,11 @@ namespace cs {
         return _op.template eval<i,j>()*_scalar;
       }
 
-      static inline constexpr bool is_simd = check_simd<OP>();
+      template<typename simd_policy_T>
+      static constexpr bool is_simd()
+      {
+        return check_simd<OP,simd_policy_T>();
+      }
 
       constexpr simd_type<value_type> block(const size_type b) const
       {
@@ -224,7 +236,11 @@ namespace cs {
         return _lhs.template eval<i,j>()*_rhs.template eval<i,j>();
       }
 
-      static inline constexpr bool is_simd = check_simd<LHS>()  &&  check_simd<RHS>();
+      template<typename simd_policy_T>
+      static constexpr bool is_simd()
+      {
+        return check_simd<LHS,simd_policy_T>()  &&  check_simd<RHS,simd_policy_T>();
+      }
 
       constexpr simd_type<value_type> block(const size_type b) const
       {
@@ -260,7 +276,11 @@ namespace cs {
         return _lhs.template eval<i,j>() - _rhs.template eval<i,j>();
       }
 
-      static inline constexpr bool is_simd = check_simd<LHS>()  &&  check_simd<RHS>();
+      template<typename simd_policy_T>
+      static constexpr bool is_simd()
+      {
+        return check_simd<LHS,simd_policy_T>()  &&  check_simd<RHS,simd_policy_T>();
+      }
 
       constexpr simd_type<value_type> block(const size_type b) const
       {

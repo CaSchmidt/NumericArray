@@ -32,7 +32,7 @@
 #ifndef EXPRBASE_H
 #define EXPRBASE_H
 
-#include <cs/TypeTraits.h>
+#include <cs/NumericTraits.h>
 
 namespace cs {
 

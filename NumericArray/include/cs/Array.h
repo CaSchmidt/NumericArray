@@ -138,7 +138,7 @@ namespace cs {
     template<typename EXPR>
     Array& operator=(const ExprBase<traits_type,EXPR>& expr) noexcept
     {
-      if constexpr( check_simd<EXPR>() ) {
+      if constexpr( check_simd<EXPR,policy_type>() ) {
         impl::BlockAssign<policy_type,DataBlocks>::run(_data, expr);
       } else {
         impl::ArrayAssign<policy_type,traits_type::Size>::run(_data, expr);
@@ -230,7 +230,11 @@ namespace cs {
 
     // SIMD Interface ////////////////////////////////////////////////////////
 
-    static inline constexpr bool is_simd = true;
+    template<typename simd_policy_T>
+    static constexpr bool is_simd()
+    {
+      return std::is_same_v<simd_policy_T,policy_type>;
+    }
 
     constexpr simd_type block(const size_type b) const
     {
