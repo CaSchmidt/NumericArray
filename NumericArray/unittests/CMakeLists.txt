@@ -3,11 +3,10 @@ macro(cs_unittest target)
   add_executable(${target} ${sources})
   add_dependencies(${target} NumericArray)
   format_output_name(${target} ${target})
-  if(MSVC)
-    target_compile_options(${target}
-      PRIVATE /std:c++17
-      )
-  endif()
+  set_target_properties(${target} PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+    )
   target_include_directories(${target}
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
     PRIVATE ${NumericArray_SOURCE_DIR}/include
