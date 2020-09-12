@@ -32,10 +32,25 @@
 #ifndef ARRAYPOLICY_H
 #define ARRAYPOLICY_H
 
+#include <type_traits>
+
 namespace cs {
 
+  template<typename traits_T, template<typename> typename derived_T>
+  struct PolicyBase {
+    using traits_type = traits_T;
+    using policy_type = derived_T<traits_type>;
+
+    template<typename traits_T>
+    using make_policy = derived_T<traits_T>;
+
+    template<typename other_T>
+    inline static constexpr bool is_same_v =
+        std::is_same_v<policy_type,typename other_T::template make_policy<traits_type>>;
+  };
+
   template<typename traits_T>
-  struct RowMajorPolicy {
+  struct RowMajorPolicy : public PolicyBase<traits_T,RowMajorPolicy> {
     using traits_type = traits_T;
     using   size_type = typename traits_type::size_type;
 
