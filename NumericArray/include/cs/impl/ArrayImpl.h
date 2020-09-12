@@ -85,7 +85,7 @@ namespace cs {
       static constexpr void run(value_type *dest, const ExprBase<traits_type,EXPR>& src)
       {
         constexpr size_type b = static_cast<size_type>(simd::blocks(traits_type::Size)) - COUNT;
-        constexpr size_type l = b*simd::ValueCount;
+        constexpr size_type l = b*simd::ElementCount;
 
         simd::store(dest + l, src.as_derived().block(b));
         BlockAssign<policy_type,COUNT-1>::run(dest, src);
@@ -143,7 +143,7 @@ namespace cs {
 
       static constexpr void run(value_type *dest, const value_type *src)
       {
-        constexpr size_type l = static_cast<size_type>((simd::blocks(traits_type::Size) - COUNT)*simd::ValueCount);
+        constexpr size_type l = static_cast<size_type>((simd::blocks(traits_type::Size) - COUNT)*simd::ElementCount);
 
         simd::store(dest + l, simd::load(src + l));
         BlockCopy<traits_type,COUNT-1>::run(dest, src);
@@ -227,7 +227,7 @@ namespace cs {
 
       static constexpr void run(value_type *dest, const value_type value)
       {
-        constexpr size_type l = static_cast<size_type>((simd::blocks(traits_type::Size) - COUNT)*simd::ValueCount);
+        constexpr size_type l = static_cast<size_type>((simd::blocks(traits_type::Size) - COUNT)*simd::ElementCount);
 
         simd::store(dest + l, simd::set(value));
         BlockSet<traits_type,COUNT-1>::run(dest, value);

@@ -39,141 +39,142 @@
 
 namespace cs {
 
+  ////// Traits //////////////////////////////////////////////////////////////
+
   template<typename T>
-  struct SIMD {
+  struct SIMDtraits {
     // SFINAE
   };
 
   template<>
-  struct SIMD<double> {
+  struct SIMDtraits<double> {
     using  simd_type = __m128d;
     using value_type = double;
+  };
 
-    static inline constexpr std::size_t  Alignment = sizeof(simd_type);
-    static inline constexpr std::size_t ValueCount = sizeof(simd_type)/sizeof(value_type);
+  template<>
+  struct SIMDtraits<float> {
+    using  simd_type = __m128;
+    using value_type = float;
+  };
+
+  template<typename T>
+  using simd_type = typename SIMDtraits<T>::simd_type;
+
+  ////// Implementation //////////////////////////////////////////////////////
+
+  template<typename T>
+  struct SIMD {
+    using  simd_type = typename SIMDtraits<T>::simd_type;
+    using value_type = typename SIMDtraits<T>::value_type;
+
+    static inline constexpr std::size_t    Alignment = sizeof(simd_type);
+    static inline constexpr std::size_t ElementCount = sizeof(simd_type)/sizeof(value_type);
 
     inline static constexpr std::size_t blocks(const std::size_t count)
     {
-      return (count + ValueCount - 1)/ValueCount;
+      return (count + ElementCount - 1)/ElementCount;
     }
 
     inline static constexpr std::size_t size(const std::size_t count)
     {
-      return blocks(count)*ValueCount;
+      return blocks(count)*ElementCount;
     }
 
-    inline static simd_type load(const value_type *src)
+    // Interface - double ////////////////////////////////////////////////////
+
+    inline static __m128d load(const double *src)
     {
       return _mm_load_pd(src);
     }
 
-    inline static simd_type set(const value_type& x)
+    inline static __m128d set(const double& x)
     {
       return _mm_set1_pd(x);
     }
 
-    inline static void store(value_type *dest, const simd_type& x)
+    inline static void store(double *dest, const __m128d& x)
     {
       _mm_store_pd(dest, x);
     }
 
-    inline static simd_type add(const simd_type& a, const simd_type& b)
+    inline static __m128d add(const __m128d& a, const __m128d& b)
     {
       return _mm_add_pd(a, b);
     }
 
-    inline static simd_type sub(const simd_type& a, const simd_type& b)
+    inline static __m128d sub(const __m128d& a, const __m128d& b)
     {
       return _mm_sub_pd(a, b);
     }
 
-    inline static simd_type mul(const simd_type& a, const simd_type& b)
+    inline static __m128d mul(const __m128d& a, const __m128d& b)
     {
       return _mm_mul_pd(a, b);
     }
 
-    inline static simd_type div(const simd_type& a, const simd_type& b)
+    inline static __m128d div(const __m128d& a, const __m128d& b)
     {
       return _mm_div_pd(a, b);
     }
 
-    inline static simd_type min(const simd_type& a, const simd_type& b)
+    inline static __m128d min(const __m128d& a, const __m128d& b)
     {
       return _mm_min_pd(a, b);
     }
 
-    inline static simd_type max(const simd_type& a, const simd_type& b)
+    inline static __m128d max(const __m128d& a, const __m128d& b)
     {
       return _mm_max_pd(a, b);
     }
-  };
 
-  template<>
-  struct SIMD<float> {
-    using  simd_type = __m128;
-    using value_type = float;
+    // Interface - float /////////////////////////////////////////////////////
 
-    static inline constexpr std::size_t  Alignment = sizeof(simd_type);
-    static inline constexpr std::size_t ValueCount = sizeof(simd_type)/sizeof(value_type);
-
-    inline static constexpr std::size_t blocks(const std::size_t count)
-    {
-      return (count + ValueCount - 1)/ValueCount;
-    }
-
-    inline static constexpr std::size_t size(const std::size_t count)
-    {
-      return blocks(count)*ValueCount;
-    }
-
-    inline static simd_type load(const value_type *src)
+    inline static __m128 load(const float *src)
     {
       return _mm_load_ps(src);
     }
 
-    inline static simd_type set(const value_type& x)
+    inline static __m128 set(const float& x)
     {
       return _mm_set1_ps(x);
     }
 
-    inline static void store(value_type *dest, const simd_type& x)
+    inline static void store(float *dest, const __m128& x)
     {
       _mm_store_ps(dest, x);
     }
 
-    inline static simd_type add(const simd_type& a, const simd_type& b)
+    inline static __m128 add(const __m128& a, const __m128& b)
     {
       return _mm_add_ps(a, b);
     }
 
-    inline static simd_type sub(const simd_type& a, const simd_type& b)
+    inline static __m128 sub(const __m128& a, const __m128& b)
     {
       return _mm_sub_ps(a, b);
     }
 
-    inline static simd_type mul(const simd_type& a, const simd_type& b)
+    inline static __m128 mul(const __m128& a, const __m128& b)
     {
       return _mm_mul_ps(a, b);
     }
 
-    inline static simd_type div(const simd_type& a, const simd_type& b)
+    inline static __m128 div(const __m128& a, const __m128& b)
     {
       return _mm_div_ps(a, b);
     }
 
-    inline static simd_type min(const simd_type& a, const simd_type& b)
+    inline static __m128 min(const __m128& a, const __m128& b)
     {
       return _mm_min_ps(a, b);
     }
 
-    inline static simd_type max(const simd_type& a, const simd_type& b)
+    inline static __m128 max(const __m128& a, const __m128& b)
     {
       return _mm_max_ps(a, b);
     }
   };
-
-  template<typename T>
-  using simd_type = typename SIMD<T>::simd_type;
 
 } // namespace cs
 

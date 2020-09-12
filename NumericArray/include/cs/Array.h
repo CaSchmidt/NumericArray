@@ -238,7 +238,7 @@ namespace cs {
 
     constexpr simd_type block(const size_type b) const
     {
-      return simd::load(&_data[b*simd::ValueCount]);
+      return simd::load(&_data[b*simd::ElementCount]);
     }
 
   protected:
