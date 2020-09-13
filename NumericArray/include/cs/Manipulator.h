@@ -100,13 +100,6 @@ namespace cs {
   template<typename policy_T, typename policy_T::size_type i>
   class RGBProperty {
   public:
-    template<typename T>
-    static inline constexpr bool if_rgb_v =
-        std::is_integral_v<T>  &&  std::is_unsigned_v<T>  &&  sizeof(T) == 1;
-
-    template<typename T>
-    using if_rgb_t = std::enable_if_t<if_rgb_v<T>,T>;
-
     using policy_type = policy_T;
     using    rgb_type = if_rgb_t<unsigned char>;
     using traits_type = typename policy_type::traits_type;

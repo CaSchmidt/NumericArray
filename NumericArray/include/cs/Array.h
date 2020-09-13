@@ -151,33 +151,33 @@ namespace cs {
     template<typename EXPR>
     Array& operator+=(const ExprBase<traits_type,EXPR>& expr)
     {
-      operator=(impl::BinAdd<traits_type,Array,EXPR>(as_derived(), expr.as_derived()));
+      operator=(impl::BinAdd<traits_type,Array,EXPR>(*this, expr.as_derived()));
       return *this;
     }
 
     template<typename EXPR>
     Array& operator-=(const ExprBase<traits_type,EXPR>& expr)
     {
-      operator=(impl::BinSub<traits_type,Array,EXPR>(as_derived(), expr.as_derived()));
+      operator=(impl::BinSub<traits_type,Array,EXPR>(*this, expr.as_derived()));
       return *this;
     }
 
     Array& operator*=(const value_type s)
     {
-      operator=(impl::BinSMul<traits_type,Array>(as_derived(), s));
+      operator=(impl::BinSMul<traits_type,Array>(*this, s));
       return *this;
     }
 
     Array& operator/=(const value_type s)
     {
-      operator=(impl::BinSDiv<traits_type,Array>(as_derived(), s));
+      operator=(impl::BinSDiv<traits_type,Array>(*this, s));
       return *this;
     }
 
     template<typename EXPR>
     Array& operator%=(const ExprBase<traits_type,EXPR>& expr)
     {
-      operator=(impl::BinProduct<traits_type,Array,EXPR>(as_derived(), expr.as_derived()));
+      operator=(impl::BinProduct<traits_type,Array,EXPR>(*this, expr.as_derived()));
       return *this;
     }
 

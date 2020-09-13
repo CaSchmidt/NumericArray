@@ -32,7 +32,7 @@
 #ifndef CSMATH_H
 #define CSMATH_H
 
-#include <cmath>
+#include <math.h>
 
 #include <emmintrin.h> // SSE2
 #include <xmmintrin.h> // SSE
@@ -41,44 +41,44 @@
 
 inline double csAbs(const double& x)
 {
-  return std::fabs(x);
+  return ::fabs(x);
 }
 
 inline float csAbs(const float& x)
 {
-  return std::fabsf(x);
+  return ::fabsf(x);
 }
 
 ////// Inverse Trigonometric Functions ///////////////////////////////////////
 
 inline double csACos(const double& x)
 {
-  return std::acos(x);
+  return ::acos(x);
 }
 
 inline float csACos(const float& x)
 {
-  return std::acosf(x);
+  return ::acosf(x);
 }
 
 inline double csASin(const double& x)
 {
-  return std::asin(x);
+  return ::asin(x);
 }
 
 inline float csASin(const float& x)
 {
-  return std::asinf(x);
+  return ::asinf(x);
 }
 
 inline double csATan2(const double& y, const double& x)
 {
-  return std::atan2(y, x);
+  return ::atan2(y, x);
 }
 
 inline float csATan2(const float& y, const float& x)
 {
-  return std::atan2f(y, x);
+  return ::atan2f(y, x);
 }
 
 ////// Clamp /////////////////////////////////////////////////////////////////
@@ -119,24 +119,24 @@ inline float csMin(const float& a, const float& b)
 
 inline double csPow(const double& x, const double& y)
 {
-  return std::pow(x, y);
+  return ::pow(x, y);
 }
 
 inline float csPow(const float& x, const float& y)
 {
-  return std::powf(x, y);
+  return ::powf(x, y);
 }
 
 ////// Remainder /////////////////////////////////////////////////////////////
 
 inline double csRemndr(const double& x, const double& y)
 {
-  return std::fmod(x, y);
+  return ::fmod(x, y);
 }
 
 inline float csRemndr(const float& x, const float& y)
 {
-  return std::fmodf(x, y);
+  return ::fmodf(x, y);
 }
 
 ////// Square Root ///////////////////////////////////////////////////////////
@@ -165,32 +165,32 @@ inline float csSqrt(const float& x)
 
 inline double csCos(const double& x)
 {
-  return std::cos(x);
+  return ::cos(x);
 }
 
 inline float csCos(const float& x)
 {
-  return std::cosf(x);
+  return ::cosf(x);
 }
 
 inline double csSin(const double& x)
 {
-  return std::sin(x);
+  return ::sin(x);
 }
 
 inline float csSin(const float& x)
 {
-  return std::sinf(x);
+  return ::sinf(x);
 }
 
 inline double csTan(const double& x)
 {
-  return std::tan(x);
+  return ::tan(x);
 }
 
 inline float csTan(const float& x)
 {
-  return std::tanf(x);
+  return ::tanf(x);
 }
 
 #endif // CSMATH_H

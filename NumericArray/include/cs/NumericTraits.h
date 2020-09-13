@@ -149,6 +149,14 @@ namespace cs {
     return false;
   }
 
+  // RGB types ///////////////////////////////////////////////////////////////
+
+  template<typename T>
+  inline constexpr bool if_rgb_v =
+      std::is_integral_v<T>  &&  std::is_unsigned_v<T>  &&  sizeof(T) == 1;
+
+  template<typename T>
+  using if_rgb_t = std::enable_if_t<if_rgb_v<T>,T>;
 
 } // namespace cs
 

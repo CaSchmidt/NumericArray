@@ -41,8 +41,8 @@ namespace cs {
     using traits_type = traits_T;
     using policy_type = derived_T<traits_type>;
 
-    template<typename traits_T>
-    using make_policy = derived_T<traits_T>;
+    template<typename T>
+    using make_policy = derived_T<T>;
 
     /*
      * NOTE:
