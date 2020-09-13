@@ -44,9 +44,16 @@ namespace cs {
     template<typename traits_T>
     using make_policy = derived_T<traits_T>;
 
+    /*
+     * NOTE:
+     * Two policies are considered identical IFF both underlying template classes
+     * instantiated with both policies' traits lead to identical complete types.
+     */
     template<typename other_T>
     inline static constexpr bool is_same_v =
-        std::is_same_v<policy_type,typename other_T::template make_policy<traits_type>>;
+        std::is_same_v<policy_type,typename other_T::template make_policy<traits_type>>
+    &&
+    std::is_same_v<typename policy_type::template make_policy<typename other_T::traits_type>,other_T>;
   };
 
   template<typename traits_T>
