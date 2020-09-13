@@ -90,8 +90,8 @@ namespace cs {
   {
     static_assert(if_column_v<traits_T>);
     using SUB = impl::BinSub<traits_T,TO,FROM>;
-    return impl::Normalize<traits_T,SUB>(SUB(to.as_derived(), from.as_derived()),
-                                         length(SUB(to.as_derived(), from.as_derived())));
+    return impl::BinSDiv<traits_T,SUB>(SUB(to.as_derived(), from.as_derived()),
+                                       length(SUB(to.as_derived(), from.as_derived())));
   }
 
   // Distance ////////////////////////////////////////////////////////////////
@@ -172,8 +172,8 @@ namespace cs {
   constexpr auto normalize(const ExprBase<traits_T,ARG>& arg)
   {
     static_assert(if_column_v<traits_T>);
-    return impl::Normalize<traits_T,ARG>(arg.as_derived(),
-                                         length(arg.as_derived()));
+    return impl::BinSDiv<traits_T,ARG>(arg.as_derived(),
+                                       length(arg.as_derived()));
   }
 
   // Vector/Matrix Transposition /////////////////////////////////////////////

@@ -294,36 +294,6 @@ namespace cs {
       const value_type _scalar{};
     };
 
-    // Implementation - Vector Normalization /////////////////////////////////
-
-    template<typename traits_T, typename ARG>
-    class Normalize : public ExprBase<traits_T,Normalize<traits_T,ARG>> {
-    public:
-      using typename ExprBase<traits_T,Normalize<traits_T,ARG>>::size_type;
-      using typename ExprBase<traits_T,Normalize<traits_T,ARG>>::traits_type;
-      using typename ExprBase<traits_T,Normalize<traits_T,ARG>>::value_type;
-
-      static_assert(if_column_v<traits_type>);
-
-      Normalize(const ARG& arg, const value_type length)
-        : _arg(arg)
-        , _length{length}
-      {
-      }
-
-      ~Normalize() noexcept = default;
-
-      template<size_type i, size_type j>
-      constexpr value_type eval() const
-      {
-        return _arg.template eval<i,j>()/_length;
-      }
-
-    private:
-      const ARG&       _arg;
-      const value_type _length{};
-    };
-
     // Implementation - Matrix/Vector Transposition //////////////////////////
 
     template<typename traits_T, typename ARG>
