@@ -58,7 +58,7 @@ public:
     } else if( format == static_cast<CharT>('f')  ||  format == static_cast<CharT>('F') ) {
       _format = std::ios_base::fixed;
     } else {
-      _format = 0;
+      _format = std::ios_base::fmtflags{};
     }
     if( format == static_cast<CharT>('A')  ||
         format == static_cast<CharT>('E')  ||
