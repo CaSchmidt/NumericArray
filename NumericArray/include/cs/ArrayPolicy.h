@@ -37,7 +37,7 @@
 namespace cs {
 
   template<typename traits_T, template<typename> typename derived_T>
-  struct PolicyBase {
+  struct ArrayPolicyBase {
     using traits_type = traits_T;
     using policy_type = derived_T<traits_type>;
 
@@ -50,7 +50,7 @@ namespace cs {
   };
 
   template<typename traits_T>
-  struct RowMajorPolicy : public PolicyBase<traits_T,RowMajorPolicy> {
+  struct RowMajorPolicy : public ArrayPolicyBase<traits_T,RowMajorPolicy> {
     using traits_type = traits_T;
     using   size_type = typename traits_type::size_type;
 
