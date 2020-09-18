@@ -3,6 +3,10 @@ macro(cs_test target)
   add_executable(${target} ${sources})
   add_dependencies(${target} NumericArray)
   format_output_name(${target} ${target})
+  set_target_properties(${target} PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+    )
   target_include_directories(${target}
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
     PRIVATE ${NumericArray_SOURCE_DIR}/include
@@ -13,3 +17,4 @@ endmacro()
 ### Tests ####################################################################
 
 cs_test(test_array src/test_array.cpp)
+cs_test(test_simd src/test_simd.cpp)
