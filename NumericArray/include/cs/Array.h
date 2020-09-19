@@ -223,7 +223,7 @@ namespace cs {
     // Compile-Time Element Access ///////////////////////////////////////////
 
     template<size_type i, size_type j>
-    constexpr value_type eval() const
+    inline value_type eval() const
     {
       return _data[policy_type::template index<i,j>()];
     }
@@ -236,7 +236,7 @@ namespace cs {
       return policy_type::template is_same_v<simd_policy_T>;
     }
 
-    constexpr simd_type block(const size_type b) const
+    inline simd_type block(const size_type b) const
     {
       return simd::load(&_data[b*simd::ElementCount]);
     }

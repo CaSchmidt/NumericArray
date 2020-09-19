@@ -37,13 +37,13 @@
 namespace cs {
 
   template<typename traits_T, typename OP>
-  constexpr auto operator+(const ExprBase<traits_T,OP>& op)
+  inline auto operator+(const ExprBase<traits_T,OP>& op)
   {
     return impl::UnaPlus<traits_T,OP>(op.as_derived());
   }
 
   template<typename traits_T, typename OP>
-  constexpr auto operator-(const ExprBase<traits_T,OP>& op)
+  inline auto operator-(const ExprBase<traits_T,OP>& op)
   {
     return impl::UnaMinus<traits_T,OP>(op.as_derived());
   }

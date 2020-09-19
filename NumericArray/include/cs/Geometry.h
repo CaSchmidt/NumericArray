@@ -40,21 +40,21 @@ namespace cs {
   // Elementary Axes /////////////////////////////////////////////////////////
 
   template<typename traits_T>
-  constexpr auto xAxis()
+  inline auto xAxis()
   {
     static_assert(if_column_v<traits_T>);
     return impl::Axis<traits_T,0>();
   }
 
   template<typename traits_T>
-  constexpr auto yAxis()
+  inline auto yAxis()
   {
     static_assert(if_column_v<traits_T>);
     return impl::Axis<traits_T,1>();
   }
 
   template<typename traits_T>
-  constexpr auto zAxis()
+  inline auto zAxis()
   {
     static_assert(if_column_v<traits_T>);
     return impl::Axis<traits_T,2>();
@@ -63,7 +63,7 @@ namespace cs {
   // NxN Identity Matrix /////////////////////////////////////////////////////
 
   template<typename traits_T>
-  constexpr auto identity()
+  inline auto identity()
   {
     static_assert(if_quadratic_v<traits_T>);
     return impl::Identity<traits_T>();
@@ -72,7 +72,7 @@ namespace cs {
   // 3x3 Rotation About X Axis ///////////////////////////////////////////////
 
   template<typename traits_T>
-  constexpr auto rotateX(const typename traits_T::value_type angle)
+  inline auto rotateX(const typename traits_T::value_type angle)
   {
     static_assert(if_dimensions_v<traits_T,3,3>);
     return impl::RotateX<traits_T>(csCos(angle), csSin(angle));
@@ -81,7 +81,7 @@ namespace cs {
   // 3x3 Rotation About Y Axis ///////////////////////////////////////////////
 
   template<typename traits_T>
-  constexpr auto rotateY(const typename traits_T::value_type angle)
+  inline auto rotateY(const typename traits_T::value_type angle)
   {
     static_assert(if_dimensions_v<traits_T,3,3>);
     return impl::RotateY<traits_T>(csCos(angle), csSin(angle));
@@ -90,7 +90,7 @@ namespace cs {
   // 3x3 Rotation About Z Axis ///////////////////////////////////////////////
 
   template<typename traits_T>
-  constexpr auto rotateZ(const typename traits_T::value_type angle)
+  inline auto rotateZ(const typename traits_T::value_type angle)
   {
     static_assert(if_dimensions_v<traits_T,3,3>);
     return impl::RotateZ<traits_T>(csCos(angle), csSin(angle));
@@ -99,9 +99,9 @@ namespace cs {
   // 3x3 Scaling Matrix //////////////////////////////////////////////////////
 
   template<typename traits_T>
-  constexpr auto scale(const typename traits_T::value_type sx,
-                       const typename traits_T::value_type sy,
-                       const typename traits_T::value_type sz)
+  inline auto scale(const typename traits_T::value_type sx,
+                    const typename traits_T::value_type sy,
+                    const typename traits_T::value_type sz)
   {
     static_assert(if_dimensions_v<traits_T,3,3>);
     return impl::Scale<traits_T>(sx, sy, sz);

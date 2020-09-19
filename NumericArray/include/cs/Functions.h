@@ -41,12 +41,12 @@ namespace cs {
   // Forward Declarations ////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG>
-  constexpr typename traits_T::value_type length(const ExprBase<traits_T,ARG>& arg);
+  inline typename traits_T::value_type length(const ExprBase<traits_T,ARG>& arg);
 
   // Cast ////////////////////////////////////////////////////////////////////
 
   template<typename to_T, typename from_T, typename ARG>
-  constexpr auto array_cast(const ExprBase<from_T,ARG>& arg)
+  inline auto array_cast(const ExprBase<from_T,ARG>& arg)
   {
     static_assert(if_identical_v<to_T,from_T>);
     return impl::Cast<to_T,ARG>(arg.as_derived());
@@ -55,9 +55,9 @@ namespace cs {
   // Clamp ///////////////////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG>
-  constexpr auto clamp(const ExprBase<traits_T,ARG>& arg,
-                       const typename traits_T::value_type lo,
-                       const typename traits_T::value_type hi)
+  inline auto clamp(const ExprBase<traits_T,ARG>& arg,
+                    const typename traits_T::value_type lo,
+                    const typename traits_T::value_type hi)
   {
     return impl::SClamp<traits_T,ARG>(arg.as_derived(), lo, hi);
   }
@@ -65,8 +65,8 @@ namespace cs {
   // Cross Product ///////////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG1, typename ARG2>
-  constexpr auto cross(const ExprBase<traits_T,ARG1>& arg1,
-                       const ExprBase<traits_T,ARG2>& arg2)
+  inline auto cross(const ExprBase<traits_T,ARG1>& arg1,
+                    const ExprBase<traits_T,ARG2>& arg2)
   {
     static_assert(if_dimensions_v<traits_T,3,1>);
     return impl::Cross<traits_T,ARG1,ARG2>(arg1.as_derived(), arg2.as_derived());
@@ -75,7 +75,7 @@ namespace cs {
   // Determinant /////////////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG>
-  constexpr typename traits_T::value_type determinant(const ExprBase<traits_T,ARG>& arg)
+  inline typename traits_T::value_type determinant(const ExprBase<traits_T,ARG>& arg)
   {
     static_assert(if_dimensions_v<traits_T,3,3>);
     using COFACTOR = impl::Cofactor3x3<traits_T,ARG>;
@@ -85,8 +85,8 @@ namespace cs {
   // Direction ///////////////////////////////////////////////////////////////
 
   template<typename traits_T, typename FROM, typename TO>
-  constexpr auto direction(const ExprBase<traits_T,FROM>& from,
-                           const ExprBase<traits_T,TO>& to)
+  inline auto direction(const ExprBase<traits_T,FROM>& from,
+                        const ExprBase<traits_T,TO>& to)
   {
     static_assert(if_column_v<traits_T>);
     using SUB = impl::BinSub<traits_T,TO,FROM>;
@@ -97,8 +97,8 @@ namespace cs {
   // Distance ////////////////////////////////////////////////////////////////
 
   template<typename traits_T, typename FROM, typename TO>
-  constexpr typename traits_T::value_type distance(const ExprBase<traits_T,FROM>& from,
-                                                   const ExprBase<traits_T,TO>& to)
+  inline typename traits_T::value_type distance(const ExprBase<traits_T,FROM>& from,
+                                                const ExprBase<traits_T,TO>& to)
   {
     static_assert(if_column_v<traits_T>);
     using SUB = impl::BinSub<traits_T,TO,FROM>;
@@ -110,8 +110,8 @@ namespace cs {
   template<typename value_T, typename size_T, size_T ROWS,
            template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
            typename ARG1, typename ARG2>
-  constexpr value_T dot(const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG1>& arg1,
-                        const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG2>& arg2)
+  inline value_T dot(const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG1>& arg1,
+                     const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG2>& arg2)
   {
     using TRANSPOSE = impl::Transpose<traits_T<value_T,size_T,1,ROWS>,ARG1>;
     using       MUL = impl::BinMul<traits_T<value_T,size_T,1,1>,ROWS,TRANSPOSE,ARG2>;
@@ -119,8 +119,8 @@ namespace cs {
   }
 
   template<typename traits_T, typename ARG1, typename ARG2>
-  constexpr typename traits_T::value_type dot1(const ExprBase<traits_T,ARG1>& arg1,
-                                               const ExprBase<traits_T,ARG2>& arg2)
+  inline typename traits_T::value_type dot1(const ExprBase<traits_T,ARG1>& arg1,
+                                            const ExprBase<traits_T,ARG2>& arg2)
   {
     static_assert(if_column_v<traits_T>);
     return csMax(typename traits_T::value_type{0}, dot(arg1, arg2));
@@ -129,7 +129,7 @@ namespace cs {
   // Inverse /////////////////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG>
-  constexpr auto inverse(const ExprBase<traits_T,ARG>& arg)
+  inline auto inverse(const ExprBase<traits_T,ARG>& arg)
   {
     static_assert(if_dimensions_v<traits_T,3,3>);
     using  COFACTOR = impl::Cofactor3x3<traits_T,ARG>;
@@ -142,7 +142,7 @@ namespace cs {
   // Length //////////////////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG>
-  constexpr typename traits_T::value_type length(const ExprBase<traits_T,ARG>& arg)
+  inline typename traits_T::value_type length(const ExprBase<traits_T,ARG>& arg)
   {
     static_assert(if_column_v<traits_T>);
     return csSqrt(dot(arg, arg));
@@ -151,8 +151,8 @@ namespace cs {
   // Maximum /////////////////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG>
-  constexpr auto max(const ExprBase<traits_T,ARG>& expr,
-                     const typename traits_T::value_type scalar)
+  inline auto max(const ExprBase<traits_T,ARG>& expr,
+                  const typename traits_T::value_type scalar)
   {
     return impl::SMax<traits_T,ARG>(expr.as_derived(), scalar);
   }
@@ -160,8 +160,8 @@ namespace cs {
   // Minimum /////////////////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG>
-  constexpr auto min(const ExprBase<traits_T,ARG>& expr,
-                     const typename traits_T::value_type scalar)
+  inline auto min(const ExprBase<traits_T,ARG>& expr,
+                  const typename traits_T::value_type scalar)
   {
     return impl::SMin<traits_T,ARG>(expr.as_derived(), scalar);
   }
@@ -169,7 +169,7 @@ namespace cs {
   // Vector Normalization ////////////////////////////////////////////////////
 
   template<typename traits_T, typename ARG>
-  constexpr auto normalize(const ExprBase<traits_T,ARG>& arg)
+  inline auto normalize(const ExprBase<traits_T,ARG>& arg)
   {
     static_assert(if_column_v<traits_T>);
     return impl::BinSDiv<traits_T,ARG>(arg.as_derived(),
@@ -181,7 +181,7 @@ namespace cs {
   template<typename value_T, typename size_T, size_T ROWS, size_T COLS,
            template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
            typename ARG>
-  constexpr auto transpose(const ExprBase<traits_T<value_T,size_T,ROWS,COLS>,ARG>& arg)
+  inline auto transpose(const ExprBase<traits_T<value_T,size_T,ROWS,COLS>,ARG>& arg)
   {
     return impl::Transpose<traits_T<value_T,size_T,COLS,ROWS>,ARG>(arg.as_derived());
   }

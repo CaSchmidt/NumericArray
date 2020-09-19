@@ -60,7 +60,7 @@ namespace cs {
       ~Cast() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return _arg.template eval<i,j>();
       }
@@ -71,7 +71,7 @@ namespace cs {
         return check_simd<ARG,simd_policy_T>();
       }
 
-      constexpr simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const size_type b) const
       {
         return _arg.block(b);
       }
@@ -99,7 +99,7 @@ namespace cs {
       ~SClamp() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return csClamp(_arg.template eval<i,j>(), _lo, _hi);
       }
@@ -110,7 +110,7 @@ namespace cs {
         return check_simd<ARG,simd_policy_T>();
       }
 
-      constexpr simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const size_type b) const
       {
         using simd = SIMD<value_type>;
         return simd::max(simd::set(_lo), simd::min(_arg.block(b), simd::set(_hi)));
@@ -139,7 +139,7 @@ namespace cs {
 
       ~Cofactor3x3() noexcept = default;
 
-      constexpr value_type determinant() const
+      inline value_type determinant() const
       {
         return
             _arg.template eval<0,0>()*eval<0,0>() +
@@ -148,7 +148,7 @@ namespace cs {
       }
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return sign<i,j>()*(
               _arg.template eval<AI<i>::j,AI<j>::j>()*
@@ -199,7 +199,7 @@ namespace cs {
       ~Cross() noexcept = default;
 
       template<size_type i, size_type /*j*/>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return
             _arg1.template eval<NI<i>::j,0>()*_arg2.template eval<NI<i>::k,0>() -
@@ -232,7 +232,7 @@ namespace cs {
       ~SMax() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return csMax(_arg.template eval<i,j>(), _scalar);
       }
@@ -243,7 +243,7 @@ namespace cs {
         return check_simd<ARG,simd_policy_T>();
       }
 
-      constexpr simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const size_type b) const
       {
         using simd = SIMD<value_type>;
         return simd::max(_arg.block(b), simd::set(_scalar));
@@ -272,7 +272,7 @@ namespace cs {
       ~SMin() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return csMin(_arg.template eval<i,j>(), _scalar);
       }
@@ -283,7 +283,7 @@ namespace cs {
         return check_simd<ARG,simd_policy_T>();
       }
 
-      constexpr simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const size_type b) const
       {
         using simd = SIMD<value_type>;
         return simd::min(_arg.block(b), simd::set(_scalar));
@@ -311,7 +311,7 @@ namespace cs {
       ~Transpose() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return _arg.template eval<j,i>();
       }

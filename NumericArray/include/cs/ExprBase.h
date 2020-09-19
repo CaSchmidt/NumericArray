@@ -53,7 +53,7 @@ namespace cs {
       return static_cast<const derived_T&>(*this);
     }
 
-    constexpr value_type as_scalar() const
+    inline value_type as_scalar() const
     {
       static_assert(if_dimensions_v<traits_type,1,1>);
       return as_derived().template eval<0,0>();

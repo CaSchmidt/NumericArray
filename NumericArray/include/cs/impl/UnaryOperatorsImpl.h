@@ -58,7 +58,7 @@ namespace cs {
       ~UnaMinus() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return -_op.template eval<i,j>();
       }
@@ -69,7 +69,7 @@ namespace cs {
         return check_simd<OP,simd_policy_T>();
       }
 
-      constexpr simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const size_type b) const
       {
         constexpr value_type mONE = static_cast<value_type>(-1);
         using                simd = SIMD<value_type>;
@@ -99,7 +99,7 @@ namespace cs {
       ~UnaPlus() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return _op.template eval<i,j>();
       }
@@ -110,7 +110,7 @@ namespace cs {
         return check_simd<OP,simd_policy_T>();
       }
 
-      constexpr simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const size_type b) const
       {
         return _op.block(b);
       }

@@ -58,7 +58,7 @@ namespace cs {
       ~BinAdd() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return _lhs.template eval<i,j>() + _rhs.template eval<i,j>();
       }
@@ -69,7 +69,7 @@ namespace cs {
         return check_simd<LHS,simd_policy_T>()  &&  check_simd<RHS,simd_policy_T>();
       }
 
-      constexpr simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const size_type b) const
       {
         return SIMD<value_type>::add(_lhs.block(b), _rhs.block(b));
       }
@@ -98,7 +98,7 @@ namespace cs {
       ~BinSDiv() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return _op.template eval<i,j>()/_scalar;
       }
@@ -109,7 +109,7 @@ namespace cs {
         return check_simd<OP,simd_policy_T>();
       }
 
-      constexpr simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const size_type b) const
       {
         using simd = SIMD<value_type>;
         return simd::div(_op.block(b), simd::set(_scalar));
@@ -126,7 +126,7 @@ namespace cs {
     struct BinMulProduct {
       static constexpr auto K = INNER - 1 - k;
 
-      static constexpr value_T run(const LHS& lhs, const RHS& rhs)
+      inline static value_T run(const LHS& lhs, const RHS& rhs)
       {
         return
             lhs.template eval<I,K>()*rhs.template eval<K,J>() +
@@ -138,7 +138,7 @@ namespace cs {
     struct BinMulProduct<value_T,I,J,0,INNER,LHS,RHS> {
       static constexpr auto K = INNER - 1;
 
-      static constexpr value_T run(const LHS& lhs, const RHS& rhs)
+      inline static value_T run(const LHS& lhs, const RHS& rhs)
       {
         return lhs.template eval<I,K>()*rhs.template eval<K,J>();
       }
@@ -161,7 +161,7 @@ namespace cs {
       ~BinMul() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return BinMulProduct<value_type,i,j,INNER-1,INNER,LHS,RHS>::run(_lhs, _rhs);
       }
@@ -190,7 +190,7 @@ namespace cs {
       ~BinSMul() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return _op.template eval<i,j>()*_scalar;
       }
@@ -201,7 +201,7 @@ namespace cs {
         return check_simd<OP,simd_policy_T>();
       }
 
-      constexpr simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const size_type b) const
       {
         using simd = SIMD<value_type>;
         return simd::mul(_op.block(b), simd::set(_scalar));
@@ -231,7 +231,7 @@ namespace cs {
       ~BinProduct() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return _lhs.template eval<i,j>()*_rhs.template eval<i,j>();
       }
@@ -242,7 +242,7 @@ namespace cs {
         return check_simd<LHS,simd_policy_T>()  &&  check_simd<RHS,simd_policy_T>();
       }
 
-      constexpr simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const size_type b) const
       {
         return SIMD<value_type>::mul(_lhs.block(b), _rhs.block(b));
       }
@@ -271,7 +271,7 @@ namespace cs {
       ~BinSub() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         return _lhs.template eval<i,j>() - _rhs.template eval<i,j>();
       }
@@ -282,7 +282,7 @@ namespace cs {
         return check_simd<LHS,simd_policy_T>()  &&  check_simd<RHS,simd_policy_T>();
       }
 
-      constexpr simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const size_type b) const
       {
         return SIMD<value_type>::sub(_lhs.block(b), _rhs.block(b));
       }

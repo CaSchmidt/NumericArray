@@ -77,7 +77,7 @@ namespace cs {
 
     ~ArrayProperty() noexcept = default;
 
-    constexpr operator value_type() const
+    inline operator value_type() const
     {
       return *_data;
     }
@@ -114,7 +114,7 @@ namespace cs {
 
     ~RGBProperty() noexcept = default;
 
-    constexpr operator rgb_type() const
+    inline operator rgb_type() const
     {
       constexpr value_type  ONE = 1;
       constexpr value_type ZERO = 0;

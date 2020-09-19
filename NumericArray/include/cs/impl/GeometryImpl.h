@@ -55,7 +55,7 @@ namespace cs {
       ~Axis() noexcept = default;
 
       template<size_type i, size_type>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         if constexpr( i == DIM ) {
           return value_type{1};
@@ -80,7 +80,7 @@ namespace cs {
       ~Identity() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         if constexpr( II<i,j,j,i> ) {
           return value_type{1};
@@ -113,7 +113,7 @@ namespace cs {
       ~RotateX() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         if constexpr( II<i,j,0,0> ) {
           return value_type{1};
@@ -154,7 +154,7 @@ namespace cs {
       ~RotateY() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         if constexpr( II<i,j,1,1> ) {
           return value_type{1};
@@ -193,7 +193,7 @@ namespace cs {
       }
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         if constexpr( II<i,j,2,2> ) {
           return value_type{1};
@@ -235,7 +235,7 @@ namespace cs {
       ~Scale() noexcept = default;
 
       template<size_type i, size_type j>
-      constexpr value_type eval() const
+      inline value_type eval() const
       {
         if constexpr( II<i,j,0,0> ) {
           return _sx;

@@ -49,7 +49,7 @@ namespace cs {
       using  value_type = typename traits_type::value_type;
 
       template<typename EXPR>
-      static constexpr void run(value_type *dest, const ExprBase<traits_type,EXPR>& src)
+      inline static void run(value_type *dest, const ExprBase<traits_type,EXPR>& src)
       {
         constexpr size_type l = traits_type::Size - COUNT;
         constexpr size_type i = policy_type::template row<l>();
@@ -68,7 +68,7 @@ namespace cs {
       using  value_type = typename traits_type::value_type;
 
       template<typename EXPR>
-      static constexpr void run(value_type *, const ExprBase<traits_type,EXPR>&)
+      inline static void run(value_type *, const ExprBase<traits_type,EXPR>&)
       {
       }
     };
@@ -82,7 +82,7 @@ namespace cs {
       using        simd = SIMD<value_type>;
 
       template<typename EXPR>
-      static constexpr void run(value_type *dest, const ExprBase<traits_type,EXPR>& src)
+      inline static void run(value_type *dest, const ExprBase<traits_type,EXPR>& src)
       {
         constexpr size_type b = static_cast<size_type>(simd::blocks(traits_type::Size)) - COUNT;
         constexpr size_type l = b*simd::ElementCount;
@@ -101,7 +101,7 @@ namespace cs {
       using        simd = SIMD<value_type>;
 
       template<typename EXPR>
-      static constexpr void run(value_type *, const ExprBase<traits_type,EXPR>&)
+      inline static void run(value_type *, const ExprBase<traits_type,EXPR>&)
       {
       }
     };
@@ -114,7 +114,7 @@ namespace cs {
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
-      static constexpr void run(value_type *dest, const value_type *src)
+      inline static void run(value_type *dest, const value_type *src)
       {
         constexpr size_type l = traits_type::Size - COUNT;
 
@@ -129,7 +129,7 @@ namespace cs {
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
-      static constexpr void run(value_type *, const value_type *)
+      inline static void run(value_type *, const value_type *)
       {
       }
     };
@@ -141,7 +141,7 @@ namespace cs {
       using  value_type = typename traits_type::value_type;
       using        simd = SIMD<value_type>;
 
-      static constexpr void run(value_type *dest, const value_type *src)
+      inline static void run(value_type *dest, const value_type *src)
       {
         constexpr size_type l = static_cast<size_type>((simd::blocks(traits_type::Size) - COUNT)*simd::ElementCount);
 
@@ -157,7 +157,7 @@ namespace cs {
       using  value_type = typename traits_type::value_type;
       using        simd = SIMD<value_type>;
 
-      static constexpr void run(value_type *, const value_type *)
+      inline static void run(value_type *, const value_type *)
       {
       }
     };
@@ -170,7 +170,7 @@ namespace cs {
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
-      static constexpr void run(value_type *dest, value_type *src)
+      inline static void run(value_type *dest, value_type *src)
       {
         constexpr size_type l = traits_type::Size - COUNT;
 
@@ -185,7 +185,7 @@ namespace cs {
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
-      static constexpr void run(value_type *, value_type *)
+      inline static void run(value_type *, value_type *)
       {
       }
     };
@@ -198,7 +198,7 @@ namespace cs {
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
-      static constexpr void run(value_type *dest, const value_type value)
+      inline static void run(value_type *dest, const value_type value)
       {
         constexpr size_type l = traits_type::Size - COUNT;
 
@@ -213,7 +213,7 @@ namespace cs {
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
-      static constexpr void run(value_type *, const value_type)
+      inline static void run(value_type *, const value_type)
       {
       }
     };
@@ -225,7 +225,7 @@ namespace cs {
       using  value_type = typename traits_type::value_type;
       using        simd = SIMD<value_type>;
 
-      static constexpr void run(value_type *dest, const value_type value)
+      inline static void run(value_type *dest, const value_type value)
       {
         constexpr size_type l = static_cast<size_type>((simd::blocks(traits_type::Size) - COUNT)*simd::ElementCount);
 
@@ -241,7 +241,7 @@ namespace cs {
       using  value_type = typename traits_type::value_type;
       using        simd = SIMD<value_type>;
 
-      static constexpr void run(value_type *, const value_type)
+      inline static void run(value_type *, const value_type)
       {
       }
     };

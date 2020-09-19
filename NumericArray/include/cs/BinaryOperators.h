@@ -37,13 +37,13 @@
 namespace cs {
 
   template<typename traits_T, typename LHS, typename RHS>
-  constexpr auto operator+(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
+  inline auto operator+(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
   {
     return impl::BinAdd<traits_T,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
   }
 
   template<typename traits_T, typename LHS, typename RHS>
-  constexpr auto operator-(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
+  inline auto operator-(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
   {
     return impl::BinSub<traits_T,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
   }
@@ -51,35 +51,35 @@ namespace cs {
   template<typename value_T, typename size_T, size_T ROWS, size_T INNER, size_T COLS,
            template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
            typename LHS, typename RHS>
-  constexpr auto operator*(const ExprBase<traits_T<value_T,size_T,ROWS,INNER>,LHS>& lhs,
-                           const ExprBase<traits_T<value_T,size_T,INNER,COLS>,RHS>& rhs)
+  inline auto operator*(const ExprBase<traits_T<value_T,size_T,ROWS,INNER>,LHS>& lhs,
+                        const ExprBase<traits_T<value_T,size_T,INNER,COLS>,RHS>& rhs)
   {
     return impl::BinMul<traits_T<value_T,size_T,ROWS,COLS>,INNER,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
   }
 
   template<typename traits_T, typename OP>
-  constexpr auto operator*(const ExprBase<traits_T,OP>& op,
-                           const typename traits_T::value_type scalar)
+  inline auto operator*(const ExprBase<traits_T,OP>& op,
+                        const typename traits_T::value_type scalar)
   {
     return impl::BinSMul<traits_T,OP>(op.as_derived(), scalar);
   }
 
   template<typename traits_T, typename OP>
-  constexpr auto operator*(const typename traits_T::value_type scalar,
-                           const ExprBase<traits_T,OP>& op)
+  inline auto operator*(const typename traits_T::value_type scalar,
+                        const ExprBase<traits_T,OP>& op)
   {
     return impl::BinSMul<traits_T,OP>(op.as_derived(), scalar);
   }
 
   template<typename traits_T, typename OP>
-  constexpr auto operator/(const ExprBase<traits_T,OP>& op,
-                           const typename traits_T::value_type scalar)
+  inline auto operator/(const ExprBase<traits_T,OP>& op,
+                        const typename traits_T::value_type scalar)
   {
     return impl::BinSDiv<traits_T,OP>(op.as_derived(), scalar);
   }
 
   template<typename traits_T, typename LHS, typename RHS>
-  constexpr auto operator%(const ExprBase<traits_T,LHS>& a, const ExprBase<traits_T,RHS>& b)
+  inline auto operator%(const ExprBase<traits_T,LHS>& a, const ExprBase<traits_T,RHS>& b)
   {
     return impl::BinProduct<traits_T,LHS,RHS>(a.as_derived(), b.as_derived());
   }
