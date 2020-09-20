@@ -77,141 +77,78 @@ namespace cs {
 
     // Implementation - Copy Array ///////////////////////////////////////////
 
-    template<typename traits_T, auto COUNT>
+    template<typename traits_T>
     struct ArrayCopy {
       using traits_type = traits_T;
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
-      inline static void run(value_type *dest, const value_type *src)
+      template<std::size_t l>
+      inline static void eval(value_type *dest, const value_type *src)
       {
-        constexpr size_type l = traits_type::Size - COUNT;
-
         dest[l] = src[l];
-        ArrayCopy<traits_type,COUNT-1>::run(dest, src);
       }
     };
 
     template<typename traits_T>
-    struct ArrayCopy<traits_T,0> {
-      using traits_type = traits_T;
-      using   size_type = typename traits_type::size_type;
-      using  value_type = typename traits_type::value_type;
-
-      inline static void run(value_type *, const value_type *)
-      {
-      }
-    };
-
-    template<typename traits_T, auto COUNT>
     struct BlockCopy {
       using traits_type = traits_T;
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
       using        simd = SIMD<value_type>;
 
-      inline static void run(value_type *dest, const value_type *src)
+      template<std::size_t b>
+      inline static void eval(value_type *dest, const value_type *src)
       {
-        constexpr size_type l = static_cast<size_type>((simd::blocks(traits_type::Size) - COUNT)*simd::ElementCount);
+        constexpr size_type l = b*simd::ElementCount;
 
         simd::store(dest + l, simd::load(src + l));
-        BlockCopy<traits_type,COUNT-1>::run(dest, src);
-      }
-    };
-
-    template<typename traits_T>
-    struct BlockCopy<traits_T,0> {
-      using traits_type = traits_T;
-      using   size_type = typename traits_type::size_type;
-      using  value_type = typename traits_type::value_type;
-      using        simd = SIMD<value_type>;
-
-      inline static void run(value_type *, const value_type *)
-      {
       }
     };
 
     // Implementation - Move Array ///////////////////////////////////////////
 
-    template<typename traits_T, auto COUNT>
+    template<typename traits_T>
     struct ArrayMove {
       using traits_type = traits_T;
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
-      inline static void run(value_type *dest, value_type *src)
+      template<std::size_t l>
+      inline static void eval(value_type *dest, value_type *src)
       {
-        constexpr size_type l = traits_type::Size - COUNT;
-
         dest[l] = std::move(src[l]);
-        ArrayMove<traits_type,COUNT-1>::run(dest, src);
-      }
-    };
-
-    template<typename traits_T>
-    struct ArrayMove<traits_T,0> {
-      using traits_type = traits_T;
-      using   size_type = typename traits_type::size_type;
-      using  value_type = typename traits_type::value_type;
-
-      inline static void run(value_type *, value_type *)
-      {
       }
     };
 
     // Implementation - Set Array ////////////////////////////////////////////
 
-    template<typename traits_T, auto COUNT>
+    template<typename traits_T>
     struct ArraySet {
       using traits_type = traits_T;
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
-      inline static void run(value_type *dest, const value_type value)
+      template<std::size_t l>
+      inline static void eval(value_type *dest, const value_type value)
       {
-        constexpr size_type l = traits_type::Size - COUNT;
-
         dest[l] = value;
-        ArraySet<traits_type,COUNT-1>::run(dest, value);
       }
     };
 
     template<typename traits_T>
-    struct ArraySet<traits_T,0> {
-      using traits_type = traits_T;
-      using   size_type = typename traits_type::size_type;
-      using  value_type = typename traits_type::value_type;
-
-      inline static void run(value_type *, const value_type)
-      {
-      }
-    };
-
-    template<typename traits_T, auto COUNT>
     struct BlockSet {
       using traits_type = traits_T;
       using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
       using        simd = SIMD<value_type>;
 
-      inline static void run(value_type *dest, const value_type value)
+      template<std::size_t b>
+      inline static void eval(value_type *dest, const value_type value)
       {
-        constexpr size_type l = static_cast<size_type>((simd::blocks(traits_type::Size) - COUNT)*simd::ElementCount);
+        constexpr size_type l = b*simd::ElementCount;
 
         simd::store(dest + l, simd::set(value));
-        BlockSet<traits_type,COUNT-1>::run(dest, value);
-      }
-    };
-
-    template<typename traits_T>
-    struct BlockSet<traits_T,0> {
-      using traits_type = traits_T;
-      using   size_type = typename traits_type::size_type;
-      using  value_type = typename traits_type::value_type;
-      using        simd = SIMD<value_type>;
-
-      inline static void run(value_type *, const value_type)
-      {
       }
     };
 

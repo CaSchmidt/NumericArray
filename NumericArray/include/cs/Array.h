@@ -70,7 +70,8 @@ namespace cs {
     Array& operator=(const Array& other) noexcept
     {
       if( this != &other ) {
-        impl::BlockCopy<traits_type,DataBlocks>::run(_data, other._data);
+        using COPY = impl::BlockCopy<traits_type>;
+        meta::for_each<DataBlocks,COPY>(_data, other._data);
       }
       return *this;
     }
@@ -86,7 +87,8 @@ namespace cs {
     Array& operator=(Array&& other) noexcept
     {
       if( this != &other ) {
-        impl::BlockCopy<traits_type,DataBlocks>::run(_data, other._data);
+        using MOVE = impl::BlockCopy<traits_type>;
+        meta::for_each<DataBlocks,MOVE>(_data, other._data);
       }
       return *this;
     }
@@ -101,7 +103,8 @@ namespace cs {
 
     Array& operator=(const value_type& value) noexcept
     {
-      impl::BlockSet<traits_type,DataBlocks>::run(_data, value);
+      using SET = impl::BlockSet<traits_type>;
+      meta::for_each<DataBlocks,SET>(_data, value);
       return *this;
     }
 
