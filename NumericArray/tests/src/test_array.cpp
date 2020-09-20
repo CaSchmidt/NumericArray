@@ -49,14 +49,14 @@ void test_axpy(const value_T alpha, const Vector&x, const Vector& y)
 }
 #endif
 
-#if 1
+#if 0
 void test_copy(const Vector& x)
 {
   v = x;
 }
 #endif
 
-#if 1
+#if 0
 void test_set(const value_T v)
 {
   ::v = v;
@@ -144,7 +144,7 @@ namespace test_manip {
 } // namespace test_manip
 #endif
 
-#if 1
+#if 0
 void test_simd(const Vector& a, const Vector& b)
 {
   v = a + b;
