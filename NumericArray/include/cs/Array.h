@@ -37,6 +37,7 @@
 #include <cs/impl/ArrayImpl.h>
 #include <cs/impl/BinaryOperatorsImpl.h>
 #include <cs/ListAssign.h>
+#include <cs/Meta.h>
 
 namespace cs {
 
@@ -139,9 +140,11 @@ namespace cs {
     Array& operator=(const ExprBase<traits_type,EXPR>& expr) noexcept
     {
       if constexpr( check_simd<EXPR,policy_type>() ) {
-        impl::BlockAssign<policy_type,DataBlocks>::run(_data, expr);
+        using ASSIGN = impl::BlockAssign<policy_type,EXPR>;
+        meta::for_each<DataBlocks,ASSIGN>(_data, expr);
       } else {
-        impl::ArrayAssign<policy_type,traits_type::Size>::run(_data, expr);
+        using ASSIGN = impl::ArrayAssign<policy_type,EXPR>;
+        meta::for_each<traits_type::Size,ASSIGN>(_data, expr);
       }
       return *this;
     }

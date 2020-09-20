@@ -41,39 +41,24 @@ namespace cs {
 
     // Implementation - Assign Array /////////////////////////////////////////
 
-    template<typename policy_T, auto COUNT>
+    template<typename policy_T, typename EXPR>
     struct ArrayAssign {
       using policy_type = policy_T;
       using   size_type = typename policy_type::size_type;
       using traits_type = typename policy_type::traits_type;
       using  value_type = typename traits_type::value_type;
 
-      template<typename EXPR>
-      inline static void run(value_type *dest, const ExprBase<traits_type,EXPR>& src)
+      template<std::size_t l>
+      inline static void eval(value_type *dest, const ExprBase<traits_type,EXPR>& src)
       {
-        constexpr size_type l = traits_type::Size - COUNT;
         constexpr size_type i = policy_type::template row<l>();
         constexpr size_type j = policy_type::template column<l>();
 
         dest[l] = src.as_derived().template eval<i,j>();
-        ArrayAssign<policy_type,COUNT-1>::run(dest, src);
       }
     };
 
-    template<typename policy_T>
-    struct ArrayAssign<policy_T,0> {
-      using policy_type = policy_T;
-      using   size_type = typename policy_type::size_type;
-      using traits_type = typename policy_type::traits_type;
-      using  value_type = typename traits_type::value_type;
-
-      template<typename EXPR>
-      inline static void run(value_type *, const ExprBase<traits_type,EXPR>&)
-      {
-      }
-    };
-
-    template<typename policy_T, auto COUNT>
+    template<typename policy_T, typename EXPR>
     struct BlockAssign {
       using policy_type = policy_T;
       using   size_type = typename policy_type::size_type;
@@ -81,28 +66,12 @@ namespace cs {
       using  value_type = typename traits_type::value_type;
       using        simd = SIMD<value_type>;
 
-      template<typename EXPR>
-      inline static void run(value_type *dest, const ExprBase<traits_type,EXPR>& src)
+      template<std::size_t b>
+      inline static void eval(value_type *dest, const ExprBase<traits_type,EXPR>& src)
       {
-        constexpr size_type b = static_cast<size_type>(simd::blocks(traits_type::Size)) - COUNT;
         constexpr size_type l = b*simd::ElementCount;
 
         simd::store(dest + l, src.as_derived().block(b));
-        BlockAssign<policy_type,COUNT-1>::run(dest, src);
-      }
-    };
-
-    template<typename policy_T>
-    struct BlockAssign<policy_T,0> {
-      using policy_type = policy_T;
-      using   size_type = typename policy_type::size_type;
-      using traits_type = typename policy_type::traits_type;
-      using  value_type = typename traits_type::value_type;
-      using        simd = SIMD<value_type>;
-
-      template<typename EXPR>
-      inline static void run(value_type *, const ExprBase<traits_type,EXPR>&)
-      {
       }
     };
 
