@@ -17,4 +17,5 @@ endmacro()
 ### Tests ####################################################################
 
 cs_test(test_array src/test_array.cpp)
+cs_test(test_meta src/test_meta.cpp)
 cs_test(test_simd src/test_simd.cpp)
