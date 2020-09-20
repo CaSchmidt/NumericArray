@@ -28,6 +28,7 @@ list(APPEND NumericArray_HEADERS
   include/cs/ListAssign.h
   include/cs/Manipulator.h
   include/cs/Math.h
+  include/cs/Meta.h
   include/cs/NumericArray.h
   include/cs/NumericTraits.h
   include/cs/SIMD.h
