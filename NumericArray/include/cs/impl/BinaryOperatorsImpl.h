@@ -33,6 +33,7 @@
 #define BINARYOPERATORSIMPL_H
 
 #include <cs/ExprBase.h>
+#include <cs/Meta.h>
 #include <cs/SIMD.h>
 
 namespace cs {
@@ -122,23 +123,12 @@ namespace cs {
 
     // Implementation - Multiplication ///////////////////////////////////////
 
-    template<typename value_T, auto I, auto J, auto k, auto INNER, typename LHS, typename RHS>
+    template<typename traits_T, std::size_t I, std::size_t J, typename LHS, typename RHS>
     struct BinMulProduct {
-      static constexpr auto K = INNER - 1 - k;
+      using value_type = typename traits_T::value_type;
 
-      inline static value_T run(const LHS& lhs, const RHS& rhs)
-      {
-        return
-            lhs.template eval<I,K>()*rhs.template eval<K,J>() +
-            BinMulProduct<value_T,I,J,k-1,INNER,LHS,RHS>::run(lhs, rhs);
-      }
-    };
-
-    template<typename value_T, auto I, auto J, auto INNER, typename LHS, typename RHS>
-    struct BinMulProduct<value_T,I,J,0,INNER,LHS,RHS> {
-      static constexpr auto K = INNER - 1;
-
-      inline static value_T run(const LHS& lhs, const RHS& rhs)
+      template<std::size_t K>
+      inline static value_type eval(const LHS& lhs, const RHS& rhs)
       {
         return lhs.template eval<I,K>()*rhs.template eval<K,J>();
       }
@@ -163,7 +153,8 @@ namespace cs {
       template<size_type i, size_type j>
       inline value_type eval() const
       {
-        return BinMulProduct<value_type,i,j,INNER-1,INNER,LHS,RHS>::run(_lhs, _rhs);
+        using PROD = BinMulProduct<traits_type,i,j,LHS,RHS>;
+        return meta::accumulate<value_type,INNER,PROD>(_lhs, _rhs);
       }
 
     private:
