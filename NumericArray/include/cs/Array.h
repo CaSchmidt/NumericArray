@@ -105,6 +105,10 @@ namespace cs {
     {
       using SET = impl::BlockSet<traits_type>;
       meta::for_each<DataBlocks,SET>(_data, value);
+      if constexpr( DataSize - traits_type::Size > 0 ) {
+        using SET = impl::ArraySet<traits_type>;
+        meta::for_each<DataSize-traits_type::Size,SET>(_data + traits_type::Size, value_type{0});
+      }
       return *this;
     }
 
