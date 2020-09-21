@@ -57,9 +57,24 @@ void test_copy(const Vector& x)
 #endif
 
 #if 0
+void test_inline()
+{
+  Vector v{1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
+  ::v = v;
+}
+#endif
+
+#if 0
 void test_set(const value_T v)
 {
   ::v = v;
+}
+#endif
+
+#if 0
+void test_list()
+{
+  ::v = {1, 2, 3, 4};
 }
 #endif
 
@@ -148,6 +163,22 @@ namespace test_manip {
 void test_simd(const Vector& a, const Vector& b)
 {
   v = a + b;
+}
+#endif
+
+#if 0
+void test_sum()
+{
+  {
+    using simd = cs::SIMD<double>;
+    const __m128d x = _mm_set_pd(2, 1);
+    printf("%.1f\n", simd::sum(x));
+  }
+  {
+    using simd = cs::SIMD<float>;
+    const __m128 x = _mm_set_ps(4, 3, 2, 1);
+    printf("%.1f\n", simd::sum(x));
+  }
 }
 #endif
 
