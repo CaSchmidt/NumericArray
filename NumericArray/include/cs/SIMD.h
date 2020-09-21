@@ -50,12 +50,22 @@ namespace cs {
   struct SIMDtraits<double> {
     using  simd_type = __m128d;
     using value_type = double;
+
+    inline static __m128d zero()
+    {
+      return _mm_setzero_pd();
+    }
   };
 
   template<>
   struct SIMDtraits<float> {
     using  simd_type = __m128;
     using value_type = float;
+
+    inline static __m128 zero()
+    {
+      return _mm_setzero_ps();
+    }
   };
 
   template<typename T>
@@ -65,8 +75,9 @@ namespace cs {
 
   template<typename T>
   struct SIMD {
-    using  simd_type = typename SIMDtraits<T>::simd_type;
-    using value_type = typename SIMDtraits<T>::value_type;
+    using  simd_traits = SIMDtraits<T>;
+    using  simd_type   = typename simd_traits::simd_type;
+    using value_type   = typename simd_traits::value_type;
 
     static inline constexpr std::size_t    Alignment = sizeof(simd_type);
     static inline constexpr std::size_t ElementCount = sizeof(simd_type)/sizeof(value_type);
@@ -81,7 +92,18 @@ namespace cs {
       return blocks(count)*ElementCount;
     }
 
+    inline static simd_type zero()
+    {
+      return simd_traits::zero();
+    }
+
     // Interface - double ////////////////////////////////////////////////////
+
+    inline static double sum(const __m128d& x)
+    {
+      const __m128d sum = _mm_add_sd(x, _mm_shuffle_pd(x, x, _MM_SHUFFLE2(1, 1)));
+      return _mm_cvtsd_f64(sum);
+    }
 
     inline static __m128d load(const double *src)
     {
@@ -129,6 +151,13 @@ namespace cs {
     }
 
     // Interface - float /////////////////////////////////////////////////////
+
+    inline static float sum(const __m128& x)
+    {
+      const __m128 sum1 = _mm_add_ps(x, _mm_shuffle_ps(x, x, _MM_SHUFFLE(3, 2, 3, 2)));
+      const __m128 sum2 = _mm_add_ss(sum1, _mm_shuffle_ps(sum1, sum1, _MM_SHUFFLE(1, 1, 1, 1)));
+      return _mm_cvtss_f32(sum2);
+    }
 
     inline static __m128 load(const float *src)
     {
