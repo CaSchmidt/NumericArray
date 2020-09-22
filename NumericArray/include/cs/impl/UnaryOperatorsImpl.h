@@ -63,10 +63,10 @@ namespace cs {
         return -_op.template eval<i,j>();
       }
 
-      template<typename simd_policy_T>
+      template<typename simd_policy_T, bool check_policy>
       static constexpr bool is_simd()
       {
-        return check_simd<OP,simd_policy_T>();
+        return check_simd<OP,simd_policy_T,check_policy>();
       }
 
       inline simd_type<value_type> block(const size_type b) const
@@ -104,10 +104,10 @@ namespace cs {
         return _op.template eval<i,j>();
       }
 
-      template<typename simd_policy_T>
+      template<typename simd_policy_T, bool check_policy>
       static constexpr bool is_simd()
       {
-        return check_simd<OP,simd_policy_T>();
+        return check_simd<OP,simd_policy_T,check_policy>();
       }
 
       inline simd_type<value_type> block(const size_type b) const

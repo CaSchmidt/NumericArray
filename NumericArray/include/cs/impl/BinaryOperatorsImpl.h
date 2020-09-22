@@ -64,10 +64,10 @@ namespace cs {
         return _lhs.template eval<i,j>() + _rhs.template eval<i,j>();
       }
 
-      template<typename simd_policy_T>
+      template<typename simd_policy_T, bool check_policy>
       static constexpr bool is_simd()
       {
-        return check_simd<LHS,simd_policy_T>()  &&  check_simd<RHS,simd_policy_T>();
+        return check_simd<LHS,simd_policy_T,check_policy>()  &&  check_simd<RHS,simd_policy_T,check_policy>();
       }
 
       inline simd_type<value_type> block(const size_type b) const
@@ -104,10 +104,10 @@ namespace cs {
         return _op.template eval<i,j>()/_scalar;
       }
 
-      template<typename simd_policy_T>
+      template<typename simd_policy_T, bool check_policy>
       static constexpr bool is_simd()
       {
-        return check_simd<OP,simd_policy_T>();
+        return check_simd<OP,simd_policy_T,check_policy>();
       }
 
       inline simd_type<value_type> block(const size_type b) const
@@ -186,10 +186,10 @@ namespace cs {
         return _op.template eval<i,j>()*_scalar;
       }
 
-      template<typename simd_policy_T>
+      template<typename simd_policy_T, bool check_policy>
       static constexpr bool is_simd()
       {
-        return check_simd<OP,simd_policy_T>();
+        return check_simd<OP,simd_policy_T,check_policy>();
       }
 
       inline simd_type<value_type> block(const size_type b) const
@@ -227,10 +227,10 @@ namespace cs {
         return _lhs.template eval<i,j>()*_rhs.template eval<i,j>();
       }
 
-      template<typename simd_policy_T>
+      template<typename simd_policy_T, bool check_policy>
       static constexpr bool is_simd()
       {
-        return check_simd<LHS,simd_policy_T>()  &&  check_simd<RHS,simd_policy_T>();
+        return check_simd<LHS,simd_policy_T,check_policy>()  &&  check_simd<RHS,simd_policy_T,check_policy>();
       }
 
       inline simd_type<value_type> block(const size_type b) const
@@ -267,10 +267,10 @@ namespace cs {
         return _lhs.template eval<i,j>() - _rhs.template eval<i,j>();
       }
 
-      template<typename simd_policy_T>
+      template<typename simd_policy_T, bool check_policy>
       static constexpr bool is_simd()
       {
-        return check_simd<LHS,simd_policy_T>()  &&  check_simd<RHS,simd_policy_T>();
+        return check_simd<LHS,simd_policy_T,check_policy>()  &&  check_simd<RHS,simd_policy_T,check_policy>();
       }
 
       inline simd_type<value_type> block(const size_type b) const

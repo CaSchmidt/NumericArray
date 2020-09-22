@@ -128,23 +128,23 @@ namespace cs {
 
   // SIMD interface availability /////////////////////////////////////////////
 
-  template<typename T, typename simd_policy_T, typename = bool>
+  template<typename T, typename simd_policy_T, bool check_policy, typename = bool>
   struct if_simd : std::false_type {};
 
-  template<typename T, typename simd_policy_T>
-  struct if_simd<T,simd_policy_T,decltype(T::template is_simd<simd_policy_T>(),std::declval<T>().block(0),bool())> : std::true_type {};
+  template<typename T, typename simd_policy_T, bool check_policy>
+  struct if_simd<T,simd_policy_T,check_policy,decltype(T::template is_simd<simd_policy_T,check_policy>(),std::declval<T>().block(0),bool())> : std::true_type {};
 
-  template<typename T, typename simd_policy_T>
-  inline constexpr bool if_simd_v = if_simd<T,simd_policy_T>::value;
+  template<typename T, typename simd_policy_T, bool check_policy>
+  inline constexpr bool if_simd_v = if_simd<T,simd_policy_T,check_policy>::value;
 
-  template<typename T, typename simd_policy_T>
-  constexpr std::enable_if_t<if_simd_v<T,simd_policy_T>,bool> check_simd()
+  template<typename T, typename simd_policy_T, bool check_policy = true>
+  constexpr std::enable_if_t<if_simd_v<T,simd_policy_T,check_policy>,bool> check_simd()
   {
-    return static_cast<bool>(T::template is_simd<simd_policy_T>());
+    return static_cast<bool>(T::template is_simd<simd_policy_T,check_policy>());
   }
 
-  template<typename T, typename simd_policy_T>
-  constexpr std::enable_if_t<!if_simd_v<T,simd_policy_T>,bool> check_simd()
+  template<typename T, typename simd_policy_T, bool check_policy = true>
+  constexpr std::enable_if_t<!if_simd_v<T,simd_policy_T,check_policy>,bool> check_simd()
   {
     return false;
   }
