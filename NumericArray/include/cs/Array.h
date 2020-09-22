@@ -243,7 +243,10 @@ namespace cs {
     template<typename simd_policy_T, bool check_policy>
     static constexpr bool is_simd()
     {
-      return check_policy  &&  policy_type::template is_same_v<simd_policy_T>;
+      if constexpr( check_policy ) {
+        return policy_type::template is_same_v<simd_policy_T>;
+      }
+      return true;
     }
 
     inline simd_type block(const size_type b) const
