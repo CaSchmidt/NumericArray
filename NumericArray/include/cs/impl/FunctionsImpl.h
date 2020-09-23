@@ -269,8 +269,9 @@ namespace cs {
 
           simd_type x = simd::zero();
           meta::for_each<simd::blocks(INNER),PROD>(x, _arg1, _arg2);
+          x = simd::hadd(x);
 
-          return simd::sum(x);
+          return simd::scalar(x);
         }
         using PROD = DotProduct<traits_type,ARG1,ARG2>;
         return meta::accumulate<value_type,INNER,PROD>(_arg1, _arg2);

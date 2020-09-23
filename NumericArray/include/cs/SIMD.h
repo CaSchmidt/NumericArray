@@ -99,12 +99,6 @@ namespace cs {
 
     // Interface - double ////////////////////////////////////////////////////
 
-    inline static double sum(const __m128d& x)
-    {
-      const __m128d sum = _mm_add_sd(x, _mm_shuffle_pd(x, x, _MM_SHUFFLE2(1, 1)));
-      return _mm_cvtsd_f64(sum);
-    }
-
     inline static __m128d load(const double *src)
     {
       return _mm_load_pd(src);
@@ -150,14 +144,17 @@ namespace cs {
       return _mm_max_pd(a, b);
     }
 
-    // Interface - float /////////////////////////////////////////////////////
-
-    inline static float sum(const __m128& x)
+    inline static double scalar(const __m128d& x)
     {
-      const __m128 sum1 = _mm_add_ps(x, _mm_shuffle_ps(x, x, _MM_SHUFFLE(3, 2, 3, 2)));
-      const __m128 sum2 = _mm_add_ss(sum1, _mm_shuffle_ps(sum1, sum1, _MM_SHUFFLE(1, 1, 1, 1)));
-      return _mm_cvtss_f32(sum2);
+      return _mm_cvtsd_f64(x);
     }
+
+    inline static __m128d hadd(const __m128d& x)
+    {
+      return _mm_add_pd(x, _mm_shuffle_pd(x, x, _MM_SHUFFLE2(0, 1)));
+    }
+
+    // Interface - float /////////////////////////////////////////////////////
 
     inline static __m128 load(const float *src)
     {
@@ -202,6 +199,18 @@ namespace cs {
     inline static __m128 max(const __m128& a, const __m128& b)
     {
       return _mm_max_ps(a, b);
+    }
+
+    inline static float scalar(const __m128& x)
+    {
+      return _mm_cvtss_f32(x);
+    }
+
+    inline static __m128 hadd(__m128 x)
+    {
+      x = _mm_add_ps(x, _mm_shuffle_ps(x, x, _MM_SHUFFLE(2, 3, 0, 1)));
+      x = _mm_add_ps(x, _mm_shuffle_ps(x, x, _MM_SHUFFLE(0, 1, 2, 3)));
+      return x;
     }
   };
 
