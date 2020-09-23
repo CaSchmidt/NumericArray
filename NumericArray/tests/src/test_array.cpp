@@ -167,17 +167,19 @@ void test_simd(const Vector& a, const Vector& b)
 #endif
 
 #if 0
-void test_sum()
+void test_hadd(double *d, float *f)
 {
   {
     using simd = cs::SIMD<double>;
     const __m128d x = _mm_set_pd(2, 1);
-    printf("%.1f\n", simd::sum(x));
+    *d = simd::scalar(simd::hadd(x));
+    // printf("%.1f\n", *d);
   }
   {
     using simd = cs::SIMD<float>;
     const __m128 x = _mm_set_ps(4, 3, 2, 1);
-    printf("%.1f\n", simd::sum(x));
+    *f = simd::scalar(simd::hadd(x));
+    // printf("%.1f\n", *f);
   }
 }
 #endif
