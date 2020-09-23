@@ -35,6 +35,7 @@
 #include <cs/impl/IndexingImpl.h>
 #include <cs/ExprBase.h>
 #include <cs/Math.h>
+#include <cs/Meta.h>
 #include <cs/SIMD.h>
 
 namespace cs {
@@ -210,6 +211,72 @@ namespace cs {
       template<size_type i>
       using NI = NextIndex<size_type,i,3>;
 
+      const ARG1& _arg1;
+      const ARG2& _arg2;
+    };
+
+    // Implementation - Dot Product //////////////////////////////////////////
+
+    template<typename traits_T, typename ARG1, typename ARG2>
+    struct DotProduct {
+      using value_type = typename traits_T::value_type;
+
+      template<std::size_t i>
+      inline static value_type eval(const ARG1& arg1, const ARG2& arg2)
+      {
+        return arg1.template eval<i,0>()*arg2.template eval<i,0>();
+      }
+    };
+
+    template<typename traits_T, typename ARG1, typename ARG2>
+    struct DotProductSIMD {
+      using value_type = typename traits_T::value_type;
+      using  simd      = SIMD<value_type>;
+      using  simd_type = typename simd::simd_type;
+
+      template<std::size_t b>
+      inline static void eval(simd_type& x, const ARG1& arg1, const ARG2& arg2)
+      {
+        x = simd::add(x, simd::mul(arg1.block(b), arg2.block(b)));
+      }
+    };
+
+    template<typename traits_T, typename traits_T::size_type INNER, typename ARG1, typename ARG2>
+    class Dot : public ExprBase<traits_T,Dot<traits_T,INNER,ARG1,ARG2>> {
+    public:
+      using typename ExprBase<traits_T,Dot<traits_T,INNER,ARG1,ARG2>>::size_type;
+      using typename ExprBase<traits_T,Dot<traits_T,INNER,ARG1,ARG2>>::traits_type;
+      using typename ExprBase<traits_T,Dot<traits_T,INNER,ARG1,ARG2>>::value_type;
+
+      static_assert(if_dimensions_v<traits_type,1,1>);
+
+      Dot(const ARG1& arg1, const ARG2& arg2) noexcept
+        : _arg1(arg1)
+        , _arg2(arg2)
+      {
+      }
+
+      ~Dot() noexcept = default;
+
+      template<size_type /*i*/, size_type /*j*/>
+      inline value_type eval() const
+      {
+        struct NoPolicy { };
+        if constexpr( check_simd<ARG1,NoPolicy,false>()  &&  check_simd<ARG2,NoPolicy,false>() ) {
+          using PROD      = DotProductSIMD<traits_type,ARG1,ARG2>;
+          using simd      = SIMD<value_type>;
+          using simd_type = typename simd::simd_type;
+
+          simd_type x = simd::zero();
+          meta::for_each<simd::blocks(INNER),PROD>(x, _arg1, _arg2);
+
+          return simd::sum(x);
+        }
+        using PROD = DotProduct<traits_type,ARG1,ARG2>;
+        return meta::accumulate<value_type,INNER,PROD>(_arg1, _arg2);
+      }
+
+    private:
       const ARG1& _arg1;
       const ARG2& _arg2;
     };

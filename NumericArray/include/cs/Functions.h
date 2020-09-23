@@ -113,9 +113,8 @@ namespace cs {
   inline value_T dot(const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG1>& arg1,
                      const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG2>& arg2)
   {
-    using TRANSPOSE = impl::Transpose<traits_T<value_T,size_T,1,ROWS>,ARG1>;
-    using       MUL = impl::BinMul<traits_T<value_T,size_T,1,1>,ROWS,TRANSPOSE,ARG2>;
-    return MUL(arg1.as_derived(), arg2.as_derived()).as_scalar();
+    using DOT = impl::Dot<traits_T<value_T,size_T,1,1>,ROWS,ARG1,ARG2>;
+    return DOT(arg1.as_derived(), arg2.as_derived()).as_scalar();
   }
 
   template<typename traits_T, typename ARG1, typename ARG2>
