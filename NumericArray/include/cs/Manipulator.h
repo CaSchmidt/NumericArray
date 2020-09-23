@@ -71,7 +71,7 @@ namespace cs {
     static_assert(if_index_v<traits_type,i,j>);
 
     ArrayProperty(value_type *data) noexcept
-      : _data{&data[policy_type::template index<i,j>()]}
+      : _data{&data[policy_type::index(i, j)]}
     {
     }
 
@@ -108,7 +108,7 @@ namespace cs {
     static_assert(if_index_v<traits_type,i,0>);
 
     RGBProperty(value_type *data) noexcept
-      : _data{&data[policy_type::template index<i,0>()]}
+      : _data{&data[policy_type::index(i, 0)]}
     {
     }
 

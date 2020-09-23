@@ -235,7 +235,7 @@ namespace cs {
     template<size_type i, size_type j>
     inline value_type eval() const
     {
-      return _data[policy_type::template index<i,j>()];
+      return _data[policy_type::index(i, j)];
     }
 
     // SIMD Interface ////////////////////////////////////////////////////////

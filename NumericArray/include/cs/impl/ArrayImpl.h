@@ -51,8 +51,8 @@ namespace cs {
       template<std::size_t l>
       inline static void eval(value_type *dest, const ExprBase<traits_type,EXPR>& src)
       {
-        constexpr size_type i = policy_type::template row<l>();
-        constexpr size_type j = policy_type::template column<l>();
+        constexpr size_type i = policy_type::row(l);
+        constexpr size_type j = policy_type::column(l);
 
         dest[l] = src.as_derived().template eval<i,j>();
       }

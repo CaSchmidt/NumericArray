@@ -61,16 +61,9 @@ namespace cs {
     using traits_type = traits_T;
     using   size_type = typename traits_type::size_type;
 
-    template<size_type l>
-    static constexpr size_type column()
+    static constexpr size_type column(const size_type l)
     {
       return l%traits_type::Columns;
-    }
-
-    template<size_type i, size_type j>
-    static constexpr size_type index()
-    {
-      return i*traits_type::Columns + j;
     }
 
     static constexpr size_type index(const size_type i, const size_type j)
@@ -78,8 +71,7 @@ namespace cs {
       return i*traits_type::Columns + j;
     }
 
-    template<size_type l>
-    static constexpr size_type row()
+    static constexpr size_type row(const size_type l)
     {
       return l/traits_type::Columns;
     }
