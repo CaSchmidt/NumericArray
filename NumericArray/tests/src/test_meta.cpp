@@ -26,6 +26,11 @@ struct MyFor {
 };
 
 struct MyDot {
+  inline static double accumulate(const double& a, const double& b)
+  {
+    return a + b;
+  }
+
   template<std::size_t I>
   inline static double eval(const double *a, const double *b)
   {
