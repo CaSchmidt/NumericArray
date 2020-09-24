@@ -125,6 +125,11 @@ namespace cs {
     struct BinMulProduct {
       using value_type = typename traits_T::value_type;
 
+      inline static value_type accumulate(const value_type& a, const value_type& b)
+      {
+        return a + b;
+      }
+
       template<std::size_t K>
       inline static value_type eval(const LHS& lhs, const RHS& rhs)
       {

@@ -71,8 +71,8 @@ namespace cs {
 
         inline static value_T run(Rargs&&... args)
         {
-          return F::template eval<N-1-I>(std::forward<Rargs>(args)...) +
-              AccumulateImpl<I-1,N,value_T,F,Rargs...>::run(std::forward<Rargs>(args)...);
+          return F::accumulate(F::template eval<N-1-I>(std::forward<Rargs>(args)...),
+                               AccumulateImpl<I-1,N,value_T,F,Rargs...>::run(std::forward<Rargs>(args)...));
         }
       };
 

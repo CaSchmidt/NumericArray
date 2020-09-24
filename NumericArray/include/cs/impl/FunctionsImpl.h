@@ -217,6 +217,11 @@ namespace cs {
     struct DotProduct {
       using value_type = typename traits_T::value_type;
 
+      inline static value_type accumulate(const value_type& a, const value_type& b)
+      {
+        return a + b;
+      }
+
       template<std::size_t i>
       inline static value_type eval(const ARG1& arg1, const ARG2& arg2)
       {
@@ -230,10 +235,15 @@ namespace cs {
       using  simd      = SIMD<value_type>;
       using  simd_type = typename simd::simd_type;
 
-      template<std::size_t b>
-      inline static void eval(simd_type& x, const ARG1& arg1, const ARG2& arg2)
+      inline static simd_type accumulate(const simd_type& a, const simd_type& b)
       {
-        x = simd::add(x, simd::mul(arg1.block(b), arg2.block(b)));
+        return simd::add(a, b);
+      }
+
+      template<std::size_t b>
+      inline static simd_type eval(const ARG1& arg1, const ARG2& arg2)
+      {
+        return simd::mul(arg1.block(b), arg2.block(b));
       }
     };
 
@@ -262,11 +272,9 @@ namespace cs {
           using simd      = SIMD<value_type>;
           using simd_type = typename simd::simd_type;
 
-          simd_type x = simd::zero();
-          meta::for_each<simd::blocks(INNER),PROD>(x, _arg1, _arg2);
-          x = simd::hadd(x);
+          const simd_type x = meta::accumulate<simd_type,simd::blocks(INNER),PROD>(_arg1, _arg2);
 
-          return simd::scalar(x);
+          return simd::scalar(simd::hadd(x));
         }
         using PROD = DotProduct<traits_type,ARG1,ARG2>;
         return meta::accumulate<value_type,INNER,PROD>(_arg1, _arg2);
