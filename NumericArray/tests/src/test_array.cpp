@@ -5,11 +5,10 @@
 
 #include <cs/NumericArray.h>
 
-using  size_T = uint8_t;
 using value_T = double;
 
-using Matrix = cs::NumericArray<value_T,size_T,3,3>;
-using Vector = cs::NumericArray<value_T,size_T,3,1>;
+using Matrix = cs::NumericArray<value_T,3,3>;
+using Vector = cs::NumericArray<value_T,3,1>;
 
 Matrix M;
 Vector v;

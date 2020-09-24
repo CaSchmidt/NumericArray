@@ -4,12 +4,10 @@
 
 #include "TestArrayEqual.h"
 
-using  size_T = uint8_t;
-
 template<typename value_T>
-using _Matrix = cs::NumericArray<value_T,size_T,3,3>;
+using _Matrix = cs::NumericArray<value_T,3,3>;
 template<typename value_T>
-using _Vector = cs::NumericArray<value_T,size_T,3,1>;
+using _Vector = cs::NumericArray<value_T,3,1>;
 
 template<typename value_T>
 using _Values = std::initializer_list<value_T>;
@@ -46,9 +44,8 @@ namespace impl {
   template<typename array_T>
   void print(const array_T& array)
   {
-    using size_type = typename array_T::size_type;
-    for(size_type i = 0; i < array.rows(); i++) {
-      for(size_type j = 0; j < array.columns(); j++) {
+    for(std::size_t i = 0; i < array.rows(); i++) {
+      for(std::size_t j = 0; j < array.columns(); j++) {
         printf("  %.10f", array(i, j));
       }
       printf("\n");
@@ -236,19 +233,18 @@ namespace test_binary {
 
 namespace test_function {
 
-  template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
+  template<typename value_T, std::size_t ROWS, std::size_t COLS>
   struct MyTraits {
-    using  size_type = size_T;
     using value_type = value_T;
 
-    static constexpr size_type Columns = COLS;
-    static constexpr size_type    Rows = ROWS;
-    static constexpr size_type    Size = COLS*ROWS;
+    static constexpr std::size_t Columns = COLS;
+    static constexpr std::size_t    Rows = ROWS;
+    static constexpr std::size_t    Size = COLS*ROWS;
   };
 
   TEMPLATE_TEST_CASE("cs::Array<> function array_cast().", "[function][cast]", float, double) {
     using Vector = _Vector<TestType>;
-    using MyVector = cs::Array<cs::NoManipulator<cs::RowMajorPolicy<MyTraits<TestType,size_T,3,1>>>>;
+    using MyVector = cs::Array<cs::NoManipulator<cs::RowMajorPolicy<MyTraits<TestType,3,1>>>>;
 
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
@@ -394,8 +390,8 @@ namespace test_function {
   }
 
   TEMPLATE_TEST_CASE("cs::Array<> function transpose().", "[function][transpose]", float, double) {
-    using Matrix23 = cs::NumericArray<TestType,size_T,2,3>;
-    using Matrix32 = cs::NumericArray<TestType,size_T,3,2>;
+    using Matrix23 = cs::NumericArray<TestType,2,3>;
+    using Matrix32 = cs::NumericArray<TestType,3,2>;
 
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
@@ -528,7 +524,7 @@ namespace test_manipulator {
   };
 
   TEMPLATE_TEST_CASE("cs::Array<> with cs::ArrayProperty<> manipulator.", "[manipulator][property]", float, double) {
-    using Matrix23 = cs::Array<Matrix23Manip<cs::RowMajorPolicy<cs::ArrayTraits<TestType,size_T,2,3>>>>;
+    using Matrix23 = cs::Array<Matrix23Manip<cs::RowMajorPolicy<cs::ArrayTraits<TestType,2,3>>>>;
 
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
@@ -543,7 +539,7 @@ namespace test_manipulator {
   }
 
   template<typename T>
-  using _Color = cs::Array<cs::Color3Manip<cs::RowMajorPolicy<cs::ArrayTraits<T,size_T,3,1>>>>;
+  using _Color = cs::Array<cs::Color3Manip<cs::RowMajorPolicy<cs::ArrayTraits<T,3,1>>>>;
 
   TEMPLATE_TEST_CASE("cs::Array<> with color manipulator.", "[manipulator][color]", float, double) {
     using Color = _Color<TestType>;

@@ -41,13 +41,12 @@ inline bool equals(const array_T& A,
                    const std::initializer_list<typename array_T::value_type>& list,
                    const typename array_T::value_type& epsilon0 = Konst<typename array_T::value_type>::epsilon0)
 {
-  using size_type = typename array_T::size_type;
-  if( static_cast<std::size_t>(A.size()) != list.size() ) {
+  if( A.size() != list.size() ) {
     return false;
   }
   for(std::size_t index = 0; index < list.size(); index++) {
-    const size_type i = array_T::list_type::row(static_cast<size_type>(index));
-    const size_type j = array_T::list_type::column(static_cast<size_type>(index));
+    const std::size_t i = array_T::list_type::row(index);
+    const std::size_t j = array_T::list_type::column(index);
     if( !equals(A(i, j), list.begin()[index], epsilon0) ) {
       return false;
     }
