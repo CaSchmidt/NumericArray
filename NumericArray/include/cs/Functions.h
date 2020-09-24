@@ -107,13 +107,13 @@ namespace cs {
 
   // Dot Product /////////////////////////////////////////////////////////////
 
-  template<typename value_T, typename size_T, size_T ROWS,
-           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+  template<typename value_T, std::size_t ROWS,
+           template<typename v_T, std::size_t, std::size_t> typename traits_T,
            typename ARG1, typename ARG2>
-  inline value_T dot(const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG1>& arg1,
-                     const ExprBase<traits_T<value_T,size_T,ROWS,1>,ARG2>& arg2)
+  inline value_T dot(const ExprBase<traits_T<value_T,ROWS,1>,ARG1>& arg1,
+                     const ExprBase<traits_T<value_T,ROWS,1>,ARG2>& arg2)
   {
-    using DOT = impl::Dot<traits_T<value_T,size_T,1,1>,ROWS,ARG1,ARG2>;
+    using DOT = impl::Dot<traits_T<value_T,1,1>,ROWS,ARG1,ARG2>;
     return DOT(arg1.as_derived(), arg2.as_derived()).as_scalar();
   }
 
@@ -177,12 +177,12 @@ namespace cs {
 
   // Vector/Matrix Transposition /////////////////////////////////////////////
 
-  template<typename value_T, typename size_T, size_T ROWS, size_T COLS,
-           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+  template<typename value_T, std::size_t ROWS, std::size_t COLS,
+           template<typename v_T, std::size_t, std::size_t> typename traits_T,
            typename ARG>
-  inline auto transpose(const ExprBase<traits_T<value_T,size_T,ROWS,COLS>,ARG>& arg)
+  inline auto transpose(const ExprBase<traits_T<value_T,ROWS,COLS>,ARG>& arg)
   {
-    return impl::Transpose<traits_T<value_T,size_T,COLS,ROWS>,ARG>(arg.as_derived());
+    return impl::Transpose<traits_T<value_T,COLS,ROWS>,ARG>(arg.as_derived());
   }
 
 } // namespace cs

@@ -32,34 +32,36 @@
 #ifndef LISTASSIGN_H
 #define LISTASSIGN_H
 
+#include <cstddef>
+
 namespace cs {
 
   /*
    * Explanation of Row-Major List Index:
    *
-   * {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+   * l = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
    * ->
-   * [ 0  1   2   3 ]
-   * [ 4  5   6   7 ]
-   * [ 8  9  10  11 ]
+   * i\j  0  1   2   3
+   * 0  [ 0  1   2   3 ]
+   * 1  [ 4  5   6   7 ]
+   * 2  [ 8  9  10  11 ]
    */
 
   template<typename traits_T>
   struct ListAssign {
     using traits_type = traits_T;
-    using   size_type = typename traits_type::size_type;
 
-    static constexpr size_type column(const size_type l)
+    static constexpr std::size_t column(const std::size_t l)
     {
       return l%traits_type::Columns;
     }
 
-    static constexpr size_type index(const size_type i, const size_type j)
+    static constexpr std::size_t index(const std::size_t i, const std::size_t j)
     {
       return i*traits_type::Columns + j;
     }
 
-    static constexpr size_type row(const size_type l)
+    static constexpr std::size_t row(const std::size_t l)
     {
       return l/traits_type::Columns;
     }

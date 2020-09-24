@@ -46,7 +46,6 @@ namespace cs {
         : public ExprBase<traits_T,UnaMinus<traits_T,OP>>
     {
     public:
-      using typename ExprBase<traits_T,UnaMinus<traits_T,OP>>::size_type;
       using typename ExprBase<traits_T,UnaMinus<traits_T,OP>>::traits_type;
       using typename ExprBase<traits_T,UnaMinus<traits_T,OP>>::value_type;
 
@@ -57,7 +56,7 @@ namespace cs {
 
       ~UnaMinus() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return -_op.template eval<i,j>();
@@ -69,9 +68,9 @@ namespace cs {
         return check_simd<OP,simd_policy_T,check_policy>();
       }
 
-      inline simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const std::size_t b) const
       {
-        constexpr value_type mONE = static_cast<value_type>(-1);
+        constexpr value_type mONE = -1;
         using                simd = SIMD<value_type>;
         return simd::mul(simd::set(mONE), _op.block(b));
       }
@@ -87,7 +86,6 @@ namespace cs {
         : public ExprBase<traits_T,UnaPlus<traits_T,OP>>
     {
     public:
-      using typename ExprBase<traits_T,UnaPlus<traits_T,OP>>::size_type;
       using typename ExprBase<traits_T,UnaPlus<traits_T,OP>>::traits_type;
       using typename ExprBase<traits_T,UnaPlus<traits_T,OP>>::value_type;
 
@@ -98,7 +96,7 @@ namespace cs {
 
       ~UnaPlus() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return _op.template eval<i,j>();
@@ -110,7 +108,7 @@ namespace cs {
         return check_simd<OP,simd_policy_T,check_policy>();
       }
 
-      inline simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const std::size_t b) const
       {
         return _op.block(b);
       }

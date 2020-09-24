@@ -46,7 +46,6 @@ namespace cs {
     class BinAdd
         : public ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>> {
     public:
-      using typename ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>>::size_type;
       using typename ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>>::traits_type;
       using typename ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>>::value_type;
 
@@ -58,7 +57,7 @@ namespace cs {
 
       ~BinAdd() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return _lhs.template eval<i,j>() + _rhs.template eval<i,j>();
@@ -70,7 +69,7 @@ namespace cs {
         return check_simd<LHS,simd_policy_T,check_policy>()  &&  check_simd<RHS,simd_policy_T,check_policy>();
       }
 
-      inline simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const std::size_t b) const
       {
         return SIMD<value_type>::add(_lhs.block(b), _rhs.block(b));
       }
@@ -86,7 +85,6 @@ namespace cs {
     class BinSDiv
         : public ExprBase<traits_T,BinSDiv<traits_T,OP>> {
     public:
-      using typename ExprBase<traits_T,BinSDiv<traits_T,OP>>::size_type;
       using typename ExprBase<traits_T,BinSDiv<traits_T,OP>>::traits_type;
       using typename ExprBase<traits_T,BinSDiv<traits_T,OP>>::value_type;
 
@@ -98,7 +96,7 @@ namespace cs {
 
       ~BinSDiv() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return _op.template eval<i,j>()/_scalar;
@@ -110,7 +108,7 @@ namespace cs {
         return check_simd<OP,simd_policy_T,check_policy>();
       }
 
-      inline simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const std::size_t b) const
       {
         using simd = SIMD<value_type>;
         return simd::div(_op.block(b), simd::set(_scalar));
@@ -134,11 +132,10 @@ namespace cs {
       }
     };
 
-    template<typename traits_T, typename traits_T::size_type INNER, typename LHS, typename RHS>
+    template<typename traits_T, std::size_t INNER, typename LHS, typename RHS>
     class BinMul
         : public ExprBase<traits_T,BinMul<traits_T,INNER,LHS,RHS>> {
     public:
-      using typename ExprBase<traits_T,BinMul<traits_T,INNER,LHS,RHS>>::size_type;
       using typename ExprBase<traits_T,BinMul<traits_T,INNER,LHS,RHS>>::traits_type;
       using typename ExprBase<traits_T,BinMul<traits_T,INNER,LHS,RHS>>::value_type;
 
@@ -150,7 +147,7 @@ namespace cs {
 
       ~BinMul() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         using PROD = BinMulProduct<traits_type,i,j,LHS,RHS>;
@@ -168,7 +165,6 @@ namespace cs {
     class BinSMul
         : public ExprBase<traits_T,BinSMul<traits_T,OP>> {
     public:
-      using typename ExprBase<traits_T,BinSMul<traits_T,OP>>::size_type;
       using typename ExprBase<traits_T,BinSMul<traits_T,OP>>::traits_type;
       using typename ExprBase<traits_T,BinSMul<traits_T,OP>>::value_type;
 
@@ -180,7 +176,7 @@ namespace cs {
 
       ~BinSMul() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return _op.template eval<i,j>()*_scalar;
@@ -192,7 +188,7 @@ namespace cs {
         return check_simd<OP,simd_policy_T,check_policy>();
       }
 
-      inline simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const std::size_t b) const
       {
         using simd = SIMD<value_type>;
         return simd::mul(_op.block(b), simd::set(_scalar));
@@ -209,7 +205,6 @@ namespace cs {
     class BinProduct
         : public ExprBase<traits_T,BinProduct<traits_T,LHS,RHS>> {
     public:
-      using typename ExprBase<traits_T,BinProduct<traits_T,LHS,RHS>>::size_type;
       using typename ExprBase<traits_T,BinProduct<traits_T,LHS,RHS>>::traits_type;
       using typename ExprBase<traits_T,BinProduct<traits_T,LHS,RHS>>::value_type;
 
@@ -221,7 +216,7 @@ namespace cs {
 
       ~BinProduct() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return _lhs.template eval<i,j>()*_rhs.template eval<i,j>();
@@ -233,7 +228,7 @@ namespace cs {
         return check_simd<LHS,simd_policy_T,check_policy>()  &&  check_simd<RHS,simd_policy_T,check_policy>();
       }
 
-      inline simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const std::size_t b) const
       {
         return SIMD<value_type>::mul(_lhs.block(b), _rhs.block(b));
       }
@@ -249,7 +244,6 @@ namespace cs {
     class BinSub
         : public ExprBase<traits_T,BinSub<traits_T,LHS,RHS>> {
     public:
-      using typename ExprBase<traits_T,BinSub<traits_T,LHS,RHS>>::size_type;
       using typename ExprBase<traits_T,BinSub<traits_T,LHS,RHS>>::traits_type;
       using typename ExprBase<traits_T,BinSub<traits_T,LHS,RHS>>::value_type;
 
@@ -261,7 +255,7 @@ namespace cs {
 
       ~BinSub() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return _lhs.template eval<i,j>() - _rhs.template eval<i,j>();
@@ -273,7 +267,7 @@ namespace cs {
         return check_simd<LHS,simd_policy_T,check_policy>()  &&  check_simd<RHS,simd_policy_T,check_policy>();
       }
 
-      inline simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const std::size_t b) const
       {
         return SIMD<value_type>::sub(_lhs.block(b), _rhs.block(b));
       }

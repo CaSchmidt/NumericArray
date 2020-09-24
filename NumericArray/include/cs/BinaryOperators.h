@@ -48,13 +48,13 @@ namespace cs {
     return impl::BinSub<traits_T,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
   }
 
-  template<typename value_T, typename size_T, size_T ROWS, size_T INNER, size_T COLS,
-           template<typename v_T, typename s_T, s_T, s_T> typename traits_T,
+  template<typename value_T, std::size_t ROWS, std::size_t INNER, std::size_t COLS,
+           template<typename v_T, std::size_t, std::size_t> typename traits_T,
            typename LHS, typename RHS>
-  inline auto operator*(const ExprBase<traits_T<value_T,size_T,ROWS,INNER>,LHS>& lhs,
-                        const ExprBase<traits_T<value_T,size_T,INNER,COLS>,RHS>& rhs)
+  inline auto operator*(const ExprBase<traits_T<value_T,ROWS,INNER>,LHS>& lhs,
+                        const ExprBase<traits_T<value_T,INNER,COLS>,RHS>& rhs)
   {
-    return impl::BinMul<traits_T<value_T,size_T,ROWS,COLS>,INNER,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
+    return impl::BinMul<traits_T<value_T,ROWS,COLS>,INNER,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
   }
 
   template<typename traits_T, typename OP>

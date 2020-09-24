@@ -47,7 +47,6 @@ namespace cs {
     template<typename traits_T, typename ARG>
     class Cast : public ExprBase<traits_T,Cast<traits_T,ARG>> {
     public:
-      using typename ExprBase<traits_T,Cast<traits_T,ARG>>::size_type;
       using typename ExprBase<traits_T,Cast<traits_T,ARG>>::traits_type;
       using typename ExprBase<traits_T,Cast<traits_T,ARG>>::value_type;
 
@@ -60,7 +59,7 @@ namespace cs {
 
       ~Cast() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return _arg.template eval<i,j>();
@@ -72,7 +71,7 @@ namespace cs {
         return check_simd<ARG,simd_policy_T,check_policy>();
       }
 
-      inline simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const std::size_t b) const
       {
         return _arg.block(b);
       }
@@ -86,7 +85,6 @@ namespace cs {
     template<typename traits_T, typename ARG>
     class SClamp : public ExprBase<traits_T,SClamp<traits_T,ARG>> {
     public:
-      using typename ExprBase<traits_T,SClamp<traits_T,ARG>>::size_type;
       using typename ExprBase<traits_T,SClamp<traits_T,ARG>>::traits_type;
       using typename ExprBase<traits_T,SClamp<traits_T,ARG>>::value_type;
 
@@ -99,7 +97,7 @@ namespace cs {
 
       ~SClamp() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return csClamp(_arg.template eval<i,j>(), _lo, _hi);
@@ -111,7 +109,7 @@ namespace cs {
         return check_simd<ARG,simd_policy_T,check_policy>();
       }
 
-      inline simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const std::size_t b) const
       {
         using simd = SIMD<value_type>;
         return simd::max(simd::set(_lo), simd::min(_arg.block(b), simd::set(_hi)));
@@ -127,7 +125,6 @@ namespace cs {
     template<typename traits_T, typename ARG>
     class Cofactor3x3 : public ExprBase<traits_T,Cofactor3x3<traits_T,ARG>> {
     public:
-      using typename ExprBase<traits_T,Cofactor3x3<traits_T,ARG>>::size_type;
       using typename ExprBase<traits_T,Cofactor3x3<traits_T,ARG>>::traits_type;
       using typename ExprBase<traits_T,Cofactor3x3<traits_T,ARG>>::value_type;
 
@@ -148,7 +145,7 @@ namespace cs {
             _arg.template eval<0,2>()*eval<0,2>();
       }
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return sign<i,j>()*(
@@ -160,16 +157,16 @@ namespace cs {
       }
 
     private:
-      template<size_type i>
-      using AI = AdjointIndex3x3<size_type,i>;
+      template<std::size_t i>
+      using AI = AdjointIndex3x3<i>;
 
-      static constexpr size_type bitZERO = 0;
-      static constexpr size_type  bitONE = 1;
+      static constexpr std::size_t bitZERO = 0;
+      static constexpr std::size_t  bitONE = 1;
 
       static constexpr value_type  PLUS =  1;
       static constexpr value_type MINUS = -1;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       constexpr value_type sign() const
       {
         return ((i ^ j) & bitONE) != bitZERO
@@ -185,7 +182,6 @@ namespace cs {
     template<typename traits_T, typename ARG1, typename ARG2>
     class Cross : public ExprBase<traits_T,Cross<traits_T,ARG1,ARG2>> {
     public:
-      using typename ExprBase<traits_T,Cross<traits_T,ARG1,ARG2>>::size_type;
       using typename ExprBase<traits_T,Cross<traits_T,ARG1,ARG2>>::traits_type;
       using typename ExprBase<traits_T,Cross<traits_T,ARG1,ARG2>>::value_type;
 
@@ -199,7 +195,7 @@ namespace cs {
 
       ~Cross() noexcept = default;
 
-      template<size_type i, size_type /*j*/>
+      template<std::size_t i, std::size_t /*j*/>
       inline value_type eval() const
       {
         return
@@ -208,8 +204,8 @@ namespace cs {
       }
 
     private:
-      template<size_type i>
-      using NI = NextIndex<size_type,i,3>;
+      template<std::size_t i>
+      using NI = NextIndex<i,3>;
 
       const ARG1& _arg1;
       const ARG2& _arg2;
@@ -241,10 +237,9 @@ namespace cs {
       }
     };
 
-    template<typename traits_T, typename traits_T::size_type INNER, typename ARG1, typename ARG2>
+    template<typename traits_T, std::size_t INNER, typename ARG1, typename ARG2>
     class Dot : public ExprBase<traits_T,Dot<traits_T,INNER,ARG1,ARG2>> {
     public:
-      using typename ExprBase<traits_T,Dot<traits_T,INNER,ARG1,ARG2>>::size_type;
       using typename ExprBase<traits_T,Dot<traits_T,INNER,ARG1,ARG2>>::traits_type;
       using typename ExprBase<traits_T,Dot<traits_T,INNER,ARG1,ARG2>>::value_type;
 
@@ -258,7 +253,7 @@ namespace cs {
 
       ~Dot() noexcept = default;
 
-      template<size_type /*i*/, size_type /*j*/>
+      template<std::size_t /*i*/, std::size_t /*j*/>
       inline value_type eval() const
       {
         struct NoPolicy { };
@@ -287,7 +282,6 @@ namespace cs {
     template<typename traits_T, typename ARG>
     class SMax : public ExprBase<traits_T,SMax<traits_T,ARG>> {
     public:
-      using typename ExprBase<traits_T,SMax<traits_T,ARG>>::size_type;
       using typename ExprBase<traits_T,SMax<traits_T,ARG>>::traits_type;
       using typename ExprBase<traits_T,SMax<traits_T,ARG>>::value_type;
 
@@ -299,7 +293,7 @@ namespace cs {
 
       ~SMax() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return csMax(_arg.template eval<i,j>(), _scalar);
@@ -311,7 +305,7 @@ namespace cs {
         return check_simd<ARG,simd_policy_T,check_policy>();
       }
 
-      inline simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const std::size_t b) const
       {
         using simd = SIMD<value_type>;
         return simd::max(_arg.block(b), simd::set(_scalar));
@@ -327,7 +321,6 @@ namespace cs {
     template<typename traits_T, typename ARG>
     class SMin : public ExprBase<traits_T,SMin<traits_T,ARG>> {
     public:
-      using typename ExprBase<traits_T,SMin<traits_T,ARG>>::size_type;
       using typename ExprBase<traits_T,SMin<traits_T,ARG>>::traits_type;
       using typename ExprBase<traits_T,SMin<traits_T,ARG>>::value_type;
 
@@ -339,7 +332,7 @@ namespace cs {
 
       ~SMin() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return csMin(_arg.template eval<i,j>(), _scalar);
@@ -351,7 +344,7 @@ namespace cs {
         return check_simd<ARG,simd_policy_T,check_policy>();
       }
 
-      inline simd_type<value_type> block(const size_type b) const
+      inline simd_type<value_type> block(const std::size_t b) const
       {
         using simd = SIMD<value_type>;
         return simd::min(_arg.block(b), simd::set(_scalar));
@@ -367,7 +360,6 @@ namespace cs {
     template<typename traits_T, typename ARG>
     class Transpose : public ExprBase<traits_T,Transpose<traits_T,ARG>> {
     public:
-      using typename ExprBase<traits_T,Transpose<traits_T,ARG>>::size_type;
       using typename ExprBase<traits_T,Transpose<traits_T,ARG>>::traits_type;
       using typename ExprBase<traits_T,Transpose<traits_T,ARG>>::value_type;
 
@@ -378,7 +370,7 @@ namespace cs {
 
       ~Transpose() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         return _arg.template eval<j,i>();

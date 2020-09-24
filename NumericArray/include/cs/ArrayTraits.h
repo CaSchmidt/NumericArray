@@ -32,16 +32,17 @@
 #ifndef ARRAYTRAITS_H
 #define ARRAYTRAITS_H
 
+#include <cstddef>
+
 namespace cs {
 
-  template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
+  template<typename value_T, std::size_t ROWS, std::size_t COLS>
   struct ArrayTraits {
-    using  size_type = size_T;
     using value_type = value_T;
 
-    static constexpr size_type Columns = COLS;
-    static constexpr size_type    Rows = ROWS;
-    static constexpr size_type    Size = COLS*ROWS;
+    static constexpr std::size_t Columns = COLS;
+    static constexpr std::size_t    Rows = ROWS;
+    static constexpr std::size_t    Size = COLS*ROWS;
   };
 
 } // namespace cs

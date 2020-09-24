@@ -44,15 +44,14 @@ namespace cs {
     template<typename policy_T, typename EXPR>
     struct ArrayAssign {
       using policy_type = policy_T;
-      using   size_type = typename policy_type::size_type;
       using traits_type = typename policy_type::traits_type;
       using  value_type = typename traits_type::value_type;
 
       template<std::size_t l>
       inline static void eval(value_type *dest, const ExprBase<traits_type,EXPR>& src)
       {
-        constexpr size_type i = policy_type::row(l);
-        constexpr size_type j = policy_type::column(l);
+        constexpr std::size_t i = policy_type::row(l);
+        constexpr std::size_t j = policy_type::column(l);
 
         dest[l] = src.as_derived().template eval<i,j>();
       }
@@ -61,7 +60,6 @@ namespace cs {
     template<typename policy_T, typename EXPR>
     struct BlockAssign {
       using policy_type = policy_T;
-      using   size_type = typename policy_type::size_type;
       using traits_type = typename policy_type::traits_type;
       using  value_type = typename traits_type::value_type;
       using        simd = SIMD<value_type>;
@@ -69,7 +67,7 @@ namespace cs {
       template<std::size_t b>
       inline static void eval(value_type *dest, const ExprBase<traits_type,EXPR>& src)
       {
-        constexpr size_type l = b*simd::ElementCount;
+        constexpr std::size_t l = b*simd::ElementCount;
 
         simd::store(dest + l, src.as_derived().block(b));
       }
@@ -80,7 +78,6 @@ namespace cs {
     template<typename traits_T>
     struct ArrayCopy {
       using traits_type = traits_T;
-      using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
       template<std::size_t l>
@@ -93,14 +90,13 @@ namespace cs {
     template<typename traits_T>
     struct BlockCopy {
       using traits_type = traits_T;
-      using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
       using        simd = SIMD<value_type>;
 
       template<std::size_t b>
       inline static void eval(value_type *dest, const value_type *src)
       {
-        constexpr size_type l = b*simd::ElementCount;
+        constexpr std::size_t l = b*simd::ElementCount;
 
         simd::store(dest + l, simd::load(src + l));
       }
@@ -111,7 +107,6 @@ namespace cs {
     template<typename traits_T>
     struct ArrayMove {
       using traits_type = traits_T;
-      using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
       template<std::size_t l>
@@ -126,7 +121,6 @@ namespace cs {
     template<typename traits_T>
     struct ArraySet {
       using traits_type = traits_T;
-      using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
 
       template<std::size_t l>
@@ -139,14 +133,13 @@ namespace cs {
     template<typename traits_T>
     struct BlockSet {
       using traits_type = traits_T;
-      using   size_type = typename traits_type::size_type;
       using  value_type = typename traits_type::value_type;
       using        simd = SIMD<value_type>;
 
       template<std::size_t b>
       inline static void eval(value_type *dest, const value_type value)
       {
-        constexpr size_type l = b*simd::ElementCount;
+        constexpr std::size_t l = b*simd::ElementCount;
 
         simd::store(dest + l, simd::set(value));
       }

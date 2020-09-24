@@ -50,7 +50,6 @@ namespace cs {
     using policy_type = typename manip_type::policy_type;
     using traits_type = typename policy_type::traits_type;
     using   list_type = ListAssign<traits_type>;
-    using   size_type = typename traits_type::size_type;
     using  value_type = typename traits_type::value_type;
     using        simd = SIMD<value_type>;
     using   simd_type = typename simd::simd_type;
@@ -124,11 +123,11 @@ namespace cs {
     {
       const std::size_t max = std::min<std::size_t>(list.size(), traits_type::Size);
       for(std::size_t index = 0; index < max; index++) {
-        const size_type i = list_type::row(static_cast<size_type>(index));
-        const size_type j = list_type::column(static_cast<size_type>(index));
+        const std::size_t i = list_type::row(index);
+        const std::size_t j = list_type::column(index);
         operator()(i, j) = list.begin()[index];
       }
-      for(std::size_t index = max; index < static_cast<std::size_t>(DataSize); index++) {
+      for(std::size_t index = max; index < DataSize; index++) {
         _data[index] = value_type{0};
       }
       return *this;
@@ -193,46 +192,46 @@ namespace cs {
 
     // Element Access ////////////////////////////////////////////////////////
 
-    constexpr value_type operator()(const size_type i, const size_type j) const
+    constexpr value_type operator()(const std::size_t i, const std::size_t j) const
     {
       return _data[policy_type::index(i, j)];
     }
 
-    inline value_type& operator()(const size_type i, const size_type j)
+    inline value_type& operator()(const std::size_t i, const std::size_t j)
     {
       return _data[policy_type::index(i, j)];
     }
 
-    constexpr value_type operator[](const size_type l) const
+    constexpr value_type operator[](const std::size_t l) const
     {
       return _data[l];
     }
 
-    inline value_type& operator[](const size_type l)
+    inline value_type& operator[](const std::size_t l)
     {
       return _data[l];
     }
 
     // Query Size ////////////////////////////////////////////////////////////
 
-    constexpr size_type rows() const
+    constexpr std::size_t rows() const
     {
       return traits_type::Rows;
     }
 
-    constexpr size_type columns() const
+    constexpr std::size_t columns() const
     {
       return traits_type::Columns;
     }
 
-    constexpr size_type size() const
+    constexpr std::size_t size() const
     {
       return traits_type::Size;
     }
 
     // Compile-Time Element Access ///////////////////////////////////////////
 
-    template<size_type i, size_type j>
+    template<std::size_t i, std::size_t j>
     inline value_type eval() const
     {
       return _data[policy_type::index(i, j)];
@@ -249,14 +248,14 @@ namespace cs {
       return true;
     }
 
-    inline simd_type block(const size_type b) const
+    inline simd_type block(const std::size_t b) const
     {
       return simd::load(&_data[b*simd::ElementCount]);
     }
 
   protected:
-    static constexpr size_type DataBlocks = static_cast<size_type>(simd::blocks(traits_type::Size));
-    static constexpr size_type   DataSize = static_cast<size_type>(simd::size(traits_type::Size));
+    static constexpr std::size_t DataBlocks = simd::blocks(traits_type::Size);
+    static constexpr std::size_t   DataSize = simd::size(traits_type::Size);
 
     alignas(simd::Alignment) value_type _data[DataSize];
   };

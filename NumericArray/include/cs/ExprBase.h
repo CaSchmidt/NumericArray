@@ -40,7 +40,6 @@ namespace cs {
   class ExprBase {
   public:
     using traits_type = traits_T;
-    using   size_type = typename traits_type::size_type;
     using  value_type = typename traits_type::value_type;
 
     static_assert(if_traits_v<traits_type>);

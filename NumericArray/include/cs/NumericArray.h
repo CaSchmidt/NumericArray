@@ -43,8 +43,8 @@
 
 namespace cs {
 
-  template<typename value_T, typename size_T, size_T ROWS, size_T COLS>
-  using NumericArray = Array<NoManipulator<RowMajorPolicy<ArrayTraits<value_T,size_T,ROWS,COLS>>>>;
+  template<typename value_T, std::size_t ROWS, std::size_t COLS>
+  using NumericArray = Array<NoManipulator<RowMajorPolicy<ArrayTraits<value_T,ROWS,COLS>>>>;
 
 } // namespace cs
 

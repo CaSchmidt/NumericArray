@@ -32,41 +32,39 @@
 #ifndef INDEXINGIMPL_H
 #define INDEXINGIMPL_H
 
+#include <cstddef>
+
 namespace cs {
 
   namespace impl {
 
     // Implementation - 3x3 Adjoint Index Computation ////////////////////////
 
-    template<typename size_T, size_T i>
+    template<std::size_t i>
     struct AdjointIndex3x3 {
-      using size_type = size_T;
-
-      static constexpr size_type j = i == 0 ? 1
-                                            : i == 1 ? 0
-                                                     : i == 2 ? 0
-                                                              : 3;
-      static constexpr size_type k = i == 0 ? 2
-                                            : i == 1 ? 2
-                                                     : i == 2 ? 1
-                                                              : 3;
+      static constexpr std::size_t j = i == 0 ? 1
+                                              : i == 1 ? 0
+                                                       : i == 2 ? 0
+                                                                : 3;
+      static constexpr std::size_t k = i == 0 ? 2
+                                              : i == 1 ? 2
+                                                       : i == 2 ? 1
+                                                                : 3;
     };
 
     // Implementation - Index Comparison /////////////////////////////////////
 
-    template<typename size_T, size_T i1, size_T j1, size_T i2, size_T j2>
+    template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
     struct IsIndex {
       static constexpr bool value = i1 == i2  &&  j1 == j2;
     };
 
     // Implementation - Next Index Computation ///////////////////////////////
 
-    template<typename size_T, size_T i, size_T N>
+    template<std::size_t i, std::size_t N>
     struct NextIndex {
-      using size_type = size_T;
-
-      static constexpr size_type j = (i + 1)%N;
-      static constexpr size_type k = (i + 2)%N;
+      static constexpr std::size_t j = (i + 1)%N;
+      static constexpr std::size_t k = (i + 2)%N;
     };
 
   } // namespace impl

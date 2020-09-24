@@ -61,7 +61,7 @@ namespace cs {
 
   ////// Generic Array<i,j> Property /////////////////////////////////////////
 
-  template<typename policy_T, typename policy_T::size_type i, typename policy_T::size_type j>
+  template<typename policy_T, std::size_t i, std::size_t j>
   class ArrayProperty {
   public:
     using policy_type = policy_T;
@@ -97,7 +97,7 @@ namespace cs {
 
   ////// RGB Color Manipulator ///////////////////////////////////////////////
 
-  template<typename policy_T, typename policy_T::size_type i>
+  template<typename policy_T, std::size_t i>
   class RGBProperty {
   public:
     using policy_type = policy_T;

@@ -41,10 +41,9 @@ namespace cs {
 
     // Implementation - Nx1 Elementary Axis //////////////////////////////////
 
-    template<typename traits_T, typename traits_T::size_type DIM>
+    template<typename traits_T, std::size_t DIM>
     class Axis : public ExprBase<traits_T,Axis<traits_T,DIM>> {
     public:
-      using typename ExprBase<traits_T,Axis<traits_T,DIM>>::size_type;
       using typename ExprBase<traits_T,Axis<traits_T,DIM>>::traits_type;
       using typename ExprBase<traits_T,Axis<traits_T,DIM>>::value_type;
 
@@ -54,7 +53,7 @@ namespace cs {
 
       ~Axis() noexcept = default;
 
-      template<size_type i, size_type>
+      template<std::size_t i, std::size_t>
       inline value_type eval() const
       {
         if constexpr( i == DIM ) {
@@ -69,7 +68,6 @@ namespace cs {
     template<typename traits_T>
     class Identity : public ExprBase<traits_T,Identity<traits_T>> {
     public:
-      using typename ExprBase<traits_T,Identity<traits_T>>::size_type;
       using typename ExprBase<traits_T,Identity<traits_T>>::traits_type;
       using typename ExprBase<traits_T,Identity<traits_T>>::value_type;
 
@@ -79,7 +77,7 @@ namespace cs {
 
       ~Identity() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         if constexpr( II<i,j,j,i> ) {
@@ -89,8 +87,8 @@ namespace cs {
       }
 
     private:
-      template<size_type i1, size_type j1, size_type i2, size_type j2>
-      static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
+      template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
+      static constexpr bool II = IsIndex<i1,j1,i2,j2>::value;
     };
 
     // Implementation - Rotation about x axis ////////////////////////////////
@@ -98,7 +96,6 @@ namespace cs {
     template<typename traits_T>
     class RotateX : public ExprBase<traits_T,RotateX<traits_T>> {
     public:
-      using typename ExprBase<traits_T,RotateX<traits_T>>::size_type;
       using typename ExprBase<traits_T,RotateX<traits_T>>::traits_type;
       using typename ExprBase<traits_T,RotateX<traits_T>>::value_type;
 
@@ -112,7 +109,7 @@ namespace cs {
 
       ~RotateX() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         if constexpr( II<i,j,0,0> ) {
@@ -128,8 +125,8 @@ namespace cs {
       }
 
     private:
-      template<size_type i1, size_type j1, size_type i2, size_type j2>
-      static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
+      template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
+      static constexpr bool II = IsIndex<i1,j1,i2,j2>::value;
 
       const value_type _COS{}, _SIN{};
     };
@@ -139,7 +136,6 @@ namespace cs {
     template<typename traits_T>
     class RotateY : public ExprBase<traits_T,RotateY<traits_T>> {
     public:
-      using typename ExprBase<traits_T,RotateY<traits_T>>::size_type;
       using typename ExprBase<traits_T,RotateY<traits_T>>::traits_type;
       using typename ExprBase<traits_T,RotateY<traits_T>>::value_type;
 
@@ -153,7 +149,7 @@ namespace cs {
 
       ~RotateY() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         if constexpr( II<i,j,1,1> ) {
@@ -169,8 +165,8 @@ namespace cs {
       }
 
     private:
-      template<size_type i1, size_type j1, size_type i2, size_type j2>
-      static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
+      template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
+      static constexpr bool II = IsIndex<i1,j1,i2,j2>::value;
 
       const value_type _COS{}, _SIN{};
     };
@@ -180,7 +176,6 @@ namespace cs {
     template<typename traits_T>
     class RotateZ : public ExprBase<traits_T,RotateZ<traits_T>> {
     public:
-      using typename ExprBase<traits_T,RotateZ<traits_T>>::size_type;
       using typename ExprBase<traits_T,RotateZ<traits_T>>::traits_type;
       using typename ExprBase<traits_T,RotateZ<traits_T>>::value_type;
 
@@ -192,7 +187,7 @@ namespace cs {
       {
       }
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         if constexpr( II<i,j,2,2> ) {
@@ -208,8 +203,8 @@ namespace cs {
       }
 
     private:
-      template<size_type i1, size_type j1, size_type i2, size_type j2>
-      static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
+      template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
+      static constexpr bool II = IsIndex<i1,j1,i2,j2>::value;
 
       const value_type _COS{}, _SIN{};
     };
@@ -219,7 +214,6 @@ namespace cs {
     template<typename traits_T>
     class Scale : public ExprBase<traits_T,Scale<traits_T>> {
     public:
-      using typename ExprBase<traits_T,Scale<traits_T>>::size_type;
       using typename ExprBase<traits_T,Scale<traits_T>>::traits_type;
       using typename ExprBase<traits_T,Scale<traits_T>>::value_type;
 
@@ -234,7 +228,7 @@ namespace cs {
 
       ~Scale() noexcept = default;
 
-      template<size_type i, size_type j>
+      template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
         if constexpr( II<i,j,0,0> ) {
@@ -248,8 +242,8 @@ namespace cs {
       }
 
     private:
-      template<size_type i1, size_type j1, size_type i2, size_type j2>
-      static constexpr bool II = IsIndex<size_type,i1,j1,i2,j2>::value;
+      template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
+      static constexpr bool II = IsIndex<i1,j1,i2,j2>::value;
 
       const value_type _sx{}, _sy{}, _sz{};
     };

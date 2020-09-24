@@ -59,19 +59,18 @@ namespace cs {
   template<typename traits_T>
   struct RowMajorPolicy : public ArrayPolicyBase<traits_T,RowMajorPolicy> {
     using traits_type = traits_T;
-    using   size_type = typename traits_type::size_type;
 
-    static constexpr size_type column(const size_type l)
+    static constexpr std::size_t column(const std::size_t l)
     {
       return l%traits_type::Columns;
     }
 
-    static constexpr size_type index(const size_type i, const size_type j)
+    static constexpr std::size_t index(const std::size_t i, const std::size_t j)
     {
       return i*traits_type::Columns + j;
     }
 
-    static constexpr size_type row(const size_type l)
+    static constexpr std::size_t row(const std::size_t l)
     {
       return l/traits_type::Columns;
     }
