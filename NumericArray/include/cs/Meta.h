@@ -42,47 +42,47 @@ namespace cs {
 
       ////// For Each Metaprogram //////////////////////////////////////////////
 
-      template<std::size_t I, std::size_t N, typename F, typename... Rargs>
+      template<std::size_t I, std::size_t N, typename E, typename... Rargs>
       struct ForEachImpl {
         static_assert(N > 0  &&  I > 0);
 
         inline static void run(Rargs&&... args)
         {
-          F::template eval<N-1-I>(std::forward<Rargs>(args)...);
-          ForEachImpl<I-1,N,F,Rargs...>::run(std::forward<Rargs>(args)...);
+          E::template eval<N-1-I>(std::forward<Rargs>(args)...);
+          ForEachImpl<I-1,N,E,Rargs...>::run(std::forward<Rargs>(args)...);
         }
       };
 
-      template<std::size_t N, typename F, typename... Rargs>
-      struct ForEachImpl<0,N,F,Rargs...> {
+      template<std::size_t N, typename E, typename... Rargs>
+      struct ForEachImpl<0,N,E,Rargs...> {
         static_assert(N > 0);
 
         inline static void run(Rargs&&... args)
         {
-          F::template eval<N-1>(std::forward<Rargs>(args)...);
+          E::template eval<N-1>(std::forward<Rargs>(args)...);
         }
       };
 
       ////// Accumulate Metaprogram ////////////////////////////////////////////
 
-      template<std::size_t I, std::size_t N, typename value_T, typename F, typename... Rargs>
+      template<std::size_t I, std::size_t N, typename value_T, typename E, typename... Rargs>
       struct AccumulateImpl {
         static_assert(N > 0  &&  I > 0);
 
         inline static value_T run(Rargs&&... args)
         {
-          return F::accumulate(F::template eval<N-1-I>(std::forward<Rargs>(args)...),
-                               AccumulateImpl<I-1,N,value_T,F,Rargs...>::run(std::forward<Rargs>(args)...));
+          return E::accumulate(E::template eval<N-1-I>(std::forward<Rargs>(args)...),
+                               AccumulateImpl<I-1,N,value_T,E,Rargs...>::run(std::forward<Rargs>(args)...));
         }
       };
 
-      template<std::size_t N, typename value_T, typename F, typename... Rargs>
-      struct AccumulateImpl<0,N,value_T,F,Rargs...> {
+      template<std::size_t N, typename value_T, typename E, typename... Rargs>
+      struct AccumulateImpl<0,N,value_T,E,Rargs...> {
         static_assert(N > 0);
 
         inline static value_T run(Rargs&&... args)
         {
-          return F::template eval<N-1>(std::forward<Rargs>(args)...);
+          return E::template eval<N-1>(std::forward<Rargs>(args)...);
         }
       };
 
