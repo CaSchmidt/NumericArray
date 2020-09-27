@@ -32,7 +32,6 @@
 #ifndef ARRAYIMPL_H
 #define ARRAYIMPL_H
 
-#include <cs/ExprBase.h>
 #include <cs/SIMD.h>
 
 namespace cs {
@@ -48,12 +47,12 @@ namespace cs {
       using  value_type = typename traits_type::value_type;
 
       template<std::size_t l>
-      inline static void eval(value_type *dest, const ExprBase<traits_type,EXPR>& src)
+      inline static void eval(value_type *dest, const EXPR& src)
       {
         constexpr std::size_t i = policy_type::row(l);
         constexpr std::size_t j = policy_type::column(l);
 
-        dest[l] = src.as_derived().template eval<i,j>();
+        dest[l] = src.template eval<i,j>();
       }
     };
 
@@ -65,11 +64,11 @@ namespace cs {
       using        simd = SIMD<value_type>;
 
       template<std::size_t b>
-      inline static void eval(value_type *dest, const ExprBase<traits_type,EXPR>& src)
+      inline static void eval(value_type *dest, const EXPR& src)
       {
         constexpr std::size_t l = b*simd::ElementCount;
 
-        simd::store(dest + l, src.as_derived().block(b));
+        simd::store(dest + l, src.block(b));
       }
     };
 
