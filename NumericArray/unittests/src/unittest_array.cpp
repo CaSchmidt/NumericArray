@@ -1,5 +1,5 @@
-//#define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
-#define CATCH_CONFIG_MAIN
+#include <iostream>
+
 #include <catch.hpp>
 
 #include "TestArrayEqual.h"
@@ -42,14 +42,23 @@ namespace impl {
   }
 
   template<typename array_T>
-  void print(const array_T& array)
+  void print(const array_T& array, const char *ident = nullptr)
   {
+    if( ident != nullptr ) {
+      printf("%s = \n", ident);
+    }
     for(std::size_t i = 0; i < array.rows(); i++) {
       for(std::size_t j = 0; j < array.columns(); j++) {
-        printf("  %.10f", array(i, j));
+        printf("  %16.10f", array(i, j));
       }
       printf("\n");
     }
+  }
+
+  template<typename array_T>
+  void print(const char *ident, const array_T& array)
+  {
+    print(array, ident);
   }
 
 } // namespace impl

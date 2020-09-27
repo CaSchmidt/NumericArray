@@ -18,7 +18,7 @@ endmacro()
 
 ### Unit Tests ###############################################################
 
-cs_unittest(unittest_array src/unittest_array.cpp
+cs_unittest(unittest_array src/unittest_array.cpp src/unittest_array_main.cpp
   ../testutils/include/TestArrayEqual.h ../testutils/include/TestEquals.h
   )
 
