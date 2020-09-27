@@ -114,7 +114,7 @@ namespace cs {
                      const ExprBase<traits_T<value_T,ROWS,1>,ARG2>& arg2)
   {
     using DOT = impl::Dot<traits_T<value_T,1,1>,ROWS,ARG1,ARG2>;
-    return DOT(arg1.as_derived(), arg2.as_derived()).as_scalar();
+    return DOT(arg1.as_derived(), arg2.as_derived()).template eval<0,0>();
   }
 
   template<typename traits_T, typename ARG1, typename ARG2>
