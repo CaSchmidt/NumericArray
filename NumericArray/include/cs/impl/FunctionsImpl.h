@@ -166,7 +166,7 @@ namespace cs {
       static constexpr value_type MINUS = -1;
 
       template<std::size_t i, std::size_t j>
-      constexpr value_type sign() const
+      inline value_type sign() const
       {
         return ((i ^ j) & bitONE) != bitZERO
             ? MINUS
