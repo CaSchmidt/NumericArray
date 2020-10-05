@@ -80,15 +80,13 @@ namespace cs {
       template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
-        if constexpr( II<i,j,j,i> ) {
+        if constexpr( IsIndex_v<i,j,j,i> ) {
           return value_type{1};
         }
         return value_type{0};
       }
 
     private:
-      template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
-      static constexpr bool II = IsIndex<i1,j1,i2,j2>::value;
     };
 
     // Implementation - Rotation about x axis ////////////////////////////////
@@ -112,22 +110,19 @@ namespace cs {
       template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
-        if constexpr( II<i,j,0,0> ) {
+        if constexpr( IsIndex_v<i,j,0,0> ) {
           return value_type{1};
-        } else if constexpr( II<i,j,j,i> ) {
+        } else if constexpr( IsIndex_v<i,j,j,i> ) {
           return _COS;
-        } else if constexpr( II<i,j,1,2> ) {
+        } else if constexpr( IsIndex_v<i,j,1,2> ) {
           return -_SIN;
-        } else if constexpr( II<i,j,2,1> ) {
+        } else if constexpr( IsIndex_v<i,j,2,1> ) {
           return _SIN;
         }
         return value_type{0};
       }
 
     private:
-      template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
-      static constexpr bool II = IsIndex<i1,j1,i2,j2>::value;
-
       const value_type _COS{}, _SIN{};
     };
 
@@ -152,22 +147,19 @@ namespace cs {
       template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
-        if constexpr( II<i,j,1,1> ) {
+        if constexpr( IsIndex_v<i,j,1,1> ) {
           return value_type{1};
-        } else if constexpr( II<i,j,j,i> ) {
+        } else if constexpr( IsIndex_v<i,j,j,i> ) {
           return _COS;
-        } else if constexpr( II<i,j,0,2> ) {
+        } else if constexpr( IsIndex_v<i,j,0,2> ) {
           return _SIN;
-        } else if constexpr( II<i,j,2,0> ) {
+        } else if constexpr( IsIndex_v<i,j,2,0> ) {
           return -_SIN;
         }
         return value_type{0};
       }
 
     private:
-      template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
-      static constexpr bool II = IsIndex<i1,j1,i2,j2>::value;
-
       const value_type _COS{}, _SIN{};
     };
 
@@ -190,22 +182,19 @@ namespace cs {
       template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
-        if constexpr( II<i,j,2,2> ) {
+        if constexpr( IsIndex_v<i,j,2,2> ) {
           return value_type{1};
-        } else if constexpr( II<i,j,j,i> ) {
+        } else if constexpr( IsIndex_v<i,j,j,i> ) {
           return _COS;
-        } else if constexpr( II<i,j,0,1> ) {
+        } else if constexpr( IsIndex_v<i,j,0,1> ) {
           return -_SIN;
-        } else if constexpr( II<i,j,1,0> ) {
+        } else if constexpr( IsIndex_v<i,j,1,0> ) {
           return _SIN;
         }
         return value_type{0};
       }
 
     private:
-      template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
-      static constexpr bool II = IsIndex<i1,j1,i2,j2>::value;
-
       const value_type _COS{}, _SIN{};
     };
 
@@ -231,20 +220,17 @@ namespace cs {
       template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
-        if constexpr( II<i,j,0,0> ) {
+        if constexpr( IsIndex_v<i,j,0,0> ) {
           return _sx;
-        } else if constexpr( II<i,j,1,1> ) {
+        } else if constexpr( IsIndex_v<i,j,1,1> ) {
           return _sy;
-        } else if constexpr( II<i,j,2,2> ) {
+        } else if constexpr( IsIndex_v<i,j,2,2> ) {
           return _sz;
         }
         return value_type{0};
       }
 
     private:
-      template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
-      static constexpr bool II = IsIndex<i1,j1,i2,j2>::value;
-
       const value_type _sx{}, _sy{}, _sz{};
     };
 

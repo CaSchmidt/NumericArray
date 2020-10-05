@@ -148,18 +148,17 @@ namespace cs {
       template<std::size_t i, std::size_t j>
       inline value_type eval() const
       {
+        constexpr std::size_t ij = AdjointJ_v<i>;
+        constexpr std::size_t ik = AdjointK_v<i>;
+        constexpr std::size_t jj = AdjointJ_v<j>;
+        constexpr std::size_t jk = AdjointK_v<j>;
         return sign<i,j>()*(
-              _arg.template eval<AI<i>::j,AI<j>::j>()*
-              _arg.template eval<AI<i>::k,AI<j>::k>() -
-              _arg.template eval<AI<i>::k,AI<j>::j>()*
-              _arg.template eval<AI<i>::j,AI<j>::k>()
+              _arg.template eval<ij,jj>()*_arg.template eval<ik,jk>() -
+              _arg.template eval<ik,jj>()*_arg.template eval<ij,jk>()
               );
       }
 
     private:
-      template<std::size_t i>
-      using AI = AdjointIndex3x3<i>;
-
       static constexpr std::size_t bitZERO = 0;
       static constexpr std::size_t  bitONE = 1;
 
@@ -198,15 +197,14 @@ namespace cs {
       template<std::size_t i, std::size_t /*j*/>
       inline value_type eval() const
       {
+        constexpr std::size_t ij = IndexJ_v<i,3>;
+        constexpr std::size_t ik = IndexK_v<i,3>;
         return
-            _arg1.template eval<NI<i>::j,0>()*_arg2.template eval<NI<i>::k,0>() -
-            _arg1.template eval<NI<i>::k,0>()*_arg2.template eval<NI<i>::j,0>();
+            _arg1.template eval<ij,0>()*_arg2.template eval<ik,0>() -
+            _arg1.template eval<ik,0>()*_arg2.template eval<ij,0>();
       }
 
     private:
-      template<std::size_t i>
-      using NI = NextIndex<i,3>;
-
       const ARG1& _arg1;
       const ARG2& _arg2;
     };

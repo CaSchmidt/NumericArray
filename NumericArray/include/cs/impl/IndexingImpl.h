@@ -32,7 +32,7 @@
 #ifndef INDEXINGIMPL_H
 #define INDEXINGIMPL_H
 
-#include <cstddef>
+#include <type_traits>
 
 namespace cs {
 
@@ -41,31 +41,50 @@ namespace cs {
     // Implementation - 3x3 Adjoint Index Computation ////////////////////////
 
     template<std::size_t i>
-    struct AdjointIndex3x3 {
-      static constexpr std::size_t j = i == 0 ? 1
-                                              : i == 1 ? 0
-                                                       : i == 2 ? 0
-                                                                : 3;
-      static constexpr std::size_t k = i == 0 ? 2
-                                              : i == 1 ? 2
-                                                       : i == 2 ? 1
-                                                                : 3;
-    };
+    struct AdjointJ { /* SFINAE */ };
+    template<>
+    struct AdjointJ<0> : public std::integral_constant<std::size_t,1> { };
+    template<>
+    struct AdjointJ<1> : public std::integral_constant<std::size_t,0> { };
+    template<>
+    struct AdjointJ<2> : public std::integral_constant<std::size_t,0> { };
+
+    template<std::size_t i>
+    inline constexpr std::size_t AdjointJ_v = AdjointJ<i>::value;
+
+    template<std::size_t i>
+    struct AdjointK { /* SFINAE */ };
+    template<>
+    struct AdjointK<0> : public std::integral_constant<std::size_t,2> { };
+    template<>
+    struct AdjointK<1> : public std::integral_constant<std::size_t,2> { };
+    template<>
+    struct AdjointK<2> : public std::integral_constant<std::size_t,1> { };
+
+    template<std::size_t i>
+    inline constexpr std::size_t AdjointK_v = AdjointK<i>::value;
 
     // Implementation - Index Comparison /////////////////////////////////////
 
     template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
-    struct IsIndex {
-      static constexpr bool value = i1 == i2  &&  j1 == j2;
-    };
+    struct IsIndex : public std::bool_constant<i1 == i2  &&  j1 == j2> { };
+
+    template<std::size_t i1, std::size_t j1, std::size_t i2, std::size_t j2>
+    inline constexpr bool IsIndex_v = IsIndex<i1,j1,i2,j2>::value;
 
     // Implementation - Next Index Computation ///////////////////////////////
 
     template<std::size_t i, std::size_t N>
-    struct NextIndex {
-      static constexpr std::size_t j = (i + 1)%N;
-      static constexpr std::size_t k = (i + 2)%N;
-    };
+    struct IndexJ : public std::integral_constant<std::size_t,(i + 1)%N> { };
+
+    template<std::size_t i, std::size_t N>
+    inline constexpr std::size_t IndexJ_v = IndexJ<i,N>::value;
+
+    template<std::size_t i, std::size_t N>
+    struct IndexK : public std::integral_constant<std::size_t,(i + 2)%N> { };
+
+    template<std::size_t i, std::size_t N>
+    inline constexpr std::size_t IndexK_v = IndexK<i,N>::value;
 
   } // namespace impl
 
