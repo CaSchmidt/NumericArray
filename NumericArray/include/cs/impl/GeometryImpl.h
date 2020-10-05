@@ -47,7 +47,7 @@ namespace cs {
       using typename ExprBase<traits_T,Axis<traits_T,DIM>>::traits_type;
       using typename ExprBase<traits_T,Axis<traits_T,DIM>>::value_type;
 
-      static_assert(if_column_v<traits_T>  &&  DIM >= 0  &&  DIM < traits_type::Rows);
+      static_assert(if_column_v<traits_T>  &&  if_index_v<traits_T,DIM,0>);
 
       Axis() noexcept = default;
 
