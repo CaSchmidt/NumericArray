@@ -216,11 +216,10 @@ namespace cs {
       return _mm_cvtss_f32(x);
     }
 
-    inline static __m128 hadd(__m128 x)
+    inline static __m128 hadd(const __m128& x)
     {
-      x = _mm_add_ps(x, SIMD_SHUFFLE_PS(x, 2, 3, 0, 1));
-      x = _mm_add_ps(x, SIMD_SHUFFLE_PS(x, 0, 1, 2, 3));
-      return x;
+      const __m128 temp = _mm_add_ps(x,    SIMD_SHUFFLE_PS(x,    2, 3, 0, 1));
+      return              _mm_add_ps(temp, SIMD_SHUFFLE_PS(temp, 0, 1, 2, 3));
     }
   };
 
