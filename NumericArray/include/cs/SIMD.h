@@ -39,6 +39,16 @@
 
 namespace cs {
 
+  ////// Macros //////////////////////////////////////////////////////////////
+
+#define SIMD_SHUFFLE_PD(x,fp1,fp0)                                                   \
+  _mm_castsi128_pd(_mm_shuffle_epi32(_mm_castpd_si128(x),                            \
+                                     _MM_SHUFFLE((((fp1) << 1) + 1), ((fp1) << 1),   \
+                                                 (((fp0) << 1) + 1), ((fp0) << 1))))
+
+#define SIMD_SHUFFLE_PS(x,fp3,fp2,fp1,fp0) \
+  _mm_castsi128_ps(_mm_shuffle_epi32(_mm_castps_si128(x), _MM_SHUFFLE((fp3), (fp2), (fp1), (fp0))))
+
   ////// Traits //////////////////////////////////////////////////////////////
 
   template<typename T>
@@ -151,7 +161,7 @@ namespace cs {
 
     inline static __m128d hadd(const __m128d& x)
     {
-      return _mm_add_pd(x, _mm_shuffle_pd(x, x, _MM_SHUFFLE2(0, 1)));
+      return _mm_add_pd(x, SIMD_SHUFFLE_PD(x, 0, 1));
     }
 
     // Interface - float /////////////////////////////////////////////////////
@@ -208,8 +218,8 @@ namespace cs {
 
     inline static __m128 hadd(__m128 x)
     {
-      x = _mm_add_ps(x, _mm_shuffle_ps(x, x, _MM_SHUFFLE(2, 3, 0, 1)));
-      x = _mm_add_ps(x, _mm_shuffle_ps(x, x, _MM_SHUFFLE(0, 1, 2, 3)));
+      x = _mm_add_ps(x, SIMD_SHUFFLE_PS(x, 2, 3, 0, 1));
+      x = _mm_add_ps(x, SIMD_SHUFFLE_PS(x, 0, 1, 2, 3));
       return x;
     }
   };
