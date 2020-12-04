@@ -143,7 +143,7 @@ void test_direction(const Vector& from, const Vector& to)
 #if 0
 namespace test_manip {
 
-  using Vector3 = cs::Array<cs::Vector3Manip<cs::RowMajorPolicy<cs::ArrayTraits<double,uint8_t,3,1>>>>;
+  using Vector3 = cs::Array<cs::Vector3Manip<cs::RowMajorPolicy<cs::ArrayTraits<double,3,1>>>>;
 
   Vector3 v;
 
