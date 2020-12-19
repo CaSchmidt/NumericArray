@@ -2,6 +2,8 @@
 
 #include <catch.hpp>
 
+#include <cs/Math.h>
+
 #include "TestEquals.h"
 #include "TestFormatter.h"
 
@@ -31,6 +33,48 @@ namespace test_binary {
 
     std::cout << "invSqrt(" << Fmt(four) << ") = " << Fmt(test_invSqrt(four)) << std::endl;
     REQUIRE( equals(test_invSqrt(four), half, epsilon0) );
+  }
+
+  TEMPLATE_TEST_CASE("Discrete cosine of PI/2.", "[cospi2]", float, double) {
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    REQUIRE( csCosPI2<TestType>(-8) == static_cast<TestType>( 1) );
+    REQUIRE( csCosPI2<TestType>(-7) == static_cast<TestType>( 0) );
+    REQUIRE( csCosPI2<TestType>(-6) == static_cast<TestType>(-1) );
+    REQUIRE( csCosPI2<TestType>(-5) == static_cast<TestType>( 0) );
+    REQUIRE( csCosPI2<TestType>(-4) == static_cast<TestType>( 1) );
+    REQUIRE( csCosPI2<TestType>(-3) == static_cast<TestType>( 0) );
+    REQUIRE( csCosPI2<TestType>(-2) == static_cast<TestType>(-1) );
+    REQUIRE( csCosPI2<TestType>(-1) == static_cast<TestType>( 0) );
+    REQUIRE( csCosPI2<TestType>( 0) == static_cast<TestType>( 1) );
+    REQUIRE( csCosPI2<TestType>( 1) == static_cast<TestType>( 0) );
+    REQUIRE( csCosPI2<TestType>( 2) == static_cast<TestType>(-1) );
+    REQUIRE( csCosPI2<TestType>( 3) == static_cast<TestType>( 0) );
+    REQUIRE( csCosPI2<TestType>( 4) == static_cast<TestType>( 1) );
+    REQUIRE( csCosPI2<TestType>( 5) == static_cast<TestType>( 0) );
+    REQUIRE( csCosPI2<TestType>( 6) == static_cast<TestType>(-1) );
+    REQUIRE( csCosPI2<TestType>( 7) == static_cast<TestType>( 0) );
+  }
+
+  TEMPLATE_TEST_CASE("Discrete sine of PI/2.", "[sinpi2]", float, double) {
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    REQUIRE( csSinPI2<TestType>(-8) == static_cast<TestType>( 0) );
+    REQUIRE( csSinPI2<TestType>(-7) == static_cast<TestType>( 1) );
+    REQUIRE( csSinPI2<TestType>(-6) == static_cast<TestType>( 0) );
+    REQUIRE( csSinPI2<TestType>(-5) == static_cast<TestType>(-1) );
+    REQUIRE( csSinPI2<TestType>(-4) == static_cast<TestType>( 0) );
+    REQUIRE( csSinPI2<TestType>(-3) == static_cast<TestType>( 1) );
+    REQUIRE( csSinPI2<TestType>(-2) == static_cast<TestType>( 0) );
+    REQUIRE( csSinPI2<TestType>(-1) == static_cast<TestType>(-1) );
+    REQUIRE( csSinPI2<TestType>( 0) == static_cast<TestType>( 0) );
+    REQUIRE( csSinPI2<TestType>( 1) == static_cast<TestType>( 1) );
+    REQUIRE( csSinPI2<TestType>( 2) == static_cast<TestType>( 0) );
+    REQUIRE( csSinPI2<TestType>( 3) == static_cast<TestType>(-1) );
+    REQUIRE( csSinPI2<TestType>( 4) == static_cast<TestType>( 0) );
+    REQUIRE( csSinPI2<TestType>( 5) == static_cast<TestType>( 1) );
+    REQUIRE( csSinPI2<TestType>( 6) == static_cast<TestType>( 0) );
+    REQUIRE( csSinPI2<TestType>( 7) == static_cast<TestType>(-1) );
   }
 
 } // namespace test_binary

@@ -173,6 +173,13 @@ inline float csCos(const float& x)
   return ::cosf(x);
 }
 
+template<typename T>
+inline T csCosPI2(const signed int i)
+{
+  static const T tab[4] = { 1, 0, -1, 0 };
+  return tab[i & 0x3];
+}
+
 inline double csSin(const double& x)
 {
   return ::sin(x);
@@ -181,6 +188,13 @@ inline double csSin(const double& x)
 inline float csSin(const float& x)
 {
   return ::sinf(x);
+}
+
+template<typename T>
+inline T csSinPI2(const signed int i)
+{
+  static const T tab[4] = { 0, 1, 0, -1 };
+  return tab[i & 0x3];
 }
 
 inline double csTan(const double& x)
