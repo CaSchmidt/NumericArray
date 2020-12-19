@@ -78,6 +78,14 @@ namespace cs {
     return impl::RotateX<traits_T>(csCos(angle), csSin(angle));
   }
 
+  template<typename traits_T>
+  inline auto rotateXbyPI2(const signed int i)
+  {
+    static_assert(if_dimensions_v<traits_T,3,3>);
+    using T = typename traits_T::value_type;
+    return impl::RotateX<traits_T>(csCosPI2<T>(i), csSinPI2<T>(i));
+  }
+
   // 3x3 Rotation About Y Axis ///////////////////////////////////////////////
 
   template<typename traits_T>
@@ -87,6 +95,14 @@ namespace cs {
     return impl::RotateY<traits_T>(csCos(angle), csSin(angle));
   }
 
+  template<typename traits_T>
+  inline auto rotateYbyPI2(const signed int i)
+  {
+    static_assert(if_dimensions_v<traits_T,3,3>);
+    using T = typename traits_T::value_type;
+    return impl::RotateY<traits_T>(csCosPI2<T>(i), csSinPI2<T>(i));
+  }
+
   // 3x3 Rotation About Z Axis ///////////////////////////////////////////////
 
   template<typename traits_T>
@@ -94,6 +110,14 @@ namespace cs {
   {
     static_assert(if_dimensions_v<traits_T,3,3>);
     return impl::RotateZ<traits_T>(csCos(angle), csSin(angle));
+  }
+
+  template<typename traits_T>
+  inline auto rotateZbyPI2(const signed int i)
+  {
+    static_assert(if_dimensions_v<traits_T,3,3>);
+    using T = typename traits_T::value_type;
+    return impl::RotateZ<traits_T>(csCosPI2<T>(i), csSinPI2<T>(i));
   }
 
   // 3x3 Scaling Matrix //////////////////////////////////////////////////////
