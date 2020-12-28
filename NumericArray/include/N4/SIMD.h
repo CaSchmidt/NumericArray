@@ -51,17 +51,20 @@ namespace simd {
 
   ////// Macros //////////////////////////////////////////////////////////////
 
-#ifdef HAVE_SSE2
-# define SIMD_SHUFFLE(vec,x,y,z,w) \
-  _mm_castsi128_ps(_mm_shuffle_epi32(_mm_castps_si128(vec), _MM_SHUFFLE((w), (z), (y), (x))))
+#define SIMD_SHUFFLE(a,b,a1,a2,b1,b2) \
+  _mm_shuffle_ps(a, b, _MM_SHUFFLE((b2), (b1), (a2), (a1)))
 
+#ifdef HAVE_SSE2
 # define SIMD_SHL(vec,count) \
   _mm_castsi128_ps(_mm_slli_si128(_mm_castps_si128(vec), (count)))
 
 # define SIMD_SHR(vec,count) \
   _mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(vec), (count)))
+
+# define SIMD_SWIZZLE(vec,x,y,z,w) \
+  _mm_castsi128_ps(_mm_shuffle_epi32(_mm_castps_si128(vec), _MM_SHUFFLE((w), (z), (y), (x))))
 #else
-# define SIMD_SHUFFLE(vec,x,y,z,w) \
+# define SIMD_SWIZZLE(vec,x,y,z,w) \
   _mm_shuffle_ps(vec, vec, _MM_SHUFFLE((w), (z), (y), (x)))
 #endif
 
@@ -79,8 +82,8 @@ namespace simd {
 
   inline simd_t hadd(const simd_t& x)
   {
-    const simd_t y = add(x, SIMD_SHUFFLE(x, 1, 0, 3, 2));
-    return           add(y, SIMD_SHUFFLE(y, 3, 2, 1, 0));
+    const simd_t y = add(x, SIMD_SWIZZLE(x, 1, 0, 3, 2));
+    return           add(y, SIMD_SWIZZLE(y, 3, 2, 1, 0));
   }
 
   inline simd_t load(const real_t *ptr)
@@ -142,10 +145,10 @@ namespace simd {
    */
   inline simd_t cross(const simd_t& a, const simd_t& b)
   {
-    const simd_t prod1 = mul(SIMD_SHUFFLE(a, 1, 2, 0, 3),
-                             SIMD_SHUFFLE(b, 2, 0, 1, 3));
-    const simd_t prod2 = mul(SIMD_SHUFFLE(a, 2, 0, 1, 3),
-                             SIMD_SHUFFLE(b, 1, 2, 0, 3));
+    const simd_t prod1 = mul(SIMD_SWIZZLE(a, 1, 2, 0, 3),
+                             SIMD_SWIZZLE(b, 2, 0, 1, 3));
+    const simd_t prod2 = mul(SIMD_SWIZZLE(a, 2, 0, 1, 3),
+                             SIMD_SWIZZLE(b, 1, 2, 0, 3));
     return sub(prod1, prod2);
   }
 
