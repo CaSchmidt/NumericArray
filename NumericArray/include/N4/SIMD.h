@@ -52,17 +52,17 @@ namespace simd {
   ////// Macros //////////////////////////////////////////////////////////////
 
 #ifdef HAVE_SSE2
-# define SIMD_SHUFFLE(x,p3,p2,p1,p0) \
-  _mm_castsi128_ps(_mm_shuffle_epi32(_mm_castps_si128(x), _MM_SHUFFLE((p3), (p2), (p1), (p0))))
+# define SIMD_SHUFFLE(vec,x,y,z,w) \
+  _mm_castsi128_ps(_mm_shuffle_epi32(_mm_castps_si128(vec), _MM_SHUFFLE((w), (z), (y), (x))))
 
-# define SIMD_SHL(x,count) \
-  _mm_castsi128_ps(_mm_slli_si128(_mm_castps_si128(x), (count)))
+# define SIMD_SHL(vec,count) \
+  _mm_castsi128_ps(_mm_slli_si128(_mm_castps_si128(vec), (count)))
 
-# define SIMD_SHR(x,count) \
-  _mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(x), (count)))
+# define SIMD_SHR(vec,count) \
+  _mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(vec), (count)))
 #else
-# define SIMD_SHUFFLE(x,p3,p2,p1,p0) \
-  _mm_shuffle_ps(x, x, _MM_SHUFFLE((p3), (p2), (p1), (p0)))
+# define SIMD_SHUFFLE(vec,x,y,z,w) \
+  _mm_shuffle_ps(vec, vec, _MM_SHUFFLE((w), (z), (y), (x)))
 #endif
 
   ////// Elementary Functions ////////////////////////////////////////////////
@@ -79,8 +79,8 @@ namespace simd {
 
   inline simd_t hadd(const simd_t& x)
   {
-    const simd_t y = _mm_add_ps(x, SIMD_SHUFFLE(x, 2, 3, 0, 1));
-    return           _mm_add_ps(y, SIMD_SHUFFLE(y, 0, 1, 2, 3));
+    const simd_t y = add(x, SIMD_SHUFFLE(x, 1, 0, 3, 2));
+    return           add(y, SIMD_SHUFFLE(y, 3, 2, 1, 0));
   }
 
   inline simd_t load(const real_t *ptr)
@@ -118,7 +118,22 @@ namespace simd {
     return _mm_cvtss_f32(x);
   }
 
-  ////// 3D Vector Functions /////////////////////////////////////////////////
+  inline simd_t unpackhi(const simd_t& a, const simd_t& b)
+  {
+    return _mm_unpackhi_ps(a, b);
+  }
+
+  inline simd_t unpacklo(const simd_t& a, const simd_t& b)
+  {
+    return _mm_unpacklo_ps(a, b);
+  }
+
+  inline simd_t zero()
+  {
+    return _mm_setzero_ps();
+  }
+
+  ////// 3x1 Vector Functions ////////////////////////////////////////////////
 
   /*
    *         a0   b0   a1*b2 - a2*b1
@@ -127,11 +142,11 @@ namespace simd {
    */
   inline simd_t cross(const simd_t& a, const simd_t& b)
   {
-    const simd_t prod1 = _mm_mul_ps(SIMD_SHUFFLE(a, 3, 0, 2, 1),
-                                    SIMD_SHUFFLE(b, 3, 1, 0, 2));
-    const simd_t prod2 = _mm_mul_ps(SIMD_SHUFFLE(a, 3, 1, 0, 2),
-                                    SIMD_SHUFFLE(b, 3, 0, 2, 1));
-    return _mm_sub_ps(prod1, prod2);
+    const simd_t prod1 = mul(SIMD_SHUFFLE(a, 1, 2, 0, 3),
+                             SIMD_SHUFFLE(b, 2, 0, 1, 3));
+    const simd_t prod2 = mul(SIMD_SHUFFLE(a, 2, 0, 1, 3),
+                             SIMD_SHUFFLE(b, 1, 2, 0, 3));
+    return sub(prod1, prod2);
   }
 
   inline simd_t dot(const simd_t& a, const simd_t& b)
@@ -144,14 +159,14 @@ namespace simd {
 
   inline void transpose(simd_t& col0, simd_t& col1, simd_t& col2, simd_t& col3)
   {
-    const simd_t tmp0 = _mm_unpacklo_ps(col0, col2);
-    const simd_t tmp1 = _mm_unpackhi_ps(col0, col2);
-    const simd_t tmp2 = _mm_unpacklo_ps(col1, col3);
-    const simd_t tmp3 = _mm_unpackhi_ps(col1, col3);
-    col0 = _mm_unpacklo_ps(tmp0, tmp2);
-    col1 = _mm_unpackhi_ps(tmp0, tmp2);
-    col2 = _mm_unpacklo_ps(tmp1, tmp3);
-    col3 = _mm_unpackhi_ps(tmp1, tmp3);
+    const simd_t tmp0 = unpacklo(col0, col2);
+    const simd_t tmp1 = unpackhi(col0, col2);
+    const simd_t tmp2 = unpacklo(col1, col3);
+    const simd_t tmp3 = unpackhi(col1, col3);
+    col0 = unpacklo(tmp0, tmp2);
+    col1 = unpackhi(tmp0, tmp2);
+    col2 = unpacklo(tmp1, tmp3);
+    col3 = unpackhi(tmp1, tmp3);
   }
 
 } // namespace simd
