@@ -41,10 +41,28 @@ list(APPEND NumericArray_HEADERS
   include/cs/impl/UnaryOperatorsImpl.h
   )
 
+### N4 #######################################################################
+
+list(APPEND N4_HEADERS
+  include/N4/BinaryOperators.h
+  include/N4/ExprBase.h
+  include/N4/Functions.h
+  include/N4/Math.h
+  include/N4/N4.h
+  include/N4/SIMD.h
+  include/N4/TypeTraits.h
+  include/N4/UnaryOperators.h
+  include/N4/Vector4f.h
+  )
+
 ### Target ###################################################################
 
 add_custom_target(NumericArray
   SOURCES ${NumericArray_HEADERS}
+  )
+
+add_custom_target(N4
+  SOURCES ${N4_HEADERS}
   )
 
 ### Tests ####################################################################

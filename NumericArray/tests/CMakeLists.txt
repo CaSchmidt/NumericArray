@@ -1,7 +1,7 @@
 macro(cs_test target)
   set(sources ${ARGN})
   add_executable(${target} ${sources})
-  add_dependencies(${target} NumericArray)
+  add_dependencies(${target} NumericArray N4)
   format_output_name(${target} ${target})
   set_target_properties(${target} PROPERTIES
     CXX_STANDARD 17
