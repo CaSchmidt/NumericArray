@@ -120,6 +120,13 @@ namespace n4 {
       return simd::load(_data);
     }
 
+    ////// Information ///////////////////////////////////////////////////////
+
+    constexpr size_t size() const
+    {
+      return 4;
+    }
+
     ////// Data Access ///////////////////////////////////////////////////////
 
     inline const real_t *data() const

@@ -81,9 +81,9 @@ namespace n4 {
     };
 
     template<typename traits_T, typename ARG>
-    class Normalized : public ExprBase<traits_T,Normalized<traits_T,ARG>> {
+    class Normalize : public ExprBase<traits_T,Normalize<traits_T,ARG>> {
     public:
-      Normalized(const ARG& arg)
+      Normalize(const ARG& arg)
         : _arg(arg)
       {
       }
@@ -135,9 +135,9 @@ namespace n4 {
   }
 
   template<typename traits_T, typename ARG>
-  inline auto normalized(const ExprBase<traits_T,ARG>& arg)
+  inline auto normalize(const ExprBase<traits_T,ARG>& arg)
   {
-    return impl::Normalized<traits_T,ARG>(arg.as_derived());
+    return impl::Normalize<traits_T,ARG>(arg.as_derived());
   }
 
 } // namespace n4

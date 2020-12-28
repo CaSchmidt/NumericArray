@@ -38,7 +38,22 @@
 
 namespace n4 {
 
-  real_t sqrt(const real_t x)
+  inline real_t abs(const real_t x)
+  {
+    return ::fabsf(x);
+  }
+
+  inline real_t cos(const real_t x)
+  {
+    return ::cosf(x);
+  }
+
+  inline real_t sin(const real_t x)
+  {
+    return ::sinf(x);
+  }
+
+  inline real_t sqrt(const real_t x)
   {
     return ::sqrtf(x);
   }

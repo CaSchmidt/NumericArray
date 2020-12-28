@@ -35,5 +35,6 @@
 #include <N4/BinaryOperators.h>
 #include <N4/Functions.h>
 #include <N4/UnaryOperators.h>
+#include <N4/Vector4f.h>
 
 #endif // N4_H
