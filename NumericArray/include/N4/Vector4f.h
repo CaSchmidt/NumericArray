@@ -120,13 +120,6 @@ namespace n4 {
       return simd::load(_data);
     }
 
-    ////// Information ///////////////////////////////////////////////////////
-
-    constexpr size_t size() const
-    {
-      return 4;
-    }
-
     ////// Data Access ///////////////////////////////////////////////////////
 
     inline const real_t *data() const
@@ -140,6 +133,11 @@ namespace n4 {
     }
 
     ////// Element Access ////////////////////////////////////////////////////
+
+    constexpr size_t size() const
+    {
+      return 4;
+    }
 
     inline real_t operator()(const size_t i) const
     {
