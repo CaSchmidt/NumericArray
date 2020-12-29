@@ -101,6 +101,11 @@ namespace simd {
     return _mm_set1_ps(val);
   }
 
+  inline simd_t set(const real_t x, const real_t y, const real_t z, const real_t w)
+  {
+    return _mm_set_ps(w, z, y, x);
+  }
+
   inline simd_t sqrt(const simd_t& x)
   {
     return _mm_sqrt_ps(x);
@@ -160,6 +165,112 @@ namespace simd {
 
   ////// 4x4 Matrix Functions ////////////////////////////////////////////////
 
+  namespace impl {
+
+    /*
+     * Compute A * B
+     */
+    inline simd_t mul2x2(const simd_t& a, const simd_t& b)
+    {
+      return add(mul(             a,              SIMD_SWIZZLE(b, 0, 3, 0, 3)),
+                 mul(SIMD_SWIZZLE(a, 1, 0, 3, 2), SIMD_SWIZZLE(b, 2, 1, 2, 1)));
+    }
+
+    /*
+     * Compute A# * B
+     */
+    inline simd_t adjMul2x2(const simd_t& a, const simd_t& b)
+    {
+      return sub(mul(SIMD_SWIZZLE(a, 3, 3, 0, 0),              b),
+                 mul(SIMD_SWIZZLE(a, 1, 1, 2, 2), SIMD_SWIZZLE(b, 2, 3, 0, 1)));
+    }
+
+    /*
+     * Compute A * B#
+     */
+    inline simd_t mulAdj2x2(const simd_t& a, const simd_t& b)
+    {
+      return sub(mul(             a,              SIMD_SWIZZLE(b, 3, 0, 3, 0)),
+                 mul(SIMD_SWIZZLE(a, 1, 0, 3, 2), SIMD_SWIZZLE(b, 2, 1, 2, 1)));
+    }
+
+    /*
+     * Compute the trace(A * B)
+     */
+    inline simd_t traceMul2x2(const simd_t& a, const simd_t& b)
+    {
+      return hadd(mul(a, SIMD_SWIZZLE(b, 0, 2, 1, 3)));
+    }
+
+  } // namespace impl
+
+  /*
+   * Inverse of Column-Major 4x4 Matrix.
+   *
+   *               [ a0 a1 b0 b1 ]   [ 0  4  8 12 ]
+   * M = [ A B ] = [ a2 a3 b2 b3 ] = [ 1  5  9 13 ]
+   *     [ C D ]   [ c0 c1 d0 d1 ]   [ 2  6 10 14 ]
+   *               [ c2 c3 d2 d3 ]   [ 3  7 11 15 ]
+   *
+   * Reference:
+   * "Fast 4x4 Matrix Inverse with SSE SIMD", Eric Zhang, cf.
+   * https://lxjk.github.io/2017/09/03/Fast-4x4-Matrix-Inverse-with-SSE-SIMD-Explained.html
+   *
+   * Assumptions/Limits of the derivation:
+   * - A and D are both invertible
+   * - C and D commute; AKA C*D = D*C
+   */
+  inline void inverse(real_t *dest, const real_t *src)
+  {
+    const simd_t col0 = load(src +  0);
+    const simd_t col1 = load(src +  4);
+    const simd_t col2 = load(src +  8);
+    const simd_t col3 = load(src + 12);
+
+    const simd_t detACBD = sub(
+          mul(SIMD_SHUFFLE(col0, col2, 0, 2, 0, 2), SIMD_SHUFFLE(col1, col3, 1, 3, 1, 3)),
+          mul(SIMD_SHUFFLE(col0, col2, 1, 3, 1, 3), SIMD_SHUFFLE(col1, col3, 0, 2, 0, 2))
+          );
+
+    const simd_t detA = SIMD_SWIZZLE(detACBD, 0, 0, 0, 0);
+    const simd_t detB = SIMD_SWIZZLE(detACBD, 2, 2, 2, 2);
+    const simd_t detC = SIMD_SWIZZLE(detACBD, 1, 1, 1, 1);
+    const simd_t detD = SIMD_SWIZZLE(detACBD, 3, 3, 3, 3);
+
+    const simd_t A = unpacklo(col0, col1);
+    const simd_t B = unpacklo(col2, col3);
+    const simd_t C = unpackhi(col0, col1);
+    const simd_t D = unpackhi(col2, col3);
+
+    const simd_t AadjB = impl::adjMul2x2(A, B);
+    const simd_t DadjC = impl::adjMul2x2(D, C);
+
+    // NOTE: Combine adjugate's signs divided by detM.
+    const simd_t detM = div(set(1, -1, -1, 1),
+                            sub(add(mul(detA, detD), mul(detB, detC)),
+                                impl::traceMul2x2(AadjB, DadjC)));
+
+    const simd_t X = mul(detM, sub(mul(detD, A),    impl::mul2x2(B, DadjC)));
+    const simd_t Y = mul(detM, sub(mul(detB, C), impl::mulAdj2x2(D, AadjB)));
+    const simd_t Z = mul(detM, sub(mul(detC, B), impl::mulAdj2x2(A, DadjC)));
+    const simd_t W = mul(detM, sub(mul(detA, D),    impl::mul2x2(C, AadjB)));
+
+    /*
+     * NOTE: Account for the adjugate swapping elements along the main diagonal!
+     *        [ x3 x1 y3 y1 ]
+     * Minv = [ x2 x0 y2 y0 ]
+     *        [ z3 z1 w3 w1 ]
+     *        [ z2 z0 w2 w0 ]
+     */
+    store(dest +  0, SIMD_SHUFFLE(X, Z, 3, 2, 3, 2));
+    store(dest +  4, SIMD_SHUFFLE(X, Z, 1, 0, 1, 0));
+    store(dest +  8, SIMD_SHUFFLE(Y, W, 3, 2, 3, 2));
+    store(dest + 12, SIMD_SHUFFLE(Y, W, 1, 0, 1, 0));
+  }
+
+  /*
+   * Transpose of Column-Major 4x4 Matrix.
+   */
   inline void transpose(simd_t& col0, simd_t& col1, simd_t& col2, simd_t& col3)
   {
     const simd_t tmp0 = unpacklo(col0, col2);
