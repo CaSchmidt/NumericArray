@@ -271,8 +271,13 @@ namespace simd {
   /*
    * Transpose of Column-Major 4x4 Matrix.
    */
-  inline void transpose(simd_t& col0, simd_t& col1, simd_t& col2, simd_t& col3)
+  inline void transpose(real_t *dest, const real_t *src)
   {
+    simd::simd_t col0 = load(src +  0);
+    simd::simd_t col1 = load(src +  4);
+    simd::simd_t col2 = load(src +  8);
+    simd::simd_t col3 = load(src + 12);
+
     const simd_t tmp0 = unpacklo(col0, col2);
     const simd_t tmp1 = unpackhi(col0, col2);
     const simd_t tmp2 = unpacklo(col1, col3);
@@ -281,6 +286,11 @@ namespace simd {
     col1 = unpackhi(tmp0, tmp2);
     col2 = unpacklo(tmp1, tmp3);
     col3 = unpackhi(tmp1, tmp3);
+
+    simd::store(dest +  0, col0);
+    simd::store(dest +  4, col1);
+    simd::store(dest +  8, col2);
+    simd::store(dest + 12, col3);
   }
 
 } // namespace simd
