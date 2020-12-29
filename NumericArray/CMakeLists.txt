@@ -48,6 +48,7 @@ list(APPEND N4_HEADERS
   include/N4/ExprBase.h
   include/N4/Functions.h
   include/N4/Math.h
+  include/N4/Matrix4f.h
   include/N4/N4.h
   include/N4/SIMD.h
   include/N4/TypeTraits.h

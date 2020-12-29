@@ -32,6 +32,7 @@
 #ifndef N4_H
 #define N4_H
 
+#include <N4/Matrix4f.h>
 #include <N4/BinaryOperators.h>
 #include <N4/Functions.h>
 #include <N4/UnaryOperators.h>
