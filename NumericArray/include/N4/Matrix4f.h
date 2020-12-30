@@ -35,9 +35,12 @@
 #include <algorithm>
 #include <initializer_list>
 
+#include <N4/Math.h>
 #include <N4/SIMD.h>
 
 namespace n4 {
+
+  ////// 4x4 Column-Major Matrix - Implementation ////////////////////////////
 
   class Matrix4f {
   public:
@@ -184,6 +187,61 @@ namespace n4 {
 
     alignas(sizeof(simd::simd_t)) real_t _data[16];
   };
+
+  ////// 4x4 Matrix - Functions //////////////////////////////////////////////
+
+  inline Matrix4f identity()
+  {
+    Matrix4f M;
+    M(0, 0) = M(1, 1) = M(2, 2) = M(3, 3) = 1;
+    return M;
+  }
+
+  inline Matrix4f rotateX(const real_t angle)
+  {
+    Matrix4f Rx(identity());
+    Rx(1, 1) = Rx(2, 2) = cos(angle);
+    Rx(2, 1) = sin(angle);
+    Rx(1, 2) = -Rx(2, 1);
+    return Rx;
+  }
+
+  inline Matrix4f rotateY(const real_t angle)
+  {
+    Matrix4f Ry(identity());
+    Ry(0, 0) = Ry(2, 2) = cos(angle);
+    Ry(0, 2) = sin(angle);
+    Ry(2, 0) = -Ry(0, 2);
+    return Ry;
+  }
+
+  inline Matrix4f rotateZ(const real_t angle)
+  {
+    Matrix4f Rz(identity());
+    Rz(0, 0) = Rz(1, 1) = cos(angle);
+    Rz(1, 0) = sin(angle);
+    Rz(0, 1) = -Rz(1, 0);
+    return Rz;
+  }
+
+  inline Matrix4f scale(const real_t sx, const real_t sy, const real_t sz)
+  {
+    Matrix4f S;
+    S(0, 0) = sx;
+    S(1, 1) = sy;
+    S(2, 2) = sz;
+    S(3, 3) = 1;
+    return S;
+  }
+
+  inline Matrix4f translate(const real_t tx, const real_t ty, const real_t tz)
+  {
+    Matrix4f T(identity());
+    T(0, 3) = tx;
+    T(1, 3) = ty;
+    T(2, 3) = tz;
+    return T;
+  }
 
 } // namespace n4
 

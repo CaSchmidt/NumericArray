@@ -33,6 +33,7 @@
 #define N4_BINARYOPERATORS_H
 
 #include <N4/ExprBase.h>
+#include <N4/Matrix4f.h>
 #include <N4/SIMD.h>
 
 namespace n4 {
