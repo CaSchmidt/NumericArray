@@ -75,6 +75,11 @@ namespace simd {
     return _mm_add_ps(a, b);
   }
 
+  inline simd_t clamp(const simd_t& x, const simd_t& lo, const simd_t& hi)
+  {
+    return _mm_max_ps(lo, _mm_min_ps(x, hi));
+  }
+
   inline simd_t div(const simd_t& a, const simd_t& b)
   {
     return _mm_div_ps(a, b);
@@ -82,13 +87,23 @@ namespace simd {
 
   inline simd_t hadd(const simd_t& x)
   {
-    const simd_t y = add(x, SIMD_SWIZZLE(x, 1, 0, 3, 2));
-    return           add(y, SIMD_SWIZZLE(y, 3, 2, 1, 0));
+    const simd_t y = _mm_add_ps(x, SIMD_SWIZZLE(x, 1, 0, 3, 2));
+    return           _mm_add_ps(y, SIMD_SWIZZLE(y, 3, 2, 1, 0));
   }
 
   inline simd_t load(const real_t *ptr)
   {
     return _mm_load_ps(ptr);
+  }
+
+  inline simd_t max(const simd_t& a, const simd_t& b)
+  {
+    return _mm_max_ps(a, b);
+  }
+
+  inline simd_t min(const simd_t& a, const simd_t& b)
+  {
+    return _mm_min_ps(a, b);
   }
 
   inline simd_t mul(const simd_t& a, const simd_t& b)

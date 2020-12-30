@@ -177,6 +177,11 @@ namespace test_n4 {
     REQUIRE( test_util::equals(n4::direction(a + delta5, a), {0, -0.6f, -0.8f, W0})     );
     REQUIRE( test_util::equals(n4::normalize(delta5)       , {0, 0.6f, 0.8f, W0})       );
     REQUIRE( test_util::equals(n4::length(n4::normalize(a)), 1)                         );
+    REQUIRE( test_util::equals(n4::clamp(a, 1.5, 2.5)      , {1.5, 2, 2.5, W0}     , 0) );
+    REQUIRE( test_util::equals(n4::max(a, 1.5)             , {1.5, 2, 3, W0}       , 0) );
+    REQUIRE( test_util::equals(n4::max(1.5, a)             , {1.5, 2, 3, W0}       , 0) );
+    REQUIRE( test_util::equals(n4::min(a, 2.5)             , {1, 2, 2.5, W0}       , 0) );
+    REQUIRE( test_util::equals(n4::min(2.5, a)             , {1, 2, 2.5, W0}       , 0) );
   }
 
   TEST_CASE("N4 Vector4f unary operators.", "[Vector4f][unary]") {
