@@ -35,7 +35,6 @@
 #include <N4/ExprBase.h>
 #include <N4/Matrix4f.h>
 #include <N4/ScalarOperand.h>
-#include <N4/SIMD.h>
 
 namespace n4 {
 
@@ -172,15 +171,17 @@ namespace n4 {
   template<typename traits_T, typename LHS>
   inline auto operator*(const ExprBase<traits_T,LHS>& lhs, const real_t rhs)
   {
-    return impl::BinMul<traits_T,LHS,impl::ScalarOperand>(lhs.as_derived(),
-                                                          impl::ScalarOperand(rhs));
+    using impl::ScalarOperand;
+    return impl::BinMul<traits_T,LHS,ScalarOperand>(lhs.as_derived(),
+                                                    ScalarOperand(rhs));
   }
 
   template<typename traits_T, typename RHS>
   inline auto operator*(const real_t lhs, const ExprBase<traits_T,RHS>& rhs)
   {
-    return impl::BinMul<traits_T,impl::ScalarOperand,RHS>(impl::ScalarOperand(lhs),
-                                                          rhs.as_derived());
+    using impl::ScalarOperand;
+    return impl::BinMul<traits_T,ScalarOperand,RHS>(ScalarOperand(lhs),
+                                                    rhs.as_derived());
   }
 
   template<typename traits_T, typename RHS>
@@ -198,15 +199,17 @@ namespace n4 {
   template<typename traits_T, typename RHS>
   inline auto operator/(const real_t lhs, const ExprBase<traits_T,RHS>& rhs)
   {
-    return impl::BinDiv<traits_T,impl::ScalarOperand,RHS>(impl::ScalarOperand(lhs),
-                                                          rhs.as_derived());
+    using impl::ScalarOperand;
+    return impl::BinDiv<traits_T,ScalarOperand,RHS>(ScalarOperand(lhs),
+                                                    rhs.as_derived());
   }
 
   template<typename traits_T, typename LHS>
   inline auto operator/(const ExprBase<traits_T,LHS>& lhs, const real_t rhs)
   {
-    return impl::BinDiv<traits_T,LHS,impl::ScalarOperand>(lhs.as_derived(),
-                                                          impl::ScalarOperand(rhs));
+    using impl::ScalarOperand;
+    return impl::BinDiv<traits_T,LHS,ScalarOperand>(lhs.as_derived(),
+                                                    ScalarOperand(rhs));
   }
 
 } // namespace n4
