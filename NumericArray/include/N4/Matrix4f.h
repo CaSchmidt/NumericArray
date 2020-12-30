@@ -188,6 +188,23 @@ namespace n4 {
     alignas(sizeof(simd::simd_t)) real_t _data[16];
   };
 
+  ////// 4x4 Matrix - Binary Operators ///////////////////////////////////////
+
+  inline Matrix4f operator*(const Matrix4f& lhs, const Matrix4f& rhs)
+  {
+    using namespace simd;
+    Matrix4f M;
+    const simd_t col0 = load(lhs.data() +  0);
+    const simd_t col1 = load(lhs.data() +  4);
+    const simd_t col2 = load(lhs.data() +  8);
+    const simd_t col3 = load(lhs.data() + 12);
+    store(M.data() +  0, transform(col0, col1, col2, col3, load(rhs.data() +  0)));
+    store(M.data() +  4, transform(col0, col1, col2, col3, load(rhs.data() +  4)));
+    store(M.data() +  8, transform(col0, col1, col2, col3, load(rhs.data() +  8)));
+    store(M.data() + 12, transform(col0, col1, col2, col3, load(rhs.data() + 12)));
+    return M;
+  }
+
   ////// 4x4 Matrix - Functions //////////////////////////////////////////////
 
   inline Matrix4f identity()

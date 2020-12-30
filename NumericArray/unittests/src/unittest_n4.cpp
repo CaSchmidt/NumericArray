@@ -186,13 +186,22 @@ namespace test_n4 {
     REQUIRE( test_util::equals(-a, {-1, -2, -3, W0}, 0) );
   }
 
+  TEST_CASE("N4 Matrix4f binary operators.", "[Matrix4f][binary]") {
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    REQUIRE( test_util::equals(M*M, { 56,  62,  68,  74,
+                                     152, 174, 196, 218,
+                                     248, 286, 324, 362,
+                                     344, 398, 452, 506}, 0) );
+  }
+
   TEST_CASE("N4 Matrix4f functions.", "[Matrix4f][functions]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
-    REQUIRE( test_util::equals(M.transpose(), {  0, 4,  8, 12,
-                                                 1, 5,  9, 13,
-                                                 2, 6, 10, 14,
-                                                 3, 7, 11, 15 }) );
+    REQUIRE( test_util::equals(M.transpose(), { 0, 4,  8, 12,
+                                                1, 5,  9, 13,
+                                                2, 6, 10, 14,
+                                                3, 7, 11, 15 }) );
 
     const Mat4f M1{
       1, 0, 0, 0,
