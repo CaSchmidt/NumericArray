@@ -126,6 +126,8 @@ namespace test_util {
 
 namespace test_n4 {
 
+  ////// Begin Global Constants //////////////////////////////////////////////
+
   const Vec4f a{1, 2, 3};
   const Vec4f b{2, 3, 4};
 
@@ -133,12 +135,22 @@ namespace test_n4 {
   const Vec4f delta5{0, 3, 4}; // length == 5
   const Vec4f delta7{2, 3, 6}; // length == 7
 
+  const Mat4f M{
+     0,  1,  2,  3,
+     4,  5,  6,  7,
+     8,  9, 10, 11,
+    12, 13, 14, 15
+  };
+
+  ////// End Global Constants ////////////////////////////////////////////////
+
   TEST_CASE("N4 global constants.", "[N4][global]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
     PRINTexpr(a);
     PRINTexpr(b);
     PRINTreal(W0);
+    PRINTmatr(M);
   }
 
   TEST_CASE("N4 Vector4f binary operators.", "[Vector4f][binary]") {
@@ -147,10 +159,11 @@ namespace test_n4 {
     REQUIRE( test_util::equals(a + b    , {3, 5, 7, W0}                              , 0) );
     REQUIRE( test_util::equals(a - b    , {-1, -1, -1, W0}                           , 0) );
     REQUIRE( test_util::equals(a * b    , {2, 6, 12, W0}                             , 0) );
-    REQUIRE( test_util::equals(a / b    , {0.5, 0.666666f, 0.75, W0})                     );
+    REQUIRE( test_util::equals(a / b    , {0.5, 0.666666f, 0.75, W0}                    ) );
     REQUIRE( test_util::equals(2*a - a  , {1, 2, 3, W0}                              , 0) );
     REQUIRE( test_util::equals(a*2 - a  , {1, 2, 3, W0}                              , 0) );
     REQUIRE( test_util::equals(4*a/2 - a, {1, 2, 3, W0}                              , 0) );
+    REQUIRE( test_util::equals(6/a,       {6, 3, 2, W0}                              , 0) );
     REQUIRE( test_util::equals(n4::translate(1, 1, 1)*a, {1 + W0, 2 + W0, 3 + W0, W0}, 0) );
   }
 
@@ -175,14 +188,6 @@ namespace test_n4 {
 
   TEST_CASE("N4 Matrix4f functions.", "[Matrix4f][functions]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
-
-    const Mat4f M{
-       0,  1,  2,  3,
-       4,  5,  6,  7,
-       8,  9, 10, 11,
-      12, 13, 14, 15
-    };
-    PRINTmatr(M);
 
     REQUIRE( test_util::equals(M.transpose(), {  0, 4,  8, 12,
                                                  1, 5,  9, 13,
