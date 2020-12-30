@@ -4,8 +4,6 @@
 
 #include <N4/N4.h>
 
-#include <N4/Math.h> // TODO
-
 using n4::real_t;
 
 struct Vec4fTraits {
@@ -74,13 +72,23 @@ namespace test_util {
     return true;
   }
 
+  inline void do_print(const real_t x)
+  {
+    if( n4::abs(x) == real_t(0) ) {
+      printf("%8.3f", 0.0);
+    } else {
+      printf("%8.3f", x);
+    }
+  }
+
   void print(const real_t v, const char *ident = nullptr)
   {
     if( ident != nullptr ) {
       printf("%s = \n", ident);
     }
-    printf("%8.3f\n", v);
+    do_print(v); printf("\n");
     printf("\n");
+    fflush(stdout);
   }
 
   void print(const Vec4f& v, const char *ident = nullptr)
@@ -89,9 +97,10 @@ namespace test_util {
       printf("%s =\n", ident);
     }
     for(std::size_t i = 0; i < v.size(); i++) {
-      printf("%8.3f\n", v(i));
+      do_print(v(i)); printf("\n");
     }
     printf("\n");
+    fflush(stdout);
   }
 
   void print(const Mat4f& M, const char *ident = nullptr)
@@ -101,11 +110,12 @@ namespace test_util {
     }
     for(std::size_t i = 0; i < M.rows(); i++) {
       for(std::size_t j = 0; j < M.columns(); j++) {
-        printf("  %8.3f", M(i, j));
+        printf("  "); do_print(M(i, j));
       }
       printf("\n");
     }
     printf("\n");
+    fflush(stdout);
   }
 
 } // namespace test_util
