@@ -144,13 +144,14 @@ namespace test_n4 {
   TEST_CASE("N4 Vector4f binary operators.", "[Vector4f][binary]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
-    REQUIRE( test_util::equals(a + b    , {3, 5, 7, W0}              , 0) );
-    REQUIRE( test_util::equals(a - b    , {-1, -1, -1, W0}           , 0) );
-    REQUIRE( test_util::equals(a * b    , {2, 6, 12, W0}             , 0) );
-    REQUIRE( test_util::equals(a / b    , {0.5, 2.0f/3.0f, 0.75, W0})     );
-    REQUIRE( test_util::equals(2*a - a  , {1, 2, 3, W0}              , 0) );
-    REQUIRE( test_util::equals(a*2 - a  , {1, 2, 3, W0}              , 0) );
-    REQUIRE( test_util::equals(4*a/2 - a, {1, 2, 3, W0}              , 0) );
+    REQUIRE( test_util::equals(a + b    , {3, 5, 7, W0}                              , 0) );
+    REQUIRE( test_util::equals(a - b    , {-1, -1, -1, W0}                           , 0) );
+    REQUIRE( test_util::equals(a * b    , {2, 6, 12, W0}                             , 0) );
+    REQUIRE( test_util::equals(a / b    , {0.5, 0.666666f, 0.75, W0})                     );
+    REQUIRE( test_util::equals(2*a - a  , {1, 2, 3, W0}                              , 0) );
+    REQUIRE( test_util::equals(a*2 - a  , {1, 2, 3, W0}                              , 0) );
+    REQUIRE( test_util::equals(4*a/2 - a, {1, 2, 3, W0}                              , 0) );
+    REQUIRE( test_util::equals(n4::translate(1, 1, 1)*a, {1 + W0, 2 + W0, 3 + W0, W0}, 0) );
   }
 
   TEST_CASE("N4 Vector4f functions.", "[Vector4f][functions]") {

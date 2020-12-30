@@ -156,6 +156,33 @@ namespace n4 {
       const RHS& _rhs;
     };
 
+    template<typename traits_T, typename RHS>
+    class BinTransform : public ExprBase<traits_T,BinTransform<traits_T,RHS>> {
+    public:
+      BinTransform(const Matrix4f& lhs, const RHS& rhs)
+        : _lhs(lhs)
+        , _rhs(rhs)
+      {
+      }
+
+      inline simd::simd_t eval() const
+      {
+        const simd::simd_t x = _rhs.eval();
+        // NOTE: y = M*x
+        simd::simd_t y = simd::mul(SIMD_SWIZZLE(x, 0, 0, 0, 0), simd::load(_lhs.data() + 0));
+        y = simd::add(y, simd::mul(SIMD_SWIZZLE(x, 1, 1, 1, 1), simd::load(_lhs.data() + 4)));
+        y = simd::add(y, simd::mul(SIMD_SWIZZLE(x, 2, 2, 2, 2), simd::load(_lhs.data() + 8)));
+        if constexpr( traits_T::have_w ) {
+          y = simd::add(y, simd::load(_lhs.data() + 12)); // NOTE: x.w == 1
+        }
+        return y;
+      }
+
+    private:
+      const Matrix4f& _lhs;
+      const RHS& _rhs;
+    };
+
   } // namespace impl
 
   ////// User Interface //////////////////////////////////////////////////////
@@ -188,6 +215,12 @@ namespace n4 {
   inline auto operator*(const real_t lhs, const ExprBase<traits_T,RHS>& rhs)
   {
     return impl::BinSMul<traits_T,RHS>(rhs.as_derived(), lhs);
+  }
+
+  template<typename traits_T, typename RHS>
+  inline auto operator*(const Matrix4f& lhs, const ExprBase<traits_T,RHS>& rhs)
+  {
+    return impl::BinTransform<traits_T,RHS>(lhs, rhs);
   }
 
   template<typename traits_T, typename LHS, typename RHS>
