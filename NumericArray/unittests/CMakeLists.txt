@@ -26,6 +26,6 @@ cs_unittest(unittest_math src/unittest_math.cpp src/unittest_math_impl.cpp src/u
   ../testutils/include/TestEquals.h ../testutils/include/TestFormatter.h
   )
 
-cs_unittest(unittest_n4 src/unittest_n4_main.cpp src/unittest_n4.cpp
+cs_unittest(unittest_n4 src/unittest_n4_main.cpp src/unittest_n4.cpp src/unittest_n4_impl.cpp
   ../testutils/include/TestEquals.h ../testutils/include/TestFormatter.h
   )
