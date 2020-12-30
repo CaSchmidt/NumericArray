@@ -269,6 +269,21 @@ namespace simd {
   }
 
   /*
+   * Linear Transformation of 4x1 Column Vector by 4x4 Column-Major Matrix.
+   */
+  inline simd_t transform(const simd_t& col0, const simd_t& col1,
+                          const simd_t& col2, const simd_t& col3,
+                          const simd_t& x)
+  {
+    // NOTE: y = M*x
+    simd_t y = mul(SIMD_SWIZZLE(x, 0, 0, 0, 0), col0);
+    y = add(y, mul(SIMD_SWIZZLE(x, 1, 1, 1, 1), col1));
+    y = add(y, mul(SIMD_SWIZZLE(x, 2, 2, 2, 2), col2));
+    y = add(y, mul(SIMD_SWIZZLE(x, 3, 3, 3, 3), col3));
+    return y;
+  }
+
+  /*
    * Transpose of Column-Major 4x4 Matrix.
    */
   inline void transpose(real_t *dest, const real_t *src)
