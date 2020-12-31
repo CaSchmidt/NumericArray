@@ -6,15 +6,65 @@
 
 using n4::real_t;
 
-struct Vec4fTraits {
-  static constexpr bool have_w = true;
-};
+using Vec4f = n4::Vertex4f;
 
-using Vec4f = n4::Vector4f<Vec4fTraits>;
-
-constexpr real_t W0 = Vec4fTraits::have_w ? 1 : 0;
+constexpr real_t W0 = Vec4f::traits_type::have_w ? 1 : 0;
 
 using Mat4f = n4::Matrix4f;
+
+namespace test_print {
+
+  inline void do_print(const real_t x)
+  {
+    if( n4::abs(x) == real_t(0) ) {
+      printf("%8.3f", 0.0);
+    } else {
+      printf("%8.3f", x);
+    }
+  }
+
+  void print(const real_t v, const char *ident = nullptr)
+  {
+    if( ident != nullptr ) {
+      printf("%s = \n", ident);
+    }
+    do_print(v); printf("\n");
+    printf("\n");
+    fflush(stdout);
+  }
+
+  void print(const Vec4f& v, const char *ident = nullptr)
+  {
+    if( ident != nullptr ) {
+      printf("%s =\n", ident);
+    }
+    for(std::size_t i = 0; i < v.size(); i++) {
+      do_print(v(i)); printf("\n");
+    }
+    printf("\n");
+    fflush(stdout);
+  }
+
+  void print(const Mat4f& M, const char *ident = nullptr)
+  {
+    if( ident != nullptr ) {
+      printf("%s =\n", ident);
+    }
+    for(std::size_t i = 0; i < M.rows(); i++) {
+      for(std::size_t j = 0; j < M.columns(); j++) {
+        printf("  "); do_print(M(i, j));
+      }
+      printf("\n");
+    }
+    printf("\n");
+    fflush(stdout);
+  }
+
+} // namespace test_print
+
+#define PRINTreal(real)  test_print::print(real, #real)
+#define PRINTexpr(expr)  test_print::print(expr, #expr)
+#define PRINTmatr(matr)  test_print::print(matr, #matr)
 
 namespace test_konst {
 
@@ -72,57 +122,7 @@ namespace test_util {
     return true;
   }
 
-  inline void do_print(const real_t x)
-  {
-    if( n4::abs(x) == real_t(0) ) {
-      printf("%8.3f", 0.0);
-    } else {
-      printf("%8.3f", x);
-    }
-  }
-
-  void print(const real_t v, const char *ident = nullptr)
-  {
-    if( ident != nullptr ) {
-      printf("%s = \n", ident);
-    }
-    do_print(v); printf("\n");
-    printf("\n");
-    fflush(stdout);
-  }
-
-  void print(const Vec4f& v, const char *ident = nullptr)
-  {
-    if( ident != nullptr ) {
-      printf("%s =\n", ident);
-    }
-    for(std::size_t i = 0; i < v.size(); i++) {
-      do_print(v(i)); printf("\n");
-    }
-    printf("\n");
-    fflush(stdout);
-  }
-
-  void print(const Mat4f& M, const char *ident = nullptr)
-  {
-    if( ident != nullptr ) {
-      printf("%s =\n", ident);
-    }
-    for(std::size_t i = 0; i < M.rows(); i++) {
-      for(std::size_t j = 0; j < M.columns(); j++) {
-        printf("  "); do_print(M(i, j));
-      }
-      printf("\n");
-    }
-    printf("\n");
-    fflush(stdout);
-  }
-
 } // namespace test_util
-
-#define PRINTreal(real)  test_util::print(real, #real)
-#define PRINTexpr(expr)  test_util::print(expr, #expr)
-#define PRINTmatr(matr)  test_util::print(matr, #matr)
 
 namespace test_n4 {
 
@@ -182,6 +182,25 @@ namespace test_n4 {
     REQUIRE( test_util::equals(n4::max(1.5, a)             , {1.5, 2, 3, W0}       , 0) );
     REQUIRE( test_util::equals(n4::min(a, 2.5)             , {1, 2, 2.5, W0}       , 0) );
     REQUIRE( test_util::equals(n4::min(2.5, a)             , {1, 2, 2.5, W0}       , 0) );
+  }
+
+  TEST_CASE("N4 Vector4f manipulators.", "[Vector4f][manipulator]") {
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    n4::Vertex4f v;
+    v.x = 1;
+    v.y = 2;
+    v.z = 3;
+    v.w = 4;
+
+    REQUIRE( test_util::equals(n4::expr_cast_assign_w<Vec4f::traits_type>(v), {1, 2, 3, 4}, 0) );
+
+    n4::Normal3f n;
+    n.x = 1;
+    n.y = 2;
+    n.z = 3;
+
+    REQUIRE( test_util::equals(n4::expr_cast_assign_w<Vec4f::traits_type>(n), {1, 2, 3, 0}, 0) );
   }
 
   TEST_CASE("N4 Vector4f unary operators.", "[Vector4f][unary]") {
