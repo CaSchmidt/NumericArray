@@ -35,14 +35,18 @@
 #include <initializer_list>
 
 #include <N4/ExprBase.h>
+#include <N4/Manipulator.h>
 #include <N4/SIMD.h>
 
 namespace n4 {
 
-  template<typename traits_T>
-  class Vector4f : public ExprBase<traits_T,Vector4f<traits_T>> {
+  template<typename traits_T, typename manip_T = NoManipulator>
+  class Vector4f
+      : public ExprBase<traits_T,Vector4f<traits_T,manip_T>>
+      , public manip_T {
   public:
-    using typename ExprBase<traits_T,Vector4f<traits_T>>::traits_type;
+    using manip_type = manip_T;
+    using typename ExprBase<traits_T,Vector4f<traits_T,manip_T>>::traits_type;
 
     ////// Destructor ////////////////////////////////////////////////////////
 
@@ -51,6 +55,7 @@ namespace n4 {
     ////// Constructor ///////////////////////////////////////////////////////
 
     Vector4f(const real_t val = 0) noexcept
+      : manip_type(_data)
     {
       set(val);
     }
@@ -64,6 +69,7 @@ namespace n4 {
     ////// Initialize ////////////////////////////////////////////////////////
 
     Vector4f(const std::initializer_list<real_t>& list) noexcept
+      : manip_type(_data)
     {
       initialize(list);
     }
@@ -77,6 +83,7 @@ namespace n4 {
     ////// Copy //////////////////////////////////////////////////////////////
 
     Vector4f(const Vector4f& other) noexcept
+      : manip_type(_data)
     {
       copy(other);
     }
@@ -90,6 +97,7 @@ namespace n4 {
     ////// Move //////////////////////////////////////////////////////////////
 
     Vector4f(Vector4f&& other) noexcept
+      : manip_type(_data)
     {
       copy(other);
     }
@@ -104,6 +112,7 @@ namespace n4 {
 
     template<typename EXPR>
     Vector4f(const ExprBase<traits_type,EXPR>& expr) noexcept
+      : manip_type(_data)
     {
       assign(expr);
     }
