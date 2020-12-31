@@ -29,13 +29,38 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef N4_H
-#define N4_H
+#ifndef N4_NORMAL3F_H
+#define N4_NORMAL3F_H
 
-#include <N4/BinaryOperators.h>
-#include <N4/Functions.h>
-#include <N4/Normal3f.h>
-#include <N4/UnaryOperators.h>
-#include <N4/Vertex4f.h>
+#include <N4/Vector4f.h>
 
-#endif // N4_H
+namespace n4 {
+
+  class Normal3fManipulator {
+  public:
+    Normal3fManipulator(real_t *data) noexcept
+      : x(data)
+      , y(data)
+      , z(data)
+    {
+    }
+
+    ~Normal3fManipulator() noexcept = default;
+
+    VectorProperty<0> x;
+    VectorProperty<1> y;
+    VectorProperty<2> z;
+
+  private:
+    Normal3fManipulator() noexcept = delete;
+  };
+
+  struct Normal3fTraits {
+    static constexpr bool have_w = false;
+  };
+
+  using Normal3f = Vector4f<Normal3fTraits,Normal3fManipulator>;
+
+} // namespace n4
+
+#endif // N4_NORMAL3F_H

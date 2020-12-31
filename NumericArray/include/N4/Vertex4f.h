@@ -29,13 +29,40 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef N4_H
-#define N4_H
+#ifndef N4_VERTEX4F_H
+#define N4_VERTEX4F_H
 
-#include <N4/BinaryOperators.h>
-#include <N4/Functions.h>
-#include <N4/Normal3f.h>
-#include <N4/UnaryOperators.h>
-#include <N4/Vertex4f.h>
+#include <N4/Vector4f.h>
 
-#endif // N4_H
+namespace n4 {
+
+  class Vertex4fManipulator {
+  public:
+    Vertex4fManipulator(real_t *data) noexcept
+      : x(data)
+      , y(data)
+      , z(data)
+      , w(data)
+    {
+    }
+
+    ~Vertex4fManipulator() noexcept = default;
+
+    VectorProperty<0> x;
+    VectorProperty<1> y;
+    VectorProperty<2> z;
+    VectorProperty<3> w;
+
+  private:
+    Vertex4fManipulator() noexcept = delete;
+  };
+
+  struct Vertex4fTraits {
+    static constexpr bool have_w = true;
+  };
+
+  using Vertex4f = Vector4f<Vertex4fTraits,Vertex4fManipulator>;
+
+} // namespace n4
+
+#endif // N4_VERTEX4F_H
