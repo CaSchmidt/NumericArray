@@ -4,6 +4,8 @@
 
 #include <N4/N4.h>
 
+////// Global Types //////////////////////////////////////////////////////////
+
 using n4::real_t;
 
 using Vec4f = n4::Vertex4f;
@@ -11,6 +13,8 @@ using Vec4f = n4::Vertex4f;
 constexpr real_t W0 = Vec4f::traits_type::have_w ? 1 : 0;
 
 using Mat4f = n4::Matrix4f;
+
+////// Output ////////////////////////////////////////////////////////////////
 
 namespace test_print {
 
@@ -65,6 +69,8 @@ namespace test_print {
 #define PRINTreal(real)  test_print::print(real, #real)
 #define PRINTexpr(expr)  test_print::print(expr, #expr)
 #define PRINTmatr(matr)  test_print::print(matr, #matr)
+
+////// Test Utilities ////////////////////////////////////////////////////////
 
 namespace test_konst {
 
@@ -124,9 +130,12 @@ namespace test_util {
 
 } // namespace test_util
 
-namespace test_n4 {
+////// Test Cases ////////////////////////////////////////////////////////////
 
-  ////// Begin Global Constants //////////////////////////////////////////////
+namespace test_n4 {
+  using namespace test_util;
+
+  // Begin Global Constants //////////////////////////////////////////////////
 
   const Vec4f a{1, 2, 3};
   const Vec4f b{2, 3, 4};
@@ -142,7 +151,7 @@ namespace test_n4 {
     12, 13, 14, 15
   };
 
-  ////// End Global Constants ////////////////////////////////////////////////
+  // End Global Constants ////////////////////////////////////////////////////
 
   TEST_CASE("N4 global constants.", "[N4][global]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
@@ -156,32 +165,32 @@ namespace test_n4 {
   TEST_CASE("N4 Vector4f binary operators.", "[Vector4f][binary]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
-    REQUIRE( test_util::equals(a + b    , {3, 5, 7, W0}                              , 0) );
-    REQUIRE( test_util::equals(a - b    , {-1, -1, -1, W0}                           , 0) );
-    REQUIRE( test_util::equals(a * b    , {2, 6, 12, W0}                             , 0) );
-    REQUIRE( test_util::equals(a / b    , {0.5, 0.666666f, 0.75, W0}                    ) );
-    REQUIRE( test_util::equals(2*a - a  , {1, 2, 3, W0}                              , 0) );
-    REQUIRE( test_util::equals(a*2 - a  , {1, 2, 3, W0}                              , 0) );
-    REQUIRE( test_util::equals(4*a/2 - a, {1, 2, 3, W0}                              , 0) );
-    REQUIRE( test_util::equals(6/a,       {6, 3, 2, W0}                              , 0) );
-    REQUIRE( test_util::equals(n4::translate(1, 1, 1)*a, {1 + W0, 2 + W0, 3 + W0, W0}, 0) );
+    REQUIRE( equals(a + b    , {3, 5, 7, W0}                              , 0) );
+    REQUIRE( equals(a - b    , {-1, -1, -1, W0}                           , 0) );
+    REQUIRE( equals(a * b    , {2, 6, 12, W0}                             , 0) );
+    REQUIRE( equals(a / b    , {0.5, 0.666666f, 0.75, W0}                    ) );
+    REQUIRE( equals(2*a - a  , {1, 2, 3, W0}                              , 0) );
+    REQUIRE( equals(a*2 - a  , {1, 2, 3, W0}                              , 0) );
+    REQUIRE( equals(4*a/2 - a, {1, 2, 3, W0}                              , 0) );
+    REQUIRE( equals(6/a,       {6, 3, 2, W0}                              , 0) );
+    REQUIRE( equals(n4::translate(1, 1, 1)*a, {1 + W0, 2 + W0, 3 + W0, W0}, 0) );
   }
 
   TEST_CASE("N4 Vector4f functions.", "[Vector4f][functions]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
-    REQUIRE( test_util::equals(n4::cross(a, b)             , {-1, 2, -1, W0}       , 0) );
-    REQUIRE( test_util::equals(n4::dot(a, b)               , 20                    , 0) );
-    REQUIRE( test_util::equals(n4::length(delta3)          , 3)                         );
-    REQUIRE( test_util::equals(n4::distance(a, a + delta7) , 7)                         );
-    REQUIRE( test_util::equals(n4::direction(a + delta5, a), {0, -0.6f, -0.8f, W0})     );
-    REQUIRE( test_util::equals(n4::normalize(delta5)       , {0, 0.6f, 0.8f, W0})       );
-    REQUIRE( test_util::equals(n4::length(n4::normalize(a)), 1)                         );
-    REQUIRE( test_util::equals(n4::clamp(a, 1.5, 2.5)      , {1.5, 2, 2.5, W0}     , 0) );
-    REQUIRE( test_util::equals(n4::max(a, 1.5)             , {1.5, 2, 3, W0}       , 0) );
-    REQUIRE( test_util::equals(n4::max(1.5, a)             , {1.5, 2, 3, W0}       , 0) );
-    REQUIRE( test_util::equals(n4::min(a, 2.5)             , {1, 2, 2.5, W0}       , 0) );
-    REQUIRE( test_util::equals(n4::min(2.5, a)             , {1, 2, 2.5, W0}       , 0) );
+    REQUIRE( equals(n4::cross(a, b)             , {-1, 2, -1, W0}       , 0) );
+    REQUIRE( equals(n4::dot(a, b)               , 20                    , 0) );
+    REQUIRE( equals(n4::length(delta3)          , 3)                         );
+    REQUIRE( equals(n4::distance(a, a + delta7) , 7)                         );
+    REQUIRE( equals(n4::direction(a + delta5, a), {0, -0.6f, -0.8f, W0})     );
+    REQUIRE( equals(n4::normalize(delta5)       , {0, 0.6f, 0.8f, W0})       );
+    REQUIRE( equals(n4::length(n4::normalize(a)), 1)                         );
+    REQUIRE( equals(n4::clamp(a, 1.5, 2.5)      , {1.5, 2, 2.5, W0}     , 0) );
+    REQUIRE( equals(n4::max(a, 1.5)             , {1.5, 2, 3, W0}       , 0) );
+    REQUIRE( equals(n4::max(1.5, a)             , {1.5, 2, 3, W0}       , 0) );
+    REQUIRE( equals(n4::min(a, 2.5)             , {1, 2, 2.5, W0}       , 0) );
+    REQUIRE( equals(n4::min(2.5, a)             , {1, 2, 2.5, W0}       , 0) );
   }
 
   TEST_CASE("N4 Vector4f manipulators.", "[Vector4f][manipulator]") {
@@ -193,39 +202,39 @@ namespace test_n4 {
     v.z = 3;
     v.w = 4;
 
-    REQUIRE( test_util::equals(n4::expr_cast_assign_w<Vec4f::traits_type>(v), {1, 2, 3, 4}, 0) );
+    REQUIRE( equals(n4::expr_cast_assign_w<Vec4f::traits_type>(v), {1, 2, 3, 4}, 0) );
 
     n4::Normal3f n;
     n.x = 1;
     n.y = 2;
     n.z = 3;
 
-    REQUIRE( test_util::equals(n4::expr_cast_assign_w<Vec4f::traits_type>(n), {1, 2, 3, 0}, 0) );
+    REQUIRE( equals(n4::expr_cast_assign_w<Vec4f::traits_type>(n), {1, 2, 3, 0}, 0) );
   }
 
   TEST_CASE("N4 Vector4f unary operators.", "[Vector4f][unary]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
-    REQUIRE( test_util::equals(+a, {1, 2, 3, W0}   , 0) );
-    REQUIRE( test_util::equals(-a, {-1, -2, -3, W0}, 0) );
+    REQUIRE( equals(+a, {1, 2, 3, W0}   , 0) );
+    REQUIRE( equals(-a, {-1, -2, -3, W0}, 0) );
   }
 
   TEST_CASE("N4 Matrix4f binary operators.", "[Matrix4f][binary]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
-    REQUIRE( test_util::equals(M*M, { 56,  62,  68,  74,
-                                     152, 174, 196, 218,
-                                     248, 286, 324, 362,
-                                     344, 398, 452, 506}, 0) );
+    REQUIRE( equals(M*M, { 56,  62,  68,  74,
+                          152, 174, 196, 218,
+                          248, 286, 324, 362,
+                          344, 398, 452, 506}, 0) );
   }
 
   TEST_CASE("N4 Matrix4f functions.", "[Matrix4f][functions]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
-    REQUIRE( test_util::equals(M.transpose(), { 0, 4,  8, 12,
-                                                1, 5,  9, 13,
-                                                2, 6, 10, 14,
-                                                3, 7, 11, 15 }) );
+    REQUIRE( equals(M.transpose(), { 0, 4,  8, 12,
+                                     1, 5,  9, 13,
+                                     2, 6, 10, 14,
+                                     3, 7, 11, 15 }) );
 
     const Mat4f M1{
       1, 0, 0, 0,
@@ -235,10 +244,10 @@ namespace test_n4 {
     };
     PRINTmatr(M1);
 
-    REQUIRE( test_util::equals(M1.inverse(), { 1, 0, 0, 0,
-                                               0, 0, 1, 0,
-                                               0, 1, 0, 0,
-                                               0, 0, 0, 1 }) );
+    REQUIRE( equals(M1.inverse(), { 1, 0, 0, 0,
+                                    0, 0, 1, 0,
+                                    0, 1, 0, 0,
+                                    0, 0, 0, 1 }) );
 
     const Mat4f M2{
       4, 0, 0, 0,
@@ -248,10 +257,10 @@ namespace test_n4 {
     };
     PRINTmatr(M2);
 
-    REQUIRE( test_util::equals(M2.inverse(), {  0.25, 0,   0, 0,
-                                                0,   -1,   1, 0,
-                                                0,    0.5, 0, 0,
-                                               -0.25, 0,   0, 1 }) );
+    REQUIRE( equals(M2.inverse(), { 0.25, 0,   0, 0,
+                                    0,   -1,   1, 0,
+                                    0,    0.5, 0, 0,
+                                   -0.25, 0,   0, 1 }) );
 
     const Mat4f Rx{ // Rotate 90° about x-axis
       1, 0,  0, 0,
@@ -261,7 +270,7 @@ namespace test_n4 {
     };
     PRINTmatr(Rx);
 
-    REQUIRE( test_util::equals(Rx.inverse(), Rx.transpose()) );
+    REQUIRE( equals(Rx.inverse(), Rx.transpose()) );
   }
 
 } // namespace test_n4
