@@ -141,14 +141,14 @@ namespace n4 {
 
     ////// Functions /////////////////////////////////////////////////////////
 
-    Matrix4f inverse() const
+    inline Matrix4f inverse() const
     {
       Matrix4f result;
       simd::inverse(result._data, _data);
       return result;
     }
 
-    Matrix4f transpose() const
+    inline Matrix4f transpose() const
     {
       Matrix4f result;
       simd::transpose(result._data, _data);

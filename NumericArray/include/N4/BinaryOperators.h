@@ -150,17 +150,23 @@ namespace n4 {
 
   ////// User Interface //////////////////////////////////////////////////////
 
+  // Addition ////////////////////////////////////////////////////////////////
+
   template<typename traits_T, typename LHS, typename RHS>
   inline auto operator+(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
   {
     return impl::BinAdd<traits_T,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
   }
 
+  // Subtraction /////////////////////////////////////////////////////////////
+
   template<typename traits_T, typename LHS, typename RHS>
   inline auto operator-(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
   {
     return impl::BinSub<traits_T,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
   }
+
+  // Multiplication //////////////////////////////////////////////////////////
 
   template<typename traits_T, typename LHS, typename RHS>
   inline auto operator*(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
@@ -189,6 +195,8 @@ namespace n4 {
   {
     return impl::BinTransform<traits_T,RHS>(lhs, rhs);
   }
+
+  // Division ////////////////////////////////////////////////////////////////
 
   template<typename traits_T, typename LHS, typename RHS>
   inline auto operator/(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
