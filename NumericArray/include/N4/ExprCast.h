@@ -29,53 +29,55 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef N4_TYPETRAITS_H
-#define N4_TYPETRAITS_H
+#ifndef EXPRCAST_H
+#define EXPRCAST_H
 
-#include <cstddef>
-#include <cstdint>
-
-#include <type_traits>
+#include <N4/ExprBase.h>
+#include <N4/SIMD.h>
 
 namespace n4 {
 
-  ////// Type Traits /////////////////////////////////////////////////////////
+  namespace impl {
 
-  template<typename T>
-  using is_real = std::bool_constant<std::is_floating_point_v<T>  &&  sizeof(T) == 4>;
+    template<typename cast_traits_T, typename EXPR, bool ASSIGN_W>
+    class ExprCast : public ExprBase<cast_traits_T,ExprCast<cast_traits_T,EXPR,ASSIGN_W>> {
+    public:
+      static constexpr bool have_assign_w = ASSIGN_W;
 
-  template<typename T>
-  using if_real_t = std::enable_if_t<is_real<T>::value,T>;
+      ExprCast(const EXPR& expr)
+        : _expr(expr)
+      {
+      }
 
-  ////// Types ///////////////////////////////////////////////////////////////
+      inline simd::simd_t eval() const
+      {
+        return _expr.eval();
+      }
 
-  using real_t = if_real_t<float>;
+    private:
+      const EXPR& _expr;
+    };
 
-  using std::size_t;
+  } // namespace impl
 
-  ////// Assign W Component //////////////////////////////////////////////////
-
-  template<typename T, typename = bool>
-  struct is_assign_w : std::false_type {};
-
-  template<typename T>
-  struct is_assign_w<T,decltype((void)T::have_assign_w,bool())> : std::true_type {};
-
-  template<typename T>
-  inline constexpr bool is_assign_w_v = is_assign_w<T>::value;
-
-  template<typename T>
-  constexpr std::enable_if_t<is_assign_w_v<T>,bool> have_assign_w()
+  template<typename cast_traits_T, typename traits_T, typename EXPR>
+  inline auto expr_cast(const ExprBase<traits_T,EXPR>& expr)
   {
-    return static_cast<bool>(T::have_assign_w);
+    return impl::ExprCast<cast_traits_T,EXPR,false>(expr.as_derived());
   }
 
-  template<typename T>
-  constexpr std::enable_if_t<!is_assign_w_v<T>,bool> have_assign_w()
+  template<typename cast_traits_T, typename traits_T, typename EXPR>
+  inline auto expr_cast_assign_w(const ExprBase<traits_T,EXPR>& expr)
   {
-    return false;
+    return impl::ExprCast<cast_traits_T,EXPR,true>(expr.as_derived());
+  }
+
+  template<typename traits_T, typename EXPR>
+  inline auto assign_w(const ExprBase<traits_T,EXPR>& expr)
+  {
+    return impl::ExprCast<traits_T,EXPR,true>(expr.as_derived());
   }
 
 } // namespace n4
 
-#endif // N4_TYPETRAITS_H
+#endif // EXPRCAST_H

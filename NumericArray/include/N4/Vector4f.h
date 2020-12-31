@@ -163,7 +163,9 @@ namespace n4 {
     void assign(const ExprBase<traits_type,EXPR>& expr)
     {
       simd::store(_data, expr.as_derived().eval());
-      reset_w();
+      if constexpr( !have_assign_w<EXPR>() ) {
+        reset_w();
+      }
     }
 
     inline void copy(const Vector4f& src)

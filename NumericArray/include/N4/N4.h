@@ -33,6 +33,7 @@
 #define N4_H
 
 #include <N4/BinaryOperators.h>
+#include <N4/ExprCast.h>
 #include <N4/Functions.h>
 #include <N4/Normal3f.h>
 #include <N4/UnaryOperators.h>
