@@ -45,6 +45,7 @@ list(APPEND NumericArray_HEADERS
 
 list(APPEND N4_HEADERS
   include/N4/BinaryOperators.h
+  include/N4/Color3f.h
   include/N4/ExprBase.h
   include/N4/ExprCast.h
   include/N4/Functions.h
