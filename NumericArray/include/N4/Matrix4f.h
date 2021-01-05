@@ -207,57 +207,83 @@ namespace n4 {
 
   ////// 4x4 Matrix - Functions //////////////////////////////////////////////
 
+  namespace impl {
+
+    inline Matrix4f rotateX(const real_t c, const real_t s)
+    {
+      return Matrix4f{
+        1, 0, 0, 0,
+        0, c,-s, 0,
+        0, s, c, 0,
+        0, 0, 0, 1
+      };
+    }
+
+    inline Matrix4f rotateY(const real_t c, const real_t s)
+    {
+      return Matrix4f{
+        c, 0, s, 0,
+        0, 1, 0, 0,
+       -s, 0, c, 0,
+        0, 0, 0, 1
+      };
+    }
+
+    inline Matrix4f rotateZ(const real_t c, const real_t s)
+    {
+      return Matrix4f{
+        c,-s, 0, 0,
+        s, c, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+      };
+    }
+
+  } // namespace impl
+
   inline Matrix4f identity()
   {
-    Matrix4f M;
-    M(0, 0) = M(1, 1) = M(2, 2) = M(3, 3) = 1;
-    return M;
+    return Matrix4f{
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1
+    };
   }
 
-  inline Matrix4f rotateX(const real_t angle)
+  inline Matrix4f rotateX(const real_t radians)
   {
-    Matrix4f Rx(identity());
-    Rx(1, 1) = Rx(2, 2) = cos(angle);
-    Rx(2, 1) = sin(angle);
-    Rx(1, 2) = -Rx(2, 1);
-    return Rx;
+    return impl::rotateX(cos(radians), sin(radians));
   }
 
-  inline Matrix4f rotateY(const real_t angle)
+  inline Matrix4f rotateY(const real_t radians)
   {
-    Matrix4f Ry(identity());
-    Ry(0, 0) = Ry(2, 2) = cos(angle);
-    Ry(0, 2) = sin(angle);
-    Ry(2, 0) = -Ry(0, 2);
-    return Ry;
+    return impl::rotateY(cos(radians), sin(radians));
   }
 
-  inline Matrix4f rotateZ(const real_t angle)
+  inline Matrix4f rotateZ(const real_t radians)
   {
-    Matrix4f Rz(identity());
-    Rz(0, 0) = Rz(1, 1) = cos(angle);
-    Rz(1, 0) = sin(angle);
-    Rz(0, 1) = -Rz(1, 0);
-    return Rz;
+    return impl::rotateZ(cos(radians), sin(radians));
   }
 
   inline Matrix4f scale(const real_t sx, const real_t sy, const real_t sz)
   {
-    Matrix4f S;
-    S(0, 0) = sx;
-    S(1, 1) = sy;
-    S(2, 2) = sz;
-    S(3, 3) = 1;
-    return S;
+    return Matrix4f{
+      sx,  0,  0, 0,
+       0, sy,  0, 0,
+       0,  0, sz, 0,
+       0,  0,  0, 1
+    };
   }
 
   inline Matrix4f translate(const real_t tx, const real_t ty, const real_t tz)
   {
-    Matrix4f T(identity());
-    T(0, 3) = tx;
-    T(1, 3) = ty;
-    T(2, 3) = tz;
-    return T;
+    return Matrix4f{
+      1, 0, 0, tx,
+      0, 1, 0, ty,
+      0, 0, 1, tz,
+      0, 0, 0,  1
+    };
   }
 
 } // namespace n4
