@@ -262,12 +262,7 @@ namespace test_n4 {
                                     0,    0.5, 0, 0,
                                    -0.25, 0,   0, 1 }) );
 
-    const Mat4f Rx{ // Rotate 90° about x-axis
-      1, 0,  0, 0,
-      0, 0, -1, 0,
-      0, 1,  0, 0,
-      0, 0,  0, 1
-    };
+    const Mat4f Rx = n4::rotateXbyPI2(1);
     PRINTmatr(Rx);
 
     REQUIRE( equals(Rx.inverse(), Rx.transpose()) );

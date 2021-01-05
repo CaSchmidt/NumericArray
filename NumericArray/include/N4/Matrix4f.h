@@ -256,14 +256,29 @@ namespace n4 {
     return impl::rotateX(cos(radians), sin(radians));
   }
 
+  inline Matrix4f rotateXbyPI2(const signed int i)
+  {
+    return impl::rotateX(cosPI2(i), sinPI2(i));
+  }
+
   inline Matrix4f rotateY(const real_t radians)
   {
     return impl::rotateY(cos(radians), sin(radians));
   }
 
+  inline Matrix4f rotateYbyPI2(const signed int i)
+  {
+    return impl::rotateY(cosPI2(i), sinPI2(i));
+  }
+
   inline Matrix4f rotateZ(const real_t radians)
   {
     return impl::rotateZ(cos(radians), sin(radians));
+  }
+
+  inline Matrix4f rotateZbyPI2(const signed int i)
+  {
+    return impl::rotateZ(cosPI2(i), sinPI2(i));
   }
 
   inline Matrix4f scale(const real_t sx, const real_t sy, const real_t sz)

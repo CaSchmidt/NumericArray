@@ -48,9 +48,21 @@ namespace n4 {
     return ::cosf(x);
   }
 
+  inline real_t cosPI2(const signed int i)
+  {
+    static const real_t tab[4] = { 1, 0, -1, 0 };
+    return tab[i & 0x3];
+  }
+
   inline real_t sin(const real_t x)
   {
     return ::sinf(x);
+  }
+
+  inline real_t sinPI2(const signed int i)
+  {
+    static const real_t tab[4] = { 0, 1, 0, -1 };
+    return tab[i & 0x3];
   }
 
   inline real_t sqrt(const real_t x)
