@@ -32,6 +32,8 @@
 #ifndef N4_FUNCTIONS_H
 #define N4_FUNCTIONS_H
 
+#include <algorithm>
+
 #include <N4/ExprBase.h>
 #include <N4/ScalarOperand.h>
 
@@ -193,6 +195,12 @@ namespace n4 {
   inline real_t dot(const ExprBase<traits_T,ARG1>& arg1, const ExprBase<traits_T,ARG2>& arg2)
   {
     return simd::to_real(simd::dot(arg1.as_derived().eval(), arg2.as_derived().eval()));
+  }
+
+  template<typename traits_T, typename ARG1, typename ARG2>
+  inline real_t dot1(const ExprBase<traits_T,ARG1>& arg1, const ExprBase<traits_T,ARG2>& arg2)
+  {
+    return std::max<real_t>(0, dot(arg1, arg2));
   }
 
   template<typename traits_T, typename ARG>
