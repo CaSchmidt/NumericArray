@@ -193,7 +193,7 @@ namespace n4 {
   template<typename traits_T, typename RHS>
   inline auto operator*(const Matrix4f& lhs, const ExprBase<traits_T,RHS>& rhs)
   {
-    return impl::BinTransform<traits_T,RHS>(lhs, rhs);
+    return impl::BinTransform<traits_T,RHS>(lhs, rhs.as_derived());
   }
 
   // Division ////////////////////////////////////////////////////////////////
