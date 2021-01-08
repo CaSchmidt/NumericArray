@@ -129,6 +129,60 @@ namespace n4 {
       return simd::load(_data);
     }
 
+    ////// Assignment ////////////////////////////////////////////////////////
+
+    template<typename EXPR>
+    inline Vector4f& operator+=(const ExprBase<traits_type,EXPR>& expr)
+    {
+      using namespace simd;
+      store(_data, add(load(_data), expr.as_derived().eval()));
+      reset_w();
+      return *this;
+    }
+
+    template<typename EXPR>
+    inline Vector4f& operator-=(const ExprBase<traits_type,EXPR>& expr)
+    {
+      using namespace simd;
+      store(_data, sub(load(_data), expr.as_derived().eval()));
+      reset_w();
+      return *this;
+    }
+
+    template<typename EXPR>
+    inline Vector4f& operator*=(const ExprBase<traits_type,EXPR>& expr)
+    {
+      using namespace simd;
+      store(_data, mul(load(_data), expr.as_derived().eval()));
+      reset_w();
+      return *this;
+    }
+
+    inline Vector4f& operator*=(const real_t val)
+    {
+      using namespace simd;
+      store(_data, mul(load(_data), simd::set(val)));
+      reset_w();
+      return *this;
+    }
+
+    template<typename EXPR>
+    inline Vector4f& operator/=(const ExprBase<traits_type,EXPR>& expr)
+    {
+      using namespace simd;
+      store(_data, div(load(_data), expr.as_derived().eval()));
+      reset_w();
+      return *this;
+    }
+
+    inline Vector4f& operator/=(const real_t val)
+    {
+      using namespace simd;
+      store(_data, div(load(_data), simd::set(val)));
+      reset_w();
+      return *this;
+    }
+
     ////// Data Access ///////////////////////////////////////////////////////
 
     inline const real_t *data() const

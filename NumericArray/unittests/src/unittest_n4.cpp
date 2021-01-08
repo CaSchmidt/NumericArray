@@ -162,6 +162,17 @@ namespace test_n4 {
     PRINTmatr(M);
   }
 
+  TEST_CASE("N4 assignment.", "[Vector4f][assign]") {
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    REQUIRE( equals(Vec4f(a) += b, {3, 5, 7, W0}          , 0) );
+    REQUIRE( equals(Vec4f(b) -= a, {1, 1, 1, W0}          , 0) );
+    REQUIRE( equals(Vec4f(b) *= a, {2, 6, 12, W0}         , 0) );
+    REQUIRE( equals(Vec4f(a) *= 2, {2, 4, 6, W0}          , 0) );
+    REQUIRE( equals(Vec4f(b) /= a, {2, 1.5, 1.333333f, W0}   ) );
+    REQUIRE( equals(Vec4f(b) /= 8, {0.25, 0.375, 0.5, W0} , 0) );
+  }
+
   TEST_CASE("N4 Vector4f binary operators.", "[Vector4f][binary]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
