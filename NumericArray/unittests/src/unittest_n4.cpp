@@ -277,6 +277,14 @@ namespace test_n4 {
     PRINTmatr(Rx);
 
     REQUIRE( equals(Rx.inverse(), Rx.transpose()) );
+
+    const Mat4f TS = n4::translate(3, 5, 7)*n4::scale(2, 4, 8);
+    PRINTmatr(TS);
+
+    REQUIRE( equals(TS.inverse(), { 0.5, 0   , 0    , -1.5,
+                                    0  , 0.25, 0    , -1.25,
+                                    0  , 0   , 0.125, -0.875,
+                                    0  , 0   , 0    ,  1}, 0) );
   }
 
 } // namespace test_n4

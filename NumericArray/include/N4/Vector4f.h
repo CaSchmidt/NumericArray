@@ -46,6 +46,7 @@ namespace n4 {
       , public manip_T {
   public:
     using manip_type = manip_T;
+    using value_type = real_t;
     using typename ExprBase<traits_T,Vector4f<traits_T,manip_T>>::traits_type;
 
     ////// Destructor ////////////////////////////////////////////////////////
