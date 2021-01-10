@@ -32,8 +32,13 @@
 #ifndef N4_MATH_H
 #define N4_MATH_H
 
+#define HAVE_MATH_SIMD
+
 #include <math.h>
 
+#ifdef HAVE_MATH_SIMD
+# include <N4/SIMD.h>
+#endif
 #include <N4/TypeTraits.h>
 
 namespace n4 {
@@ -41,6 +46,21 @@ namespace n4 {
   inline real_t abs(const real_t x)
   {
     return ::fabsf(x);
+  }
+
+  inline real_t acos(const real_t x)
+  {
+    return ::acosf(x);
+  }
+
+  inline double atan2(const double y, const double x)
+  {
+    return ::atan2(y, x);
+  }
+
+  inline float atan2(const float y, const float x)
+  {
+    return ::atan2f(y, x);
   }
 
   inline real_t cos(const real_t x)
@@ -54,6 +74,11 @@ namespace n4 {
     return tab[i & 0x3];
   }
 
+  inline real_t remndr(const real_t x, const real_t y)
+  {
+    return ::fmodf(x, y);
+  }
+
   inline real_t sin(const real_t x)
   {
     return ::sinf(x);
@@ -65,10 +90,27 @@ namespace n4 {
     return tab[i & 0x3];
   }
 
-  inline real_t sqrt(const real_t x)
+#ifdef HAVE_MATH_SIMD
+  inline double sqrt(const double x)
+  {
+    return _mm_cvtsd_f64(_mm_sqrt_sd(_mm_set_sd(x), _mm_set_sd(x)));
+  }
+
+  inline float sqrt(const float x)
+  {
+    return _mm_cvtss_f32(_mm_sqrt_ss(_mm_set_ss(x)));
+  }
+#else
+  inline double sqrt(const double x)
+  {
+    return ::sqrt(x);
+  }
+
+  inline float sqrt(const float x)
   {
     return ::sqrtf(x);
   }
+#endif
 
 } // namespace n4
 
