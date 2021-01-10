@@ -162,7 +162,13 @@ namespace test_n4 {
     PRINTmatr(M);
   }
 
-  TEST_CASE("N4 assignment.", "[Vector4f][assign]") {
+  TEST_CASE("N4 global base.", "[N4][base]") {
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    REQUIRE( equals(Vec4f{1, 2, 3, 4}, {1, 2, 3, W0}, 0) );
+  }
+
+  TEST_CASE("N4 Vector4f assignment.", "[Vector4f][assign]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
     REQUIRE( equals(Vec4f(a) += b, {3, 5, 7, W0}          , 0) );
@@ -171,6 +177,13 @@ namespace test_n4 {
     REQUIRE( equals(Vec4f(a) *= 2, {2, 4, 6, W0}          , 0) );
     REQUIRE( equals(Vec4f(b) /= a, {2, 1.5, 1.333333f, W0}   ) );
     REQUIRE( equals(Vec4f(b) /= 8, {0.25, 0.375, 0.5, W0} , 0) );
+
+    Vec4f v;
+    v += a;
+    v += b;
+    v -= Vec4f{1, 1, 1};
+    v /= 2;
+    REQUIRE( equals(v, {1, 2, 3, W0}, 0) );
   }
 
   TEST_CASE("N4 Vector4f binary operators.", "[Vector4f][binary]") {
