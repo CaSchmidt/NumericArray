@@ -74,6 +74,21 @@ namespace n4 {
     return tab[i & 0x3];
   }
 
+  inline bool isFinite(const real_t x)
+  {
+    return isfinite(x) != 0;
+  }
+
+  inline bool isNaN(const real_t x)
+  {
+    return isnan(x) != 0;
+  }
+
+  inline real_t pow(const real_t x, const real_t y)
+  {
+    return ::powf(x, y);
+  }
+
   inline real_t remndr(const real_t x, const real_t y)
   {
     return ::fmodf(x, y);
@@ -111,6 +126,11 @@ namespace n4 {
     return ::sqrtf(x);
   }
 #endif
+
+  inline real_t tan(const real_t x)
+  {
+    return ::tanf(x);
+  }
 
 } // namespace n4
 
