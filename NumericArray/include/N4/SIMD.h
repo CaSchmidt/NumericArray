@@ -141,12 +141,12 @@ namespace simd {
     return _mm_cvtss_f32(x);
   }
 
-  inline simd_t unpackhi(const simd_t& a, const simd_t& b)
+  inline simd_t intrlvhi(const simd_t& a, const simd_t& b)
   {
     return _mm_unpackhi_ps(a, b);
   }
 
-  inline simd_t unpacklo(const simd_t& a, const simd_t& b)
+  inline simd_t intrlvlo(const simd_t& a, const simd_t& b)
   {
     return _mm_unpacklo_ps(a, b);
   }
@@ -252,10 +252,10 @@ namespace simd {
     const simd_t detC = SIMD_SWIZZLE(detACBD, 1, 1, 1, 1);
     const simd_t detD = SIMD_SWIZZLE(detACBD, 3, 3, 3, 3);
 
-    const simd_t A = unpacklo(col0, col1);
-    const simd_t B = unpacklo(col2, col3);
-    const simd_t C = unpackhi(col0, col1);
-    const simd_t D = unpackhi(col2, col3);
+    const simd_t A = intrlvlo(col0, col1);
+    const simd_t B = intrlvlo(col2, col3);
+    const simd_t C = intrlvhi(col0, col1);
+    const simd_t D = intrlvhi(col2, col3);
 
     const simd_t AadjB = impl::adjMul2x2(A, B);
     const simd_t DadjC = impl::adjMul2x2(D, C);
@@ -308,14 +308,14 @@ namespace simd {
     simd::simd_t col2 = load(src +  8);
     simd::simd_t col3 = load(src + 12);
 
-    const simd_t tmp0 = unpacklo(col0, col2);
-    const simd_t tmp1 = unpackhi(col0, col2);
-    const simd_t tmp2 = unpacklo(col1, col3);
-    const simd_t tmp3 = unpackhi(col1, col3);
-    col0 = unpacklo(tmp0, tmp2);
-    col1 = unpackhi(tmp0, tmp2);
-    col2 = unpacklo(tmp1, tmp3);
-    col3 = unpackhi(tmp1, tmp3);
+    const simd_t tmp0 = intrlvlo(col0, col2);
+    const simd_t tmp1 = intrlvhi(col0, col2);
+    const simd_t tmp2 = intrlvlo(col1, col3);
+    const simd_t tmp3 = intrlvhi(col1, col3);
+    col0 = intrlvlo(tmp0, tmp2);
+    col1 = intrlvhi(tmp0, tmp2);
+    col2 = intrlvlo(tmp1, tmp3);
+    col3 = intrlvhi(tmp1, tmp3);
 
     simd::store(dest +  0, col0);
     simd::store(dest +  4, col1);
