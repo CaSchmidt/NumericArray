@@ -55,10 +55,10 @@ namespace simd {
   _mm_shuffle_ps(a, b, _MM_SHUFFLE((b2), (b1), (a2), (a1)))
 
 #ifdef HAVE_SSE2
-# define SIMD_SHL(vec,count) \
+# define SIMD_SHIFTL(vec,count) \
   _mm_castsi128_ps(_mm_slli_si128(_mm_castps_si128(vec), (count)))
 
-# define SIMD_SHR(vec,count) \
+# define SIMD_SHIFTR(vec,count) \
   _mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(vec), (count)))
 
 # define SIMD_SWIZZLE(vec,x,y,z,w) \
@@ -156,6 +156,11 @@ namespace simd {
     return _mm_setzero_ps();
   }
 
+  inline simd_t zero_w(const simd_t& x)
+  {
+    return SIMD_SHIFTR(SIMD_SHIFTL(x, 4), 4);
+  }
+
   ////// 3x1 Vector Functions ////////////////////////////////////////////////
 
   /*
@@ -175,7 +180,7 @@ namespace simd {
   inline simd_t dot(const simd_t& a, const simd_t& b)
   {
     const simd_t prod = mul(a, b);
-    return hadd(SIMD_SHR(SIMD_SHL(prod, 4), 4));
+    return hadd(zero_w(prod));
   }
 
   ////// 4x4 Matrix Functions ////////////////////////////////////////////////
