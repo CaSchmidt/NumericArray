@@ -36,6 +36,7 @@
 
 #include <N4/ExprBase.h>
 #include <N4/Manipulator.h>
+#include <N4/Math.h>
 #include <N4/SIMD.h>
 
 namespace n4 {
@@ -211,6 +212,24 @@ namespace n4 {
     inline real_t& operator()(const size_t i)
     {
       return _data[i];
+    }
+
+    ////// Functions /////////////////////////////////////////////////////////
+
+    inline bool isNaN() const
+    {
+      return
+          n4::isNaN(_data[0])  ||
+          n4::isNaN(_data[1])  ||
+          n4::isNaN(_data[2]);
+    }
+
+    inline bool isZero(const real_t epsilon0 = 0x1p-13) const
+    {
+      return
+          n4::isZero(_data[0], epsilon0)  &&
+          n4::isZero(_data[1], epsilon0)  &&
+          n4::isZero(_data[2], epsilon0);
     }
 
   private:

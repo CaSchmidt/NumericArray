@@ -84,6 +84,11 @@ namespace n4 {
     return isnan(x) != 0;
   }
 
+  inline bool isZero(const real_t x, const real_t epsilon0 = 0x1p-20)
+  {
+    return abs(x) <= epsilon0;
+  }
+
   inline real_t pow(const real_t x, const real_t y)
   {
     return ::powf(x, y);

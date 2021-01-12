@@ -64,6 +64,11 @@ namespace test_print {
     fflush(stdout);
   }
 
+  void print(const char *s, const double d)
+  {
+    printf("%-16s = %26.24f (%a)\n", s, d, d);
+  }
+
 } // namespace test_print
 
 #define PRINTreal(real)  test_print::print(real, #real)
@@ -83,7 +88,7 @@ namespace test_util {
   bool equals(const real_t a, const real_t b,
               const real_t epsilon0 = test_konst::epsilon0)
   {
-    return n4::abs(a - b) <= epsilon0;
+    return n4::isZero(a - b, epsilon0);
   }
 
   bool equals(const Vec4f& v, const std::initializer_list<real_t>& list,
@@ -160,6 +165,9 @@ namespace test_n4 {
     PRINTexpr(b);
     PRINTreal(W0);
     PRINTmatr(M);
+
+    test_print::print("0.0001", 0x1p-13);
+    test_print::print("0.000001", 0x1p-20);
   }
 
   TEST_CASE("N4 global base.", "[N4][base]") {
