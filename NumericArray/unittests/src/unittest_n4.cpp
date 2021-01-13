@@ -173,7 +173,39 @@ namespace test_n4 {
   TEST_CASE("N4 global base.", "[N4][base]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
-    REQUIRE( equals(Vec4f{1, 2, 3, 4}, {1, 2, 3, W0}, 0) );
+    {
+      Vec4f v_set(5);
+      REQUIRE( equals(v_set, {5, 5, 5, W0}, 0) );
+
+      v_set = 7;
+      REQUIRE( equals(v_set, {7, 7, 7, W0}, 0) );
+    }
+
+    {
+      Vec4f v_list{2, 4, 6};
+      REQUIRE( equals(v_list, {2, 4, 6, W0}, 0) );
+
+      v_list = {3, 5, 7};
+      REQUIRE( equals(v_list, {3, 5, 7, W0}, 0) );
+    }
+
+    {
+      Vec4f v_copy(a);
+      REQUIRE( equals(v_copy, {1, 2, 3, W0}, 0) );
+
+      v_copy = b;
+      REQUIRE( equals(v_copy, {2, 3, 4, W0}, 0) );
+    }
+
+    {
+      Vec4f a{3, 5, 7};
+      Vec4f v_move(std::move(a));
+      REQUIRE( equals(v_move, {3, 5, 7, W0}, 0) );
+
+      Vec4f b{5, 7, 9};
+      v_move = std::move(b);
+      REQUIRE( equals(v_move, {5, 7, 9, W0}, 0) );
+    }
   }
 
   TEST_CASE("N4 Vector4f assignment.", "[Vector4f][assign]") {
@@ -186,12 +218,14 @@ namespace test_n4 {
     REQUIRE( equals(Vec4f(b) /= a, {2, 1.5, 1.333333f, W0}   ) );
     REQUIRE( equals(Vec4f(b) /= 8, {0.25, 0.375, 0.5, W0} , 0) );
 
-    Vec4f v;
-    v += a;
-    v += b;
-    v -= Vec4f{1, 1, 1};
-    v /= 2;
-    REQUIRE( equals(v, {1, 2, 3, W0}, 0) );
+    {
+      Vec4f v1;
+      v1 += a;
+      v1 += b;
+      v1 -= Vec4f{1, 1, 1};
+      v1 /= 2;
+      REQUIRE( equals(v1, {1, 2, 3, W0}, 0) );
+    }
   }
 
   TEST_CASE("N4 Vector4f binary operators.", "[Vector4f][binary]") {
