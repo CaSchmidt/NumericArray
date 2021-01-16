@@ -81,13 +81,13 @@ namespace n4 {
       inline simd::simd_t eval() const
       {
         using namespace simd;
-        const simd_t x = _rhs.eval();
-        // NOTE: y = M*x
-        simd_t y = mul(SIMD_SWIZZLE(x, 0, 0, 0, 0), load(_lhs.data() + 0));
-        y = add(y, mul(SIMD_SWIZZLE(x, 1, 1, 1, 1), load(_lhs.data() + 4)));
-        y = add(y, mul(SIMD_SWIZZLE(x, 2, 2, 2, 2), load(_lhs.data() + 8)));
+        const simd_t v = _rhs.eval();
+        // NOTE: y = M*v
+        simd_t y = mul(SIMD_SWIZZLE(v, 0, 0, 0, 0), load(_lhs.data() + 0));
+        y = add(y, mul(SIMD_SWIZZLE(v, 1, 1, 1, 1), load(_lhs.data() + 4)));
+        y = add(y, mul(SIMD_SWIZZLE(v, 2, 2, 2, 2), load(_lhs.data() + 8)));
         if constexpr( traits_T::have_w ) {
-          y = add(y, load(_lhs.data() + 12)); // NOTE: x.w == 1
+          y = add(y, load(_lhs.data() + 12)); // NOTE: v.w == 1
         }
         return y;
       }
