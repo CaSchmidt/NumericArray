@@ -34,10 +34,13 @@
 
 #include <N4/ExprBase.h>
 #include <N4/SIMD.h>
+#include <N4/TypeTraits.h>
 
 namespace n4 {
 
   namespace impl {
+
+    using simd::simd_t;
 
     ////// Dispatch 1 Argument ///////////////////////////////////////////////
     ///
@@ -51,7 +54,7 @@ namespace n4 {
       {
       }
 
-      inline simd::simd_t eval() const
+      inline simd_t eval() const
       {
         return OP::eval(_arg1.eval());
       }
@@ -73,7 +76,7 @@ namespace n4 {
       {
       }
 
-      inline simd::simd_t eval() const
+      inline simd_t eval() const
       {
         return OP::eval(simd::set(_arg1), _arg2.eval());
       }
@@ -92,7 +95,7 @@ namespace n4 {
       {
       }
 
-      inline simd::simd_t eval() const
+      inline simd_t eval() const
       {
         return OP::eval(_arg1.eval(), simd::set(_arg2));
       }
@@ -111,7 +114,7 @@ namespace n4 {
       {
       }
 
-      inline simd::simd_t eval() const
+      inline simd_t eval() const
       {
         return OP::eval(_arg1.eval(), _arg2.eval());
       }
@@ -135,7 +138,7 @@ namespace n4 {
       {
       }
 
-      inline simd::simd_t eval() const
+      inline simd_t eval() const
       {
         return OP::eval(_arg1.eval(), simd::set(_arg2), simd::set(_arg3));
       }

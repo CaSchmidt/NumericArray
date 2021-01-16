@@ -33,6 +33,7 @@
 #define N4_FUNCTIONS_H
 
 #include <N4/Dispatch.h>
+#include <N4/TypeTraits.h>
 
 namespace n4 {
 
@@ -41,44 +42,43 @@ namespace n4 {
   namespace impl {
 
     struct Clamp {
-      inline static simd::simd_t eval(const simd::simd_t& x,
-                                      const simd::simd_t& lo, const simd::simd_t& hi)
+      inline static simd_t eval(const simd_t& x, const simd_t& lo, const simd_t& hi)
       {
         return simd::clamp(x, lo, hi);
       }
     };
 
     struct Cross {
-      inline static simd::simd_t eval(const simd::simd_t& a, const simd::simd_t& b)
+      inline static simd_t eval(const simd_t& a, const simd_t& b)
       {
         return simd::cross(a, b);
       }
     };
 
     struct Direction {
-      inline static simd::simd_t eval(const simd::simd_t& from, const simd::simd_t& to)
+      inline static simd_t eval(const simd_t& from, const simd_t& to)
       {
-        const simd::simd_t x = simd::sub(to, from);
+        const simd_t x = simd::sub(to, from);
         return simd::div(x, simd::sqrt(simd::dot(x, x)));
       }
     };
 
     struct Max {
-      inline static simd::simd_t eval(const simd::simd_t& a, const simd::simd_t& b)
+      inline static simd_t eval(const simd_t& a, const simd_t& b)
       {
         return simd::max(a, b);
       }
     };
 
     struct Min {
-      inline static simd::simd_t eval(const simd::simd_t& a, const simd::simd_t& b)
+      inline static simd_t eval(const simd_t& a, const simd_t& b)
       {
         return simd::min(a, b);
       }
     };
 
     struct Normalize {
-      inline static simd::simd_t eval(const simd::simd_t& x)
+      inline static simd_t eval(const simd_t& x)
       {
         return simd::div(x, simd::sqrt(simd::dot(x, x)));
       }

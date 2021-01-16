@@ -41,14 +41,14 @@ namespace n4 {
   namespace impl {
 
     struct UnaMinus {
-      inline static simd::simd_t eval(const simd::simd_t& x)
+      inline static simd_t eval(const simd_t& x)
       {
         return simd::mul(simd::set(-1), x);
       }
     };
 
     struct UnaPlus {
-      inline static simd::simd_t eval(const simd::simd_t& x)
+      inline static simd_t eval(const simd_t& x)
       {
         return x;
       }

@@ -39,13 +39,11 @@
 # include <emmintrin.h>
 #endif
 
-#include <N4/TypeTraits.h>
-
 namespace simd {
 
   ////// Types ///////////////////////////////////////////////////////////////
 
-  using n4::real_t;
+  using real_t = float;
 
   using simd_t = __m128;
 

@@ -42,28 +42,28 @@ namespace n4 {
   namespace impl {
 
     struct BinAdd {
-      inline static simd::simd_t eval(const simd::simd_t& a, const simd::simd_t& b)
+      inline static simd_t eval(const simd_t& a, const simd_t& b)
       {
         return simd::add(a, b);
       }
     };
 
     struct BinDiv {
-      inline static simd::simd_t eval(const simd::simd_t& a, const simd::simd_t& b)
+      inline static simd_t eval(const simd_t& a, const simd_t& b)
       {
         return simd::div(a, b);
       }
     };
 
     struct BinMul {
-      inline static simd::simd_t eval(const simd::simd_t& a, const simd::simd_t& b)
+      inline static simd_t eval(const simd_t& a, const simd_t& b)
       {
         return simd::mul(a, b);
       }
     };
 
     struct BinSub {
-      inline static simd::simd_t eval(const simd::simd_t& a, const simd::simd_t& b)
+      inline static simd_t eval(const simd_t& a, const simd_t& b)
       {
         return simd::sub(a, b);
       }

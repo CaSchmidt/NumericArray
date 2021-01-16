@@ -41,6 +41,8 @@
 
 namespace n4 {
 
+  static_assert(is_real<simd::real_t>::value);
+
   template<typename traits_T, typename manip_T = NoManipulator>
   class Vector4f
       : public ExprBase<traits_T,Vector4f<traits_T,manip_T>>
