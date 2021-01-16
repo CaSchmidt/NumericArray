@@ -32,8 +32,7 @@
 #ifndef N4_UNARYOPERATORS_H
 #define N4_UNARYOPERATORS_H
 
-#include <N4/ExprBase.h>
-#include <N4/SIMD.h>
+#include <N4/Dispatch.h>
 
 namespace n4 {
 
@@ -41,39 +40,18 @@ namespace n4 {
 
   namespace impl {
 
-    template<typename traits_T, typename OP>
-    class UnaMinus : public ExprBase<traits_T,UnaMinus<traits_T,OP>> {
-    public:
-      UnaMinus(const OP& op) noexcept
-        : _op(op)
+    struct UnaMinus {
+      inline static simd::simd_t eval(const simd::simd_t& x)
       {
+        return simd::mul(simd::set(-1), x);
       }
-
-      inline simd::simd_t eval() const
-      {
-        return simd::mul(simd::set(-1), _op.eval());
-      }
-
-    private:
-      const OP& _op;
     };
 
-    template<typename traits_T, typename OP>
-    class UnaPlus : public ExprBase<traits_T,UnaPlus<traits_T,OP>>
-    {
-    public:
-      UnaPlus(const OP& op)
-        : _op(op)
+    struct UnaPlus {
+      inline static simd::simd_t eval(const simd::simd_t& x)
       {
+        return x;
       }
-
-      inline simd::simd_t eval() const
-      {
-        return _op.eval();
-      }
-
-    private:
-      const OP& _op;
     };
 
   } // namespace impl
@@ -83,13 +61,13 @@ namespace n4 {
   template<typename traits_T, typename OP>
   inline auto operator+(const ExprBase<traits_T,OP>& expr)
   {
-    return impl::UnaPlus<traits_T,OP>(expr.as_derived());
+    return impl::DispatchV<traits_T,OP,impl::UnaPlus>(expr.as_derived());
   }
 
   template<typename traits_T, typename OP>
   inline auto operator-(const ExprBase<traits_T,OP>& expr)
   {
-    return impl::UnaMinus<traits_T,OP>(expr.as_derived());
+    return impl::DispatchV<traits_T,OP,impl::UnaMinus>(expr.as_derived());
   }
 
 } // namespace n4

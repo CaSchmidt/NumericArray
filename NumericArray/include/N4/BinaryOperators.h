@@ -32,9 +32,8 @@
 #ifndef N4_BINARYOPERATORS_H
 #define N4_BINARYOPERATORS_H
 
-#include <N4/ExprBase.h>
+#include <N4/Dispatch.h>
 #include <N4/Matrix4f.h>
-#include <N4/ScalarOperand.h>
 
 namespace n4 {
 
@@ -42,80 +41,32 @@ namespace n4 {
 
   namespace impl {
 
-    template<typename traits_T, typename LHS, typename RHS>
-    class BinAdd : public ExprBase<traits_T,BinAdd<traits_T,LHS,RHS>> {
-    public:
-      BinAdd(const LHS& lhs, const RHS& rhs)
-        : _lhs(lhs)
-        , _rhs(rhs)
+    struct BinAdd {
+      inline static simd::simd_t eval(const simd::simd_t& a, const simd::simd_t& b)
       {
+        return simd::add(a, b);
       }
-
-      inline simd::simd_t eval() const
-      {
-        return simd::add(_lhs.eval(), _rhs.eval());
-      }
-
-    private:
-      const LHS& _lhs;
-      const RHS& _rhs;
     };
 
-    template<typename traits_T, typename LHS, typename RHS>
-    class BinDiv : public ExprBase<traits_T,BinDiv<traits_T,LHS,RHS>> {
-    public:
-      BinDiv(const LHS& lhs, const RHS& rhs)
-        : _lhs(lhs)
-        , _rhs(rhs)
+    struct BinDiv {
+      inline static simd::simd_t eval(const simd::simd_t& a, const simd::simd_t& b)
       {
+        return simd::div(a, b);
       }
-
-      inline simd::simd_t eval() const
-      {
-        return simd::div(_lhs.eval(), _rhs.eval());
-      }
-
-    private:
-      const LHS& _lhs;
-      const RHS& _rhs;
     };
 
-    template<typename traits_T, typename LHS, typename RHS>
-    class BinMul : public ExprBase<traits_T,BinMul<traits_T,LHS,RHS>> {
-    public:
-      BinMul(const LHS& lhs, const RHS& rhs)
-        : _lhs(lhs)
-        , _rhs(rhs)
+    struct BinMul {
+      inline static simd::simd_t eval(const simd::simd_t& a, const simd::simd_t& b)
       {
+        return simd::mul(a, b);
       }
-
-      inline simd::simd_t eval() const
-      {
-        return simd::mul(_lhs.eval(), _rhs.eval());
-      }
-
-    private:
-      const LHS& _lhs;
-      const RHS& _rhs;
     };
 
-    template<typename traits_T, typename LHS, typename RHS>
-    class BinSub : public ExprBase<traits_T,BinSub<traits_T,LHS,RHS>> {
-    public:
-      BinSub(const LHS& lhs, const RHS& rhs)
-        : _lhs(lhs)
-        , _rhs(rhs)
+    struct BinSub {
+      inline static simd::simd_t eval(const simd::simd_t& a, const simd::simd_t& b)
       {
+        return simd::sub(a, b);
       }
-
-      inline simd::simd_t eval() const
-      {
-        return simd::sub(_lhs.eval(), _rhs.eval());
-      }
-
-    private:
-      const LHS& _lhs;
-      const RHS& _rhs;
     };
 
     template<typename traits_T, typename RHS>
@@ -155,7 +106,7 @@ namespace n4 {
   template<typename traits_T, typename LHS, typename RHS>
   inline auto operator+(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
   {
-    return impl::BinAdd<traits_T,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
+    return impl::DispatchVV<traits_T,LHS,RHS,impl::BinAdd>(lhs.as_derived(), rhs.as_derived());
   }
 
   // Subtraction /////////////////////////////////////////////////////////////
@@ -163,7 +114,7 @@ namespace n4 {
   template<typename traits_T, typename LHS, typename RHS>
   inline auto operator-(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
   {
-    return impl::BinSub<traits_T,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
+    return impl::DispatchVV<traits_T,LHS,RHS,impl::BinSub>(lhs.as_derived(), rhs.as_derived());
   }
 
   // Multiplication //////////////////////////////////////////////////////////
@@ -171,23 +122,19 @@ namespace n4 {
   template<typename traits_T, typename LHS, typename RHS>
   inline auto operator*(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
   {
-    return impl::BinMul<traits_T,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
+    return impl::DispatchVV<traits_T,LHS,RHS,impl::BinMul>(lhs.as_derived(), rhs.as_derived());
   }
 
   template<typename traits_T, typename LHS>
   inline auto operator*(const ExprBase<traits_T,LHS>& lhs, const real_t rhs)
   {
-    using impl::ScalarOperand;
-    return impl::BinMul<traits_T,LHS,ScalarOperand>(lhs.as_derived(),
-                                                    ScalarOperand(rhs));
+    return impl::DispatchVS<traits_T,LHS,impl::BinMul>(lhs.as_derived(), rhs);
   }
 
   template<typename traits_T, typename RHS>
   inline auto operator*(const real_t lhs, const ExprBase<traits_T,RHS>& rhs)
   {
-    using impl::ScalarOperand;
-    return impl::BinMul<traits_T,ScalarOperand,RHS>(ScalarOperand(lhs),
-                                                    rhs.as_derived());
+    return impl::DispatchSV<traits_T,RHS,impl::BinMul>(lhs, rhs.as_derived());
   }
 
   template<typename traits_T, typename RHS>
@@ -201,23 +148,19 @@ namespace n4 {
   template<typename traits_T, typename LHS, typename RHS>
   inline auto operator/(const ExprBase<traits_T,LHS>& lhs, const ExprBase<traits_T,RHS>& rhs)
   {
-    return impl::BinDiv<traits_T,LHS,RHS>(lhs.as_derived(), rhs.as_derived());
+    return impl::DispatchVV<traits_T,LHS,RHS,impl::BinDiv>(lhs.as_derived(), rhs.as_derived());
   }
 
   template<typename traits_T, typename RHS>
   inline auto operator/(const real_t lhs, const ExprBase<traits_T,RHS>& rhs)
   {
-    using impl::ScalarOperand;
-    return impl::BinDiv<traits_T,ScalarOperand,RHS>(ScalarOperand(lhs),
-                                                    rhs.as_derived());
+    return impl::DispatchSV<traits_T,RHS,impl::BinDiv>(lhs, rhs.as_derived());
   }
 
   template<typename traits_T, typename LHS>
   inline auto operator/(const ExprBase<traits_T,LHS>& lhs, const real_t rhs)
   {
-    using impl::ScalarOperand;
-    return impl::BinDiv<traits_T,LHS,ScalarOperand>(lhs.as_derived(),
-                                                    ScalarOperand(rhs));
+    return impl::DispatchVS<traits_T,LHS,impl::BinDiv>(lhs.as_derived(), rhs);
   }
 
 } // namespace n4
