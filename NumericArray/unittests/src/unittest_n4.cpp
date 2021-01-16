@@ -4,6 +4,8 @@
 
 #include <N4/N4.h>
 
+#include "Optics.h"
+
 ////// Global Types //////////////////////////////////////////////////////////
 
 using n4::real_t;
@@ -168,6 +170,7 @@ namespace test_n4 {
 
     test_print::print("0.0001", 0x1p-13);
     test_print::print("0.000001", 0x1p-20);
+    test_print::print("epsilon0", test_konst::epsilon0);
   }
 
   TEST_CASE("N4 global base.", "[N4][base]") {
@@ -343,3 +346,35 @@ namespace test_n4 {
   }
 
 } // namespace test_n4
+
+namespace test_optics {
+
+  using namespace test_util;
+
+  TEST_CASE("Optical refraction.", "[optics][refract]") {
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const real_t yI = -0.5;
+    const real_t xI = n4::sqrt(optics::ONE - yI*yI);
+    const optics::Direction I{xI, yI};
+    PRINTexpr(n4::expr_cast<Vec4f::traits_type>(I));
+
+    REQUIRE( equals(n4::length(I), 1) );
+
+    const optics::Normal N{0, 1};
+    PRINTexpr(n4::expr_cast<Vec4f::traits_type>(N));
+
+    REQUIRE( equals(n4::length(N), 1) );
+
+    {
+      const optics::Direction T1 = optics::refract(I, N, 1);
+      REQUIRE( equals(n4::expr_cast<Vec4f::traits_type>(T1), {I(0), I(1), I(2), W0}, 0) );
+    }
+
+    {
+      const optics::Direction T2 = optics::refract(I, N, 1.5);
+      REQUIRE( equals(n4::expr_cast<Vec4f::traits_type>(T2), {0, 0, 0, W0}, 0) );
+    }
+  }
+
+} // namespace test_optics
