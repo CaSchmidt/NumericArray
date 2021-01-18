@@ -61,13 +61,13 @@ namespace n4 {
   template<typename traits_T, typename OP>
   inline auto operator+(const ExprBase<traits_T,OP>& expr)
   {
-    return impl::DispatchV<traits_T,OP,impl::UnaPlus>(expr.as_derived());
+    return impl::DispatchV<impl::UnaPlus,traits_T,OP>(expr.as_derived());
   }
 
   template<typename traits_T, typename OP>
   inline auto operator-(const ExprBase<traits_T,OP>& expr)
   {
-    return impl::DispatchV<traits_T,OP,impl::UnaMinus>(expr.as_derived());
+    return impl::DispatchV<impl::UnaMinus,traits_T,OP>(expr.as_derived());
   }
 
 } // namespace n4

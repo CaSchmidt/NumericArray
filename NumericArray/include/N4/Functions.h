@@ -91,19 +91,19 @@ namespace n4 {
   template<typename traits_T, typename ARG>
   inline auto clamp(const ExprBase<traits_T,ARG>& arg, const real_t lo, const real_t hi)
   {
-    return impl::DispatchVSS<traits_T,ARG,impl::Clamp>(arg.as_derived(), lo, hi);
+    return impl::DispatchVSS<impl::Clamp,traits_T,ARG>(arg.as_derived(), lo, hi);
   }
 
   template<typename traits_T, typename ARG1, typename ARG2>
   inline auto cross(const ExprBase<traits_T,ARG1>& arg1, const ExprBase<traits_T,ARG2>& arg2)
   {
-    return impl::DispatchVV<traits_T,ARG1,ARG2,impl::Cross>(arg1.as_derived(), arg2.as_derived());
+    return impl::DispatchVV<impl::Cross,traits_T,ARG1,ARG2>(arg1.as_derived(), arg2.as_derived());
   }
 
   template<typename traits_T, typename FROM, typename TO>
   inline auto direction(const ExprBase<traits_T,FROM>& from, const ExprBase<traits_T,TO>& to)
   {
-    return impl::DispatchVV<traits_T,FROM,TO,impl::Direction>(from.as_derived(), to.as_derived());
+    return impl::DispatchVV<impl::Direction,traits_T,FROM,TO>(from.as_derived(), to.as_derived());
   }
 
   template<typename traits_T, typename FROM, typename TO>
@@ -129,31 +129,31 @@ namespace n4 {
   template<typename traits_T, typename ARG1>
   inline auto max(const ExprBase<traits_T,ARG1>& arg1, const real_t arg2)
   {
-    return impl::DispatchVS<traits_T,ARG1,impl::Max>(arg1.as_derived(), arg2);
+    return impl::DispatchVS<impl::Max,traits_T,ARG1>(arg1.as_derived(), arg2);
   }
 
   template<typename traits_T, typename ARG2>
   inline auto max(const real_t arg1, const ExprBase<traits_T,ARG2>& arg2)
   {
-    return impl::DispatchSV<traits_T,ARG2,impl::Max>(arg1, arg2.as_derived());
+    return impl::DispatchSV<impl::Max,traits_T,ARG2>(arg1, arg2.as_derived());
   }
 
   template<typename traits_T, typename ARG1>
   inline auto min(const ExprBase<traits_T,ARG1>& arg1, const real_t arg2)
   {
-    return impl::DispatchVS<traits_T,ARG1,impl::Min>(arg1.as_derived(), arg2);
+    return impl::DispatchVS<impl::Min,traits_T,ARG1>(arg1.as_derived(), arg2);
   }
 
   template<typename traits_T, typename ARG2>
   inline auto min(const real_t arg1, const ExprBase<traits_T,ARG2>& arg2)
   {
-    return impl::DispatchSV<traits_T,ARG2,impl::Min>(arg1, arg2.as_derived());
+    return impl::DispatchSV<impl::Min,traits_T,ARG2>(arg1, arg2.as_derived());
   }
 
   template<typename traits_T, typename ARG>
   inline auto normalize(const ExprBase<traits_T,ARG>& arg)
   {
-    return impl::DispatchV<traits_T,ARG,impl::Normalize>(arg.as_derived());
+    return impl::DispatchV<impl::Normalize,traits_T,ARG>(arg.as_derived());
   }
 
 } // namespace n4

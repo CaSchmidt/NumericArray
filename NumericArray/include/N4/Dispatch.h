@@ -46,8 +46,8 @@ namespace n4 {
     ///
     /// Syntax: simd_t OP::eval(simd_t)
 
-    template<typename traits_T, typename ARG1, typename OP>
-    class DispatchV : public ExprBase<traits_T,DispatchV<traits_T,ARG1,OP>> {
+    template<typename OP, typename traits_T, typename ARG1>
+    class DispatchV : public ExprBase<traits_T,DispatchV<OP,traits_T,ARG1>> {
     public:
       DispatchV(const ARG1& arg1)
         : _arg1(arg1)
@@ -67,8 +67,8 @@ namespace n4 {
     ///
     /// Syntax: simd_t OP::eval(simd_t, simd_t)
 
-    template<typename traits_T, typename ARG2, typename OP>
-    class DispatchSV : public ExprBase<traits_T,DispatchSV<traits_T,ARG2,OP>> {
+    template<typename OP, typename traits_T, typename ARG2>
+    class DispatchSV : public ExprBase<traits_T,DispatchSV<OP,traits_T,ARG2>> {
     public:
       DispatchSV(const real_t arg1, const ARG2& arg2)
         : _arg1(arg1)
@@ -86,8 +86,8 @@ namespace n4 {
       const ARG2&  _arg2;
     };
 
-    template<typename traits_T, typename ARG1, typename OP>
-    class DispatchVS : public ExprBase<traits_T,DispatchVS<traits_T,ARG1,OP>> {
+    template<typename OP, typename traits_T, typename ARG1>
+    class DispatchVS : public ExprBase<traits_T,DispatchVS<OP,traits_T,ARG1>> {
     public:
       DispatchVS(const ARG1& arg1, const real_t arg2)
         : _arg1(arg1)
@@ -105,8 +105,8 @@ namespace n4 {
       const real_t _arg2;
     };
 
-    template<typename traits_T, typename ARG1, typename ARG2, typename OP>
-    class DispatchVV : public ExprBase<traits_T,DispatchVV<traits_T,ARG1,ARG2,OP>> {
+    template<typename OP, typename traits_T, typename ARG1, typename ARG2>
+    class DispatchVV : public ExprBase<traits_T,DispatchVV<OP,traits_T,ARG1,ARG2>> {
     public:
       DispatchVV(const ARG1& arg1, const ARG2& arg2)
         : _arg1(arg1)
@@ -128,8 +128,8 @@ namespace n4 {
     ///
     /// Syntax: simd_t OP::eval(simd_t, simd_t, simd_t)
 
-    template<typename traits_T, typename ARG1, typename OP>
-    class DispatchVSS : public ExprBase<traits_T,DispatchVSS<traits_T,ARG1,OP>> {
+    template<typename OP, typename traits_T, typename ARG1>
+    class DispatchVSS : public ExprBase<traits_T,DispatchVSS<OP,traits_T,ARG1>> {
     public:
       DispatchVSS(const ARG1& arg1, const real_t arg2, const real_t arg3)
         : _arg1(arg1)
