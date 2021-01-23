@@ -27,6 +27,5 @@ cs_unittest(unittest_math src/unittest_math.cpp src/unittest_math_impl.cpp src/u
   )
 
 cs_unittest(unittest_n4
-  include/Optics.h
   src/unittest_n4_main.cpp src/unittest_n4.cpp src/unittest_n4_impl.cpp
   )

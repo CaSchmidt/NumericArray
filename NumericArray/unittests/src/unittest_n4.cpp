@@ -3,9 +3,8 @@
 #include <catch.hpp>
 
 #include <N4/N4.h>
+#include <N4/Optics.h>
 #include <N4/Util.h>
-
-#include "Optics.h"
 
 ////// Global Types //////////////////////////////////////////////////////////
 
@@ -86,7 +85,7 @@ namespace test_konst {
 
 } // namespace test_konst
 
-namespace test_util {
+namespace test_equal {
 
   bool equals(const real_t a, const real_t b,
               const real_t epsilon0 = test_konst::epsilon0)
@@ -136,12 +135,12 @@ namespace test_util {
     return true;
   }
 
-} // namespace test_util
+} // namespace test_equal
 
 ////// Test Cases ////////////////////////////////////////////////////////////
 
 namespace test_n4 {
-  using namespace test_util;
+  using namespace test_equal;
 
   // Begin Global Constants //////////////////////////////////////////////////
 
@@ -327,10 +326,10 @@ namespace test_n4 {
     };
     PRINTmatr(M2);
 
-    REQUIRE( equals(M2.inverse(), { 0.25, 0,   0, 0,
-                                    0,   -1,   1, 0,
-                                    0,    0.5, 0, 0,
-                                   -0.25, 0,   0, 1 }) );
+    REQUIRE( equals(M2.inverse(), { 0.25, 0  , 0, 0,
+                                    0   ,-1  , 1, 0,
+                                    0   , 0.5, 0, 0,
+                                   -0.25, 0  , 0, 1 }) );
 
     const Mat4f Rx = n4::rotateXbyPI2(1);
     PRINTmatr(Rx);
@@ -340,40 +339,66 @@ namespace test_n4 {
     const Mat4f TS = n4::translate(3, 5, 7)*n4::scale(2, 4, 8);
     PRINTmatr(TS);
 
-    REQUIRE( equals(TS.inverse(), { 0.5, 0   , 0    , -1.5,
-                                    0  , 0.25, 0    , -1.25,
+    REQUIRE( equals(TS.inverse(), { 0.5, 0   , 0    , -1.5  ,
+                                    0  , 0.25, 0    , -1.25 ,
                                     0  , 0   , 0.125, -0.875,
-                                    0  , 0   , 0    ,  1 }, 0) );
+                                    0  , 0   , 0    ,  1     }, 0) );
   }
 
 } // namespace test_n4
 
 namespace test_optics {
 
-  using namespace test_util;
+  using namespace test_equal;
+
+  struct DirectionTraits {
+    static constexpr bool have_w = false;
+  };
+
+  using Direction = n4::Vector4f<DirectionTraits,n4::Normal3fManipulator>;
+
+  struct NormalTraits {
+    static constexpr bool have_w = false;
+  };
+
+  using Normal = n4::Vector4f<NormalTraits,n4::Normal3fManipulator>;
+
+  Direction make_I()
+  {
+    const real_t y = -0.5;
+    const real_t x = n4::sqrt(std::max<real_t>(0, n4::optics::ONE - y*y));
+    return Direction{x, y, 0};
+  }
+
+  TEST_CASE("Optical reflection.", "[optics][reflect]") {
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Direction I = make_I();
+    REQUIRE( equals(n4::length(I), 1) );
+
+    const Normal N{0, 1, 0};
+    REQUIRE( equals(n4::length(N), 1) );
+
+    const Direction R = n4::optics::reflect(I, N);
+    REQUIRE( equals(n4::expr_cast<Vec4f::traits_type>(R), {I(0), -I(1), I(2), W0}, 0) );
+  }
 
   TEST_CASE("Optical refraction.", "[optics][refract]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
-    const real_t yI = -0.5;
-    const real_t xI = n4::sqrt(optics::ONE - yI*yI);
-    const optics::Direction I{xI, yI};
-    PRINTexpr(n4::expr_cast<Vec4f::traits_type>(I));
-
+    const Direction I = make_I();
     REQUIRE( equals(n4::length(I), 1) );
 
-    const optics::Normal N{0, 1};
-    PRINTexpr(n4::expr_cast<Vec4f::traits_type>(N));
-
+    const Normal N{0, 1, 0};
     REQUIRE( equals(n4::length(N), 1) );
 
     {
-      const optics::Direction T1 = optics::refract(I, N, 1);
+      const Direction T1 = n4::optics::refract(I, N, 1);
       REQUIRE( equals(n4::expr_cast<Vec4f::traits_type>(T1), {I(0), I(1), I(2), W0}, 0) );
     }
 
     {
-      const optics::Direction T2 = optics::refract(I, N, 1.5);
+      const Direction T2 = n4::optics::refract(I, N, 1.5);
       REQUIRE( equals(n4::expr_cast<Vec4f::traits_type>(T2), {0, 0, 0, W0}, 0) );
     }
   }
@@ -381,6 +406,8 @@ namespace test_optics {
 } // namespace test_optics
 
 namespace test_util {
+
+  using namespace test_equal;
 
   TEST_CASE("Frame from axis.", "[util][frame]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
