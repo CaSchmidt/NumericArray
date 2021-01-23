@@ -58,6 +58,7 @@ list(APPEND N4_HEADERS
   include/N4/SIMD.h
   include/N4/TypeTraits.h
   include/N4/UnaryOperators.h
+  include/N4/Util.h
   include/N4/Vector4f.h
   include/N4/Vertex4f.h
   )

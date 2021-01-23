@@ -3,6 +3,7 @@
 #include <catch.hpp>
 
 #include <N4/N4.h>
+#include <N4/Util.h>
 
 #include "Optics.h"
 
@@ -294,7 +295,7 @@ namespace test_n4 {
     REQUIRE( equals(M*M, { 56,  62,  68,  74,
                           152, 174, 196, 218,
                           248, 286, 324, 362,
-                          344, 398, 452, 506}, 0) );
+                          344, 398, 452, 506 }, 0) );
   }
 
   TEST_CASE("N4 Matrix4f functions.", "[Matrix4f][functions]") {
@@ -342,7 +343,7 @@ namespace test_n4 {
     REQUIRE( equals(TS.inverse(), { 0.5, 0   , 0    , -1.5,
                                     0  , 0.25, 0    , -1.25,
                                     0  , 0   , 0.125, -0.875,
-                                    0  , 0   , 0    ,  1}, 0) );
+                                    0  , 0   , 0    ,  1 }, 0) );
   }
 
 } // namespace test_n4
@@ -378,3 +379,16 @@ namespace test_optics {
   }
 
 } // namespace test_optics
+
+namespace test_util {
+
+  TEST_CASE("Frame from axis.", "[util][frame]") {
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    REQUIRE( equals(n4::util::frameFromZ(Vec4f{0, 0, 1}), { 0, 1, 0, 0,
+                                                           -1, 0, 0, 0,
+                                                            0, 0, 1, 0,
+                                                            0, 0, 0, 1 }, 0) );
+  }
+
+} // namespace test_util
