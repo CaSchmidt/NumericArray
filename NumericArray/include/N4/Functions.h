@@ -33,7 +33,6 @@
 #define N4_FUNCTIONS_H
 
 #include <N4/Dispatch.h>
-#include <N4/TypeTraits.h>
 
 namespace n4 {
 
