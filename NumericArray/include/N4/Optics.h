@@ -68,8 +68,8 @@ namespace n4 {
     inline Direction reflect(const Direction& I, const Normal& N)
     {
       using dir_traits = typename Direction::traits_type;
-      const real_t DOT = n4::dot(I, expr_cast<dir_traits>(N));
-      return I - TWO*DOT*expr_cast<dir_traits>(N);
+      const real_t cosTi = n4::dot(I, expr_cast<dir_traits>(N));
+      return I - TWO*cosTi*expr_cast<dir_traits>(N);
     }
 
     // cf. GLSL v4.60, 8.5. Geometric Functions
@@ -77,10 +77,12 @@ namespace n4 {
     inline Direction refract(const Direction& I, const Normal& N, const real_t eta)
     {
       using dir_traits = typename Direction::traits_type;
-      const real_t DOT = n4::dot(I, expr_cast<dir_traits>(N));
-      const real_t k = ONE - eta*eta*std::max<real_t>(0, ONE - DOT*DOT);
-      return k >= ZERO
-          ? eta*I - (eta*DOT + n4::sqrt(k))*expr_cast<dir_traits>(N)
+      const real_t  cosTi = n4::dot(I, expr_cast<dir_traits>(N));
+      const real_t sin2Ti = std::max<real_t>(0, ONE - cosTi*cosTi);
+      const real_t sin2Tt = eta*eta*sin2Ti; // Snell's Law
+      const real_t cos2Tt = ONE - sin2Tt;
+      return cos2Tt >= ZERO // Handle Total Internal Reflection
+          ? eta*I - (eta*cosTi + n4::sqrt(cos2Tt))*expr_cast<dir_traits>(N)
           : Direction();
     }
 
