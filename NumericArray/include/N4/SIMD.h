@@ -32,12 +32,8 @@
 #ifndef N4_SIMD_H
 #define N4_SIMD_H
 
-#define HAVE_SSE2
-
-#include <xmmintrin.h>
-#ifdef HAVE_SSE2
-# include <emmintrin.h>
-#endif
+#include <xmmintrin.h> // SSE
+#include <emmintrin.h> // SSE2
 
 namespace simd {
 
@@ -52,19 +48,14 @@ namespace simd {
 #define SIMD_SHUFFLE(a,b,a1,a2,b1,b2) \
   _mm_shuffle_ps(a, b, _MM_SHUFFLE((b2), (b1), (a2), (a1)))
 
-#ifdef HAVE_SSE2
-# define SIMD_SHIFTL(vec,count) \
+#define SIMD_SHIFTL(vec,count) \
   _mm_castsi128_ps(_mm_slli_si128(_mm_castps_si128(vec), (count)))
 
-# define SIMD_SHIFTR(vec,count) \
+#define SIMD_SHIFTR(vec,count) \
   _mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(vec), (count)))
 
-# define SIMD_SWIZZLE(vec,x,y,z,w) \
+#define SIMD_SWIZZLE(vec,x,y,z,w) \
   _mm_castsi128_ps(_mm_shuffle_epi32(_mm_castps_si128(vec), _MM_SHUFFLE((w), (z), (y), (x))))
-#else
-# define SIMD_SWIZZLE(vec,x,y,z,w) \
-  _mm_shuffle_ps(vec, vec, _MM_SHUFFLE((w), (z), (y), (x)))
-#endif
 
   ////// Elementary Functions ////////////////////////////////////////////////
 
