@@ -43,7 +43,7 @@ namespace n4 {
     struct UnaMinus {
       inline static simd_t eval(const simd_t& x)
       {
-        return simd::mul(simd::set(-1), x);
+        return simd::sub(simd::zero(), x);
       }
     };
 
