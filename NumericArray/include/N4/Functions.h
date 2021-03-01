@@ -40,6 +40,13 @@ namespace n4 {
 
   namespace impl {
 
+    struct Abs {
+      inline static simd_t eval(const simd_t& x)
+      {
+        return simd::abs(x);
+      }
+    };
+
     struct Clamp {
       inline static simd_t eval(const simd_t& x, const simd_t& lo, const simd_t& hi)
       {
@@ -86,6 +93,12 @@ namespace n4 {
   } // namespace impl
 
   ////// User Interface //////////////////////////////////////////////////////
+
+  template<typename traits_T, typename ARG>
+  inline auto abs(const ExprBase<traits_T,ARG>& arg)
+  {
+    return impl::DispatchV<impl::Abs,traits_T,ARG>(arg.as_derived());
+  }
 
   template<typename traits_T, typename ARG>
   inline auto clamp(const ExprBase<traits_T,ARG>& arg, const real_t lo, const real_t hi)

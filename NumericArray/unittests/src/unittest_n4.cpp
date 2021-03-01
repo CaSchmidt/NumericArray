@@ -248,6 +248,7 @@ namespace test_n4 {
   TEST_CASE("N4 Vector4f functions.", "[Vector4f][functions]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
+    REQUIRE( equals(n4::abs(Vec4f{-1, 2, -3})   , {1, 2, 3, W0}         , 0) );
     REQUIRE( equals(n4::cross(a, b)             , {-1, 2, -1, W0}       , 0) );
     REQUIRE( equals(n4::dot(a, b)               , 20                    , 0) );
     REQUIRE( equals(n4::length(delta3)          , 3)                         );

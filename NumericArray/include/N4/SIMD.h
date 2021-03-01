@@ -68,6 +68,11 @@ namespace simd {
 
   ////// Elementary Functions ////////////////////////////////////////////////
 
+  inline simd_t abs(const simd_t& x)
+  {
+    return _mm_max_ps(x, _mm_sub_ps(_mm_setzero_ps(), x));
+  }
+
   inline simd_t add(const simd_t& a, const simd_t& b)
   {
     return _mm_add_ps(a, b);
