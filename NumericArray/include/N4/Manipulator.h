@@ -69,6 +69,30 @@ namespace n4 {
       return *_data;
     }
 
+    inline real_t operator+=(const real_t value)
+    {
+      *_data += value;
+      return *_data;
+    }
+
+    inline real_t operator-=(const real_t value)
+    {
+      *_data -= value;
+      return *_data;
+    }
+
+    inline real_t operator*=(const real_t value)
+    {
+      *_data *= value;
+      return *_data;
+    }
+
+    inline real_t operator/=(const real_t value)
+    {
+      *_data /= value;
+      return *_data;
+    }
+
   private:
     VectorProperty() noexcept = delete;
 
