@@ -69,6 +69,11 @@ namespace n4 {
     return tab[i & 0x3];
   }
 
+  inline real_t floor(const real_t x)
+  {
+    return ::floorf(x);
+  }
+
   inline bool isFinite(const real_t x)
   {
     return isfinite(x) != 0;
