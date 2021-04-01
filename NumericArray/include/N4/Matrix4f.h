@@ -148,6 +148,27 @@ namespace n4 {
       return result;
     }
 
+    inline bool isZero(const real_t epsilon0 = 0x1p-13) const
+    {
+      return
+          n4::isZero(_data[ 0], epsilon0)  &&
+          n4::isZero(_data[ 1], epsilon0)  &&
+          n4::isZero(_data[ 2], epsilon0)  &&
+          n4::isZero(_data[ 3], epsilon0)  &&
+          n4::isZero(_data[ 4], epsilon0)  &&
+          n4::isZero(_data[ 5], epsilon0)  &&
+          n4::isZero(_data[ 6], epsilon0)  &&
+          n4::isZero(_data[ 7], epsilon0)  &&
+          n4::isZero(_data[ 8], epsilon0)  &&
+          n4::isZero(_data[ 9], epsilon0)  &&
+          n4::isZero(_data[10], epsilon0)  &&
+          n4::isZero(_data[11], epsilon0)  &&
+          n4::isZero(_data[12], epsilon0)  &&
+          n4::isZero(_data[13], epsilon0)  &&
+          n4::isZero(_data[14], epsilon0)  &&
+          n4::isZero(_data[15], epsilon0);
+    }
+
     inline Matrix4f transpose() const
     {
       Matrix4f result;
