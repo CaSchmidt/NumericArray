@@ -67,7 +67,7 @@ namespace n4 {
 
     inline operator rgb_t() const
     {
-      constexpr real_t MAX_RGB = static_cast<real_t>(256.0f - 0x1p-7f);
+      constexpr real_t MAX_RGB = static_cast<real_t>(256.0f - EPSILON0_PCT);
       return static_cast<rgb_t>(std::clamp<real_t>(*_data, 0, 1)*MAX_RGB);
     }
 

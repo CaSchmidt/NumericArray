@@ -84,7 +84,7 @@ namespace n4 {
     return isnan(x) != 0;
   }
 
-  inline bool isZero(const real_t x, const real_t epsilon0 = 0x1p-20)
+  inline bool isZero(const real_t x, const real_t epsilon0 = EPSILON0_SCALAR)
   {
     return abs(x) <= epsilon0;
   }

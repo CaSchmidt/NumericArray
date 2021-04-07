@@ -53,6 +53,12 @@ namespace n4 {
 
   using std::size_t;
 
+  ////// Constants ///////////////////////////////////////////////////////////
+
+  inline constexpr real_t EPSILON0_PCT    = 0x1p-7;  // ca. 0.01
+  inline constexpr real_t EPSILON0_SCALAR = 0x1p-20; // ca. 0.000001
+  inline constexpr real_t EPSILON0_VECTOR = 0x1p-13; // ca. 0.0001
+
   ////// Assign W Component //////////////////////////////////////////////////
 
   template<typename T, typename = bool>

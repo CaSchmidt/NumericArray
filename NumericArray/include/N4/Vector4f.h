@@ -226,7 +226,7 @@ namespace n4 {
           n4::isNaN(_data[2]);
     }
 
-    inline bool isZero(const real_t epsilon0 = 0x1p-13) const
+    inline bool isZero(const real_t epsilon0 = EPSILON0_VECTOR) const
     {
       return
           n4::isZero(_data[0], epsilon0)  &&
