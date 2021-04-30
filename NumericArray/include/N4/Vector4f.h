@@ -32,6 +32,7 @@
 #ifndef N4_VECTOR4F_H
 #define N4_VECTOR4F_H
 
+#include <algorithm>
 #include <initializer_list>
 
 #include <N4/ExprBase.h>
@@ -232,6 +233,18 @@ namespace n4 {
           n4::isZero(_data[0], epsilon0)  &&
           n4::isZero(_data[1], epsilon0)  &&
           n4::isZero(_data[2], epsilon0);
+    }
+
+    inline real_t max() const
+    {
+      real_t x = std::max<real_t>(_data[0], _data[1]);
+      return std::max<real_t>(x, _data[2]);
+    }
+
+    inline real_t min() const
+    {
+      real_t x = std::min<real_t>(_data[0], _data[1]);
+      return std::min<real_t>(x, _data[2]);
     }
 
   private:
