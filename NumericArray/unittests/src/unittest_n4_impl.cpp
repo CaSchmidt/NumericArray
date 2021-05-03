@@ -20,3 +20,13 @@ void test_gemv(V4f& z,
 {
   z = alpha*(A*x) + beta*y;
 }
+
+bool test_zero(const n4::Matrix4f& M)
+{
+  return M.isZero();
+}
+
+bool test_zero(const V4f& v)
+{
+  return v.isZero();
+}

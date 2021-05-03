@@ -32,7 +32,6 @@
 #ifndef N4_SIMD_H
 #define N4_SIMD_H
 
-#include <xmmintrin.h> // SSE
 #include <emmintrin.h> // SSE2
 
 namespace simd {
@@ -72,6 +71,15 @@ namespace simd {
   inline simd_t clamp(const simd_t& x, const simd_t& lo, const simd_t& hi)
   {
     return _mm_max_ps(lo, _mm_min_ps(x, hi));
+  }
+
+  template<bool HAVE_W = true>
+  inline bool cmpLEQ(const simd_t& a, const simd_t& b)
+  {
+    constexpr int MASK = HAVE_W
+        ? (1 << 4) - 1
+        : (1 << 3) - 1;
+    return _mm_movemask_ps(_mm_cmple_ps(a, b)) == MASK;
   }
 
   inline simd_t div(const simd_t& a, const simd_t& b)
@@ -175,6 +183,20 @@ namespace simd {
   {
     const simd_t prod = mul(a, b);
     return hadd(zero_w(prod));
+  }
+
+  ////// 4x1 Vector Functions ////////////////////////////////////////////////
+
+  template<bool HAVE_W = true>
+  inline bool isZero(const simd_t& x, const simd_t& epsilon0)
+  {
+    return cmpLEQ<HAVE_W>(abs(x), epsilon0);
+  }
+
+  template<bool HAVE_W = true>
+  inline bool isZero(const simd_t& x, const real_t epsilon0)
+  {
+    return isZero<HAVE_W>(x, set(epsilon0));
   }
 
   ////// 4x4 Matrix Functions ////////////////////////////////////////////////

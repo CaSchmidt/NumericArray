@@ -263,6 +263,10 @@ namespace test_n4 {
     REQUIRE( equals(n4::min(2.5, a)             , {1, 2, 2.5, W0}       , 0) );
     REQUIRE( equals(a.max()                     , 3                     , 0) );
     REQUIRE( equals(a.min()                     , 1                     , 0) );
+    REQUIRE( !a.isZero() );
+    REQUIRE( simd::cmpLEQ(a.eval(), b.eval()) );
+    REQUIRE( simd::cmpLEQ(a.eval(), a.eval()) );
+    REQUIRE( !simd::cmpLEQ(b.eval(), a.eval()) );
   }
 
   TEST_CASE("N4 Vector4f manipulators.", "[Vector4f][manipulator]") {
@@ -346,6 +350,8 @@ namespace test_n4 {
                                     0  , 0.25, 0    , -1.25 ,
                                     0  , 0   , 0.125, -0.875,
                                     0  , 0   , 0    ,  1     }, 0) );
+
+    REQUIRE( !M.isZero() );
   }
 
 } // namespace test_n4
