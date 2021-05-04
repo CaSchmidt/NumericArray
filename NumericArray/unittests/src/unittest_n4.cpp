@@ -264,6 +264,9 @@ namespace test_n4 {
     REQUIRE( equals(a.max()                     , 3                     , 0) );
     REQUIRE( equals(a.min()                     , 1                     , 0) );
     REQUIRE( !a.isZero() );
+    REQUIRE( !a.isZero(2) );
+    REQUIRE( a.isZero(3) );
+    REQUIRE( a.isZero(4) );
     REQUIRE( simd::cmpLEQ(a.eval(), b.eval()) );
     REQUIRE( simd::cmpLEQ(a.eval(), a.eval()) );
     REQUIRE( !simd::cmpLEQ(b.eval(), a.eval()) );
@@ -352,6 +355,9 @@ namespace test_n4 {
                                     0  , 0   , 0    ,  1     }, 0) );
 
     REQUIRE( !M.isZero() );
+    REQUIRE( !M.isZero(14) );
+    REQUIRE( M.isZero(15) );
+    REQUIRE( M.isZero(16) );
   }
 
 } // namespace test_n4

@@ -36,6 +36,18 @@
 
 namespace simd {
 
+  namespace priv {
+
+    template<bool CMP_W>
+    constexpr int CMP_MASK()
+    {
+      return CMP_W
+          ? (1 << 4) - 1
+          : (1 << 3) - 1;
+    }
+
+  } // namespace priv
+
   ////// Types ///////////////////////////////////////////////////////////////
 
   using real_t = float;
@@ -73,13 +85,11 @@ namespace simd {
     return _mm_max_ps(lo, _mm_min_ps(x, hi));
   }
 
-  template<bool HAVE_W = true>
+  template<bool CMP_W = true>
   inline bool cmpLEQ(const simd_t& a, const simd_t& b)
   {
-    constexpr int MASK = HAVE_W
-        ? (1 << 4) - 1
-        : (1 << 3) - 1;
-    return _mm_movemask_ps(_mm_cmple_ps(a, b)) == MASK;
+    constexpr int MASK = priv::CMP_MASK<CMP_W>();
+    return (_mm_movemask_ps(_mm_cmple_ps(a, b)) & MASK) == MASK;
   }
 
   inline simd_t div(const simd_t& a, const simd_t& b)
@@ -187,16 +197,16 @@ namespace simd {
 
   ////// 4x1 Vector Functions ////////////////////////////////////////////////
 
-  template<bool HAVE_W = true>
+  template<bool CMP_W = true>
   inline bool isZero(const simd_t& x, const simd_t& epsilon0)
   {
-    return cmpLEQ<HAVE_W>(abs(x), epsilon0);
+    return cmpLEQ<CMP_W>(abs(x), epsilon0);
   }
 
-  template<bool HAVE_W = true>
+  template<bool CMP_W = true>
   inline bool isZero(const simd_t& x, const real_t epsilon0)
   {
-    return isZero<HAVE_W>(x, set(epsilon0));
+    return isZero<CMP_W>(x, set(epsilon0));
   }
 
   ////// 4x4 Matrix Functions ////////////////////////////////////////////////
