@@ -234,13 +234,13 @@ namespace n4 {
 
     inline real_t max() const
     {
-      real_t x = std::max<real_t>(_data[0], _data[1]);
+      const real_t x = std::max<real_t>(_data[0], _data[1]);
       return std::max<real_t>(x, _data[2]);
     }
 
     inline real_t min() const
     {
-      real_t x = std::min<real_t>(_data[0], _data[1]);
+      const real_t x = std::min<real_t>(_data[0], _data[1]);
       return std::min<real_t>(x, _data[2]);
     }
 
