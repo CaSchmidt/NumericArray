@@ -248,6 +248,9 @@ namespace test_n4 {
   TEST_CASE("N4 Vector4f functions.", "[Vector4f][functions]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
+    const Vec4f A{1, 3, 3};
+    const Vec4f B{2, 2, 4};
+
     REQUIRE( equals(n4::abs(Vec4f{-1, 2, -3})   , {1, 2, 3, W0}         , 0) );
     REQUIRE( equals(n4::cross(a, b)             , {-1, 2, -1, W0}       , 0) );
     REQUIRE( equals(n4::dot(a, b)               , 20                    , 0) );
@@ -259,8 +262,10 @@ namespace test_n4 {
     REQUIRE( equals(n4::clamp(a, 1.5, 2.5)      , {1.5, 2, 2.5, W0}     , 0) );
     REQUIRE( equals(n4::max(a, 1.5)             , {1.5, 2, 3, W0}       , 0) );
     REQUIRE( equals(n4::max(1.5, a)             , {1.5, 2, 3, W0}       , 0) );
+    REQUIRE( equals(n4::max(A, B)               , {2, 3, 4, W0}         , 0) );
     REQUIRE( equals(n4::min(a, 2.5)             , {1, 2, 2.5, W0}       , 0) );
     REQUIRE( equals(n4::min(2.5, a)             , {1, 2, 2.5, W0}       , 0) );
+    REQUIRE( equals(n4::min(A, B)               , {1, 2, 3, W0}         , 0) );
     REQUIRE( equals(a.max()                     , 3                     , 0) );
     REQUIRE( equals(a.min()                     , 1                     , 0) );
     REQUIRE( !a.isZero() );

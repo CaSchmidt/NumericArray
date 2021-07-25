@@ -150,6 +150,12 @@ namespace n4 {
     return impl::DispatchSV<impl::Max,traits_T,ARG2>(arg1, arg2.as_derived());
   }
 
+  template<typename traits_T, typename ARG1, typename ARG2>
+  inline auto max(const ExprBase<traits_T,ARG1>& arg1, const ExprBase<traits_T,ARG2>& arg2)
+  {
+    return impl::DispatchVV<impl::Max,traits_T,ARG1,ARG2>(arg1.as_derived(), arg2.as_derived());
+  }
+
   template<typename traits_T, typename ARG1>
   inline auto min(const ExprBase<traits_T,ARG1>& arg1, const real_t arg2)
   {
@@ -160,6 +166,12 @@ namespace n4 {
   inline auto min(const real_t arg1, const ExprBase<traits_T,ARG2>& arg2)
   {
     return impl::DispatchSV<impl::Min,traits_T,ARG2>(arg1, arg2.as_derived());
+  }
+
+  template<typename traits_T, typename ARG1, typename ARG2>
+  inline auto min(const ExprBase<traits_T,ARG1>& arg1, const ExprBase<traits_T,ARG2>& arg2)
+  {
+    return impl::DispatchVV<impl::Min,traits_T,ARG1,ARG2>(arg1.as_derived(), arg2.as_derived());
   }
 
   template<typename traits_T, typename ARG>
