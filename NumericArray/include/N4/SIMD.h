@@ -36,6 +36,8 @@
 
 namespace simd {
 
+  ////// Private /////////////////////////////////////////////////////////////
+
   namespace priv {
 
     template<bool CMP_W>
