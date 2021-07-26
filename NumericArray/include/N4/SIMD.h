@@ -93,9 +93,19 @@ namespace simd {
     return _mm_cmple_ps(a, b);
   }
 
+  inline simd_t cmpLT(const simd_t& a, const simd_t& b)
+  {
+    return _mm_cmplt_ps(a, b);
+  }
+
   inline int cmpMask(const simd_t& x)
   {
     return _mm_movemask_ps(x);
+  }
+
+  inline simd_t cmpNEQ(const simd_t& a, const simd_t& b)
+  {
+    return _mm_cmpneq_ps(a, b);
   }
 
   inline simd_t div(const simd_t& a, const simd_t& b)
