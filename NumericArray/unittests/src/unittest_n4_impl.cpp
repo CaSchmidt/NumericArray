@@ -30,3 +30,14 @@ bool test_zero(const V4f& v)
 {
   return v.isZero();
 }
+
+bool test_intersect(const real_t *min, const real_t *max,
+                    const real_t *org, const real_t *dir,
+                    const real_t tMax)
+{
+  const simd::simd_t _min = simd::load(min);
+  const simd::simd_t _max = simd::load(max);
+  const simd::simd_t _org = simd::load(org);
+  const simd::simd_t _dir = simd::load(dir);
+  return simd::intersectRayAABBox(_min, _max, _org, _dir, tMax);
+}

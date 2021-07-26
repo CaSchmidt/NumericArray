@@ -391,6 +391,34 @@ namespace simd {
     simd::store(dest + 12, col3);
   }
 
+  ////// Ray Axis Aligned Bounding Box Intersection //////////////////////////
+
+  inline bool intersectRayAABBox(const simd_t& bbMin, const simd_t& bbMax,
+                                 const simd_t& rayOrg, const simd_t& rayDir,
+                                 const real_t rayMax)
+  {
+    constexpr int XYZ_MASK = impl::CMP_MASK<false>();
+
+    const int result_mask = cmpMask(cmpNEQ(rayDir, zero())) & XYZ_MASK;
+    if( result_mask == 0 ) {
+      return false;
+    }
+
+    const simd_t tMin = div(sub(bbMin, rayOrg), rayDir);
+    const simd_t tMax = div(sub(bbMax, rayOrg), rayDir);
+
+    const simd_t tRayMax = set(rayMax);
+
+    // 0 <= tMin  &&  tMin < tRayMax
+    const simd_t maskMin = bit_and(cmpLEQ(zero(), tMin), cmpLT(tMin, tRayMax));
+    // 0 <= tMax  &&  tMax < tRayMax
+    const simd_t maskMax = bit_and(cmpLEQ(zero(), tMax), cmpLT(tMax, tRayMax));
+
+    const int result = cmpMask(bit_and(maskMin, maskMax));
+
+    return (result & result_mask) == result_mask;
+  }
+
 } // namespace simd
 
 #endif // N4_SIMD_H
