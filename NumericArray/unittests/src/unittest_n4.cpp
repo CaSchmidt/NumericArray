@@ -272,9 +272,9 @@ namespace test_n4 {
     REQUIRE( !a.isZero(2) );
     REQUIRE( a.isZero(3) );
     REQUIRE( a.isZero(4) );
-    REQUIRE( simd::cmpLEQ(a.eval(), b.eval()) );
-    REQUIRE( simd::cmpLEQ(a.eval(), a.eval()) );
-    REQUIRE( !simd::cmpLEQ(b.eval(), a.eval()) );
+    REQUIRE( simd::compareLEQ(a.eval(), b.eval()) );
+    REQUIRE( simd::compareLEQ(a.eval(), a.eval()) );
+    REQUIRE( !simd::compareLEQ(b.eval(), a.eval()) );
   }
 
   TEST_CASE("N4 Vector4f manipulators.", "[Vector4f][manipulator]") {

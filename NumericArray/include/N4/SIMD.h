@@ -36,20 +36,6 @@
 
 namespace simd {
 
-  ////// Private /////////////////////////////////////////////////////////////
-
-  namespace priv {
-
-    template<bool CMP_W>
-    constexpr int CMP_MASK()
-    {
-      return CMP_W
-          ? (1 << 4) - 1
-          : (1 << 3) - 1;
-    }
-
-  } // namespace priv
-
   ////// Types ///////////////////////////////////////////////////////////////
 
   using real_t = float;
@@ -82,16 +68,34 @@ namespace simd {
     return _mm_add_ps(a, b);
   }
 
+  inline simd_t bit_and(const simd_t& a, const simd_t& b)
+  {
+    return _mm_and_ps(a, b);
+  }
+
   inline simd_t clamp(const simd_t& x, const simd_t& lo, const simd_t& hi)
   {
     return _mm_max_ps(lo, _mm_min_ps(x, hi));
   }
 
-  template<bool CMP_W = true>
-  inline bool cmpLEQ(const simd_t& a, const simd_t& b)
+  inline simd_t cmpEQ(const simd_t& a, const simd_t& b)
   {
-    constexpr int MASK = priv::CMP_MASK<CMP_W>();
-    return (_mm_movemask_ps(_mm_cmple_ps(a, b)) & MASK) == MASK;
+    return _mm_cmpeq_ps(a, b);
+  }
+
+  inline simd_t cmpGEQ(const simd_t& a, const simd_t& b)
+  {
+    return _mm_cmpge_ps(a, b);
+  }
+
+  inline simd_t cmpLEQ(const simd_t& a, const simd_t& b)
+  {
+    return _mm_cmple_ps(a, b);
+  }
+
+  inline int cmpMask(const simd_t& x)
+  {
+    return _mm_movemask_ps(x);
   }
 
   inline simd_t div(const simd_t& a, const simd_t& b)
@@ -175,6 +179,27 @@ namespace simd {
     return SIMD_SHIFTR(SIMD_SHIFTL(x, 4), 4);
   }
 
+  ////// Relations ///////////////////////////////////////////////////////////
+
+  namespace impl {
+
+    template<bool CMP_W>
+    constexpr int CMP_MASK()
+    {
+      return CMP_W
+          ? (1 << 4) - 1
+          : (1 << 3) - 1;
+    }
+
+  } // namespace impl
+
+  template<bool CMP_W = true>
+  inline bool compareLEQ(const simd_t& a, const simd_t& b)
+  {
+    constexpr int MASK = impl::CMP_MASK<CMP_W>();
+    return (cmpMask(cmpLEQ(a, b)) & MASK) == MASK;
+  }
+
   ////// 3x1 Vector Functions ////////////////////////////////////////////////
 
   /*
@@ -202,7 +227,7 @@ namespace simd {
   template<bool CMP_W = true>
   inline bool isZero(const simd_t& x, const simd_t& epsilon0)
   {
-    return cmpLEQ<CMP_W>(abs(x), epsilon0);
+    return compareLEQ<CMP_W>(abs(x), epsilon0);
   }
 
   template<bool CMP_W = true>
