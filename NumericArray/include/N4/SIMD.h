@@ -442,6 +442,27 @@ namespace simd {
     return (result & result_mask) == result_mask;
   }
 
+  inline bool intersectRayAABBox(const simd_t& bbMin, const simd_t& bbMax,
+                                 const simd_t& rayOrg, const simd_t& rayDir)
+  {
+    constexpr int XYZ_MASK = impl::CMP_MASK<false>();
+
+    const int result_mask = cmpMask(cmpNEQ(rayDir, zero())) & XYZ_MASK;
+    if( result_mask == 0 ) {
+      return false;
+    }
+
+    const simd_t tMin = div(sub(bbMin, rayOrg), rayDir);
+    const simd_t tMax = div(sub(bbMax, rayOrg), rayDir);
+
+    const simd_t condMin = cmpLEQ(zero(), tMin);
+    const simd_t condMax = cmpLEQ(zero(), tMax);
+
+    const int result = cmpMask(bit_or(condMin, condMax));
+
+    return (result & result_mask) == result_mask;
+  }
+
 } // namespace simd
 
 #endif // N4_SIMD_H

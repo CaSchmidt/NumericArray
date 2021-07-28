@@ -375,11 +375,19 @@ namespace test_intersect {
     return simd::intersectRayAABBox(min.eval(), max.eval(), org.eval(), dir.eval(), tMax);
   }
 
+  bool test_intersect(const Vec4f& min, const Vec4f& max,
+                      const Vec4f& org, const Vec4f& dir)
+  {
+    return simd::intersectRayAABBox(min.eval(), max.eval(), org.eval(), dir.eval());
+  }
+
   TEST_CASE("Ray/Box intersection.", "[intersect]") {
     std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
 
     const Vec4f min{1, 1, 1};
     const Vec4f max{2, 2, 2};
+
+    // Finite tMax ///////////////////////////////////////////////////////////
 
     REQUIRE(  test_intersect(min, max, {1.5, 1.5, 0}, {0, 0,  1}, 1.5 ) );
     REQUIRE(  test_intersect(min, max, {1.5, 1.5, 3}, {0, 0, -1}, 1.5 ) );
@@ -417,6 +425,29 @@ namespace test_intersect {
     REQUIRE(  test_intersect(min, max, {1, 1, 1}, {-1, -1, -1}, 2) );
     REQUIRE( !test_intersect(min, max, {0, 0, 0}, {-1, -1, -1}, 1) );
     REQUIRE( !test_intersect(min, max, {0, 0, 0}, {-1, -1, -1}, 2) );
+
+    // Infinite //////////////////////////////////////////////////////////////
+
+    REQUIRE( test_intersect(min, max, {1.5, 1.5, 0}, {0, 0,  1}) );
+    REQUIRE( test_intersect(min, max, {1.5, 1.5, 3}, {0, 0, -1}) );
+
+    REQUIRE( test_intersect(min, max, {1.5, 0, 1.5}, {0,  1, 0}) );
+    REQUIRE( test_intersect(min, max, {1.5, 3, 1.5}, {0, -1, 0}) );
+
+    REQUIRE( test_intersect(min, max, {0, 1.5, 1.5}, { 1, 0, 0}) );
+    REQUIRE( test_intersect(min, max, {3, 1.5, 1.5}, {-1, 0, 0}) );
+
+    REQUIRE(  test_intersect(min, max, {0, 0, 0}, {1, 1, 1}) );
+    REQUIRE(  test_intersect(min, max, {1, 1, 1}, {1, 1, 1}) );
+    REQUIRE(  test_intersect(min, max, {1.5, 1.5, 1.5}, {1, 1, 1}) );
+    REQUIRE(  test_intersect(min, max, {2, 2, 2}, {1, 1, 1}) );
+    REQUIRE( !test_intersect(min, max, {3, 3, 3}, {1, 1, 1}) );
+
+    REQUIRE(  test_intersect(min, max, {3, 3, 3}, {-1, -1, -1}) );
+    REQUIRE(  test_intersect(min, max, {2, 2, 2}, {-1, -1, -1}) );
+    REQUIRE(  test_intersect(min, max, {1.5, 1.5, 1.5}, {-1, -1, -1}) );
+    REQUIRE(  test_intersect(min, max, {1, 1, 1}, {-1, -1, -1}) );
+    REQUIRE( !test_intersect(min, max, {0, 0, 0}, {-1, -1, -1}) );
   }
 
 } // namespace test_intersect
