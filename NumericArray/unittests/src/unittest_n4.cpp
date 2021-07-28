@@ -367,6 +367,60 @@ namespace test_n4 {
 
 } // namespace test_n4
 
+namespace test_intersect {
+
+  bool test_intersect(const Vec4f& min, const Vec4f& max,
+                      const Vec4f& org, const Vec4f& dir, const real_t tMax)
+  {
+    return simd::intersectRayAABBox(min.eval(), max.eval(), org.eval(), dir.eval(), tMax);
+  }
+
+  TEST_CASE("Ray/Box intersection.", "[intersect]") {
+    std::cout << "*** " << Catch::getResultCapture().getCurrentTestName() << std::endl;
+
+    const Vec4f min{1, 1, 1};
+    const Vec4f max{2, 2, 2};
+
+    REQUIRE(  test_intersect(min, max, {1.5, 1.5, 0}, {0, 0,  1}, 1.5 ) );
+    REQUIRE(  test_intersect(min, max, {1.5, 1.5, 3}, {0, 0, -1}, 1.5 ) );
+    REQUIRE( !test_intersect(min, max, {1.5, 1.5, 0}, {0, 0,  1}, 0.75) );
+    REQUIRE( !test_intersect(min, max, {1.5, 1.5, 3}, {0, 0, -1}, 0.75) );
+
+    REQUIRE(  test_intersect(min, max, {1.5, 0, 1.5}, {0,  1, 0}, 1.5 ) );
+    REQUIRE(  test_intersect(min, max, {1.5, 3, 1.5}, {0, -1, 0}, 1.5 ) );
+    REQUIRE( !test_intersect(min, max, {1.5, 0, 1.5}, {0,  1, 0}, 0.75) );
+    REQUIRE( !test_intersect(min, max, {1.5, 3, 1.5}, {0, -1, 0}, 0.75) );
+
+    REQUIRE(  test_intersect(min, max, {0, 1.5, 1.5}, { 1, 0, 0}, 1.5  ) );
+    REQUIRE(  test_intersect(min, max, {3, 1.5, 1.5}, {-1, 0, 0}, 1.5  ) );
+    REQUIRE( !test_intersect(min, max, {0, 1.5, 1.5}, { 1, 0, 0}, 0.75 ) );
+    REQUIRE( !test_intersect(min, max, {3, 1.5, 1.5}, {-1, 0, 0}, 0.75 ) );
+
+    REQUIRE( !test_intersect(min, max, {0, 0, 0}, {1, 1, 1}, 1) );
+    REQUIRE(  test_intersect(min, max, {0, 0, 0}, {1, 1, 1}, 2) );
+    REQUIRE(  test_intersect(min, max, {1, 1, 1}, {1, 1, 1}, 1) );
+    REQUIRE(  test_intersect(min, max, {1, 1, 1}, {1, 1, 1}, 2) );
+    REQUIRE(  test_intersect(min, max, {1.5, 1.5, 1.5}, {1, 1, 1}, 1) );
+    REQUIRE(  test_intersect(min, max, {1.5, 1.5, 1.5}, {1, 1, 1}, 2) );
+    REQUIRE(  test_intersect(min, max, {2, 2, 2}, {1, 1, 1}, 1) );
+    REQUIRE(  test_intersect(min, max, {2, 2, 2}, {1, 1, 1}, 2) );
+    REQUIRE( !test_intersect(min, max, {3, 3, 3}, {1, 1, 1}, 1) );
+    REQUIRE( !test_intersect(min, max, {3, 3, 3}, {1, 1, 1}, 2) );
+
+    REQUIRE( !test_intersect(min, max, {3, 3, 3}, {-1, -1, -1}, 1) );
+    REQUIRE(  test_intersect(min, max, {3, 3, 3}, {-1, -1, -1}, 2) );
+    REQUIRE(  test_intersect(min, max, {2, 2, 2}, {-1, -1, -1}, 1) );
+    REQUIRE(  test_intersect(min, max, {2, 2, 2}, {-1, -1, -1}, 2) );
+    REQUIRE(  test_intersect(min, max, {1.5, 1.5, 1.5}, {-1, -1, -1}, 1) );
+    REQUIRE(  test_intersect(min, max, {1.5, 1.5, 1.5}, {-1, -1, -1}, 2) );
+    REQUIRE(  test_intersect(min, max, {1, 1, 1}, {-1, -1, -1}, 1) );
+    REQUIRE(  test_intersect(min, max, {1, 1, 1}, {-1, -1, -1}, 2) );
+    REQUIRE( !test_intersect(min, max, {0, 0, 0}, {-1, -1, -1}, 1) );
+    REQUIRE( !test_intersect(min, max, {0, 0, 0}, {-1, -1, -1}, 2) );
+  }
+
+} // namespace test_intersect
+
 namespace test_optics {
 
   using namespace test_equal;

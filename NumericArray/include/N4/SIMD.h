@@ -73,6 +73,21 @@ namespace simd {
     return _mm_and_ps(a, b);
   }
 
+  inline simd_t bit_andnot(const simd_t& a, const simd_t& b)
+  {
+    return _mm_andnot_ps(a, b); // NOTE: ~a & b
+  }
+
+  inline simd_t bit_or(const simd_t& a, const simd_t& b)
+  {
+    return _mm_or_ps(a, b);
+  }
+
+  inline simd_t bit_xor(const simd_t& a, const simd_t& b)
+  {
+    return _mm_xor_ps(a, b);
+  }
+
   inline simd_t clamp(const simd_t& x, const simd_t& lo, const simd_t& hi)
   {
     return _mm_max_ps(lo, _mm_min_ps(x, hi));
@@ -86,6 +101,11 @@ namespace simd {
   inline simd_t cmpGEQ(const simd_t& a, const simd_t& b)
   {
     return _mm_cmpge_ps(a, b);
+  }
+
+  inline simd_t cmpGT(const simd_t& a, const simd_t& b)
+  {
+    return _mm_cmpgt_ps(a, b);
   }
 
   inline simd_t cmpLEQ(const simd_t& a, const simd_t& b)
@@ -190,6 +210,11 @@ namespace simd {
   }
 
   ////// Relations ///////////////////////////////////////////////////////////
+
+  inline simd_t cmov(const simd_t& condA, const simd_t& a, const simd_t& b)
+  {
+    return bit_or(bit_and(condA, a), bit_andnot(condA, b));
+  }
 
   namespace impl {
 
@@ -409,12 +434,10 @@ namespace simd {
 
     const simd_t tRayMax = set(rayMax);
 
-    // 0 <= tMin  &&  tMin < tRayMax
-    const simd_t maskMin = bit_and(cmpLEQ(zero(), tMin), cmpLT(tMin, tRayMax));
-    // 0 <= tMax  &&  tMax < tRayMax
-    const simd_t maskMax = bit_and(cmpLEQ(zero(), tMax), cmpLT(tMax, tRayMax));
+    const simd_t condMin = bit_and(cmpLEQ(zero(), tMin), cmpLT(tMin, tRayMax));
+    const simd_t condMax = bit_and(cmpLEQ(zero(), tMax), cmpLT(tMax, tRayMax));
 
-    const int result = cmpMask(bit_and(maskMin, maskMax));
+    const int result = cmpMask(bit_or(condMin, condMax));
 
     return (result & result_mask) == result_mask;
   }
