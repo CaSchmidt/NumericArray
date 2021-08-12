@@ -108,6 +108,16 @@ namespace n4 {
     ColorProperty<1> g8;
     ColorProperty<2> b8;
 
+    real_t luminance() const
+    {
+      // NOTE 1: https://www.pbr-book.org/3ed-2018/Color_and_Radiometry/The_SampledSpectrum_Class
+      // NOTE 2: https://github.com/boksajak/referencePT/blob/master/shaders/brdf.h
+      constexpr real_t yr = 0.212671f;
+      constexpr real_t yg = 0.715160f;
+      constexpr real_t yb = 0.072169f;
+      return yr*r + yg*g + yb*b;
+    }
+
   private:
     Color3fManipulator() noexcept = delete;
   };
