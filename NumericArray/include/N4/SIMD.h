@@ -251,10 +251,9 @@ namespace simd {
     return sub(prod1, prod2);
   }
 
-  inline simd_t dot(const simd_t& a, const simd_t& b)
+  inline simd_t dot3(const simd_t& a, const simd_t& b)
   {
-    const simd_t prod = mul(a, b);
-    return hadd(zero_w(prod));
+    return hadd(zero_w(mul(a, b)));
   }
 
   ////// 4x1 Vector Functions ////////////////////////////////////////////////

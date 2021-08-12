@@ -65,7 +65,7 @@ namespace n4 {
       inline static simd_t eval(const simd_t& from, const simd_t& to)
       {
         const simd_t x = simd::sub(to, from);
-        return simd::div(x, simd::sqrt(simd::dot(x, x)));
+        return simd::div(x, simd::sqrt(simd::dot3(x, x)));
       }
     };
 
@@ -86,7 +86,7 @@ namespace n4 {
     struct Normalize {
       inline static simd_t eval(const simd_t& x)
       {
-        return simd::div(x, simd::sqrt(simd::dot(x, x)));
+        return simd::div(x, simd::sqrt(simd::dot3(x, x)));
       }
     };
 
@@ -122,20 +122,20 @@ namespace n4 {
   inline real_t distance(const ExprBase<traits_T,FROM>& from, const ExprBase<traits_T,TO>& to)
   {
     const simd::simd_t delta = simd::sub(to.as_derived().eval(), from.as_derived().eval());
-    return simd::to_real(simd::sqrt(simd::dot(delta, delta)));
+    return simd::to_real(simd::sqrt(simd::dot3(delta, delta)));
   }
 
   template<typename traits_T, typename ARG1, typename ARG2>
   inline real_t dot(const ExprBase<traits_T,ARG1>& arg1, const ExprBase<traits_T,ARG2>& arg2)
   {
-    return simd::to_real(simd::dot(arg1.as_derived().eval(), arg2.as_derived().eval()));
+    return simd::to_real(simd::dot3(arg1.as_derived().eval(), arg2.as_derived().eval()));
   }
 
   template<typename traits_T, typename ARG>
   inline real_t length(const ExprBase<traits_T,ARG>& arg)
   {
     const simd::simd_t x = arg.as_derived().eval();
-    return simd::to_real(simd::sqrt(simd::dot(x, x)));
+    return simd::to_real(simd::sqrt(simd::dot3(x, x)));
   }
 
   template<typename traits_T, typename ARG1>
