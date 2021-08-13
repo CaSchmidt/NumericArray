@@ -53,7 +53,7 @@ namespace n4 {
      *        from the media 't' to the media 'i'.
      * eta := The ratio of the indices of refraction; eta = etai/etat.
      *
-     * NOTE 1: All input vectors are considered normal AKA having a length of 1!
+     * NOTE 1: All input vectors are considered normalized AKA having a length of 1!
      *
      * NOTE 2: Properly setting up the geometry and refractive index is beyond
      *         the scope of this API and needs to be done by the caller!
