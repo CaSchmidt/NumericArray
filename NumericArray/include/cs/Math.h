@@ -29,8 +29,8 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
-#ifndef CSMATH_H
-#define CSMATH_H
+#ifndef NUMERIC_MATH_H
+#define NUMERIC_MATH_H
 
 #include <math.h>
 
@@ -207,4 +207,4 @@ inline float csTan(const float& x)
   return ::tanf(x);
 }
 
-#endif // CSMATH_H
+#endif // NUMERIC_MATH_H
