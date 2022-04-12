@@ -47,10 +47,10 @@ namespace simd {
 #define SIMD_SHUFFLE(a,b,a1,a2,b1,b2) \
   _mm_shuffle_ps(a, b, _MM_SHUFFLE((b2), (b1), (a2), (a1)))
 
-#define SIMD_SHIFTL(vec,count) \
+#define SIMD_SHIFTLx8(vec,count) \
   _mm_castsi128_ps(_mm_slli_si128(_mm_castps_si128(vec), (count)))
 
-#define SIMD_SHIFTR(vec,count) \
+#define SIMD_SHIFTRx8(vec,count) \
   _mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(vec), (count)))
 
 #define SIMD_SWIZZLE(vec,x,y,z,w) \
@@ -206,7 +206,7 @@ namespace simd {
 
   inline simd_t zero_w(const simd_t& x)
   {
-    return SIMD_SHIFTR(SIMD_SHIFTL(x, 4), 4);
+    return SIMD_SHIFTRx8(SIMD_SHIFTLx8(x, 4), 4);
   }
 
   ////// Relations ///////////////////////////////////////////////////////////
