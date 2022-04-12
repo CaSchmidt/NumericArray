@@ -44,23 +44,32 @@ namespace simd {
 
   ////// Macros //////////////////////////////////////////////////////////////
 
+#define SIMD_SHIFTR(vec,bits) \
+  _mm_castsi128_ps(_mm_srli_epi32(_mm_castps_si128(vec), bits))
+
+#define SIMD_SHIFTLx8(vec,bytes) \
+  _mm_castsi128_ps(_mm_slli_si128(_mm_castps_si128(vec), bytes))
+
+#define SIMD_SHIFTRx8(vec,bytes) \
+  _mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(vec), bytes))
+
 #define SIMD_SHUFFLE(a,b,a1,a2,b1,b2) \
   _mm_shuffle_ps(a, b, _MM_SHUFFLE((b2), (b1), (a2), (a1)))
-
-#define SIMD_SHIFTLx8(vec,count) \
-  _mm_castsi128_ps(_mm_slli_si128(_mm_castps_si128(vec), (count)))
-
-#define SIMD_SHIFTRx8(vec,count) \
-  _mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(vec), (count)))
 
 #define SIMD_SWIZZLE(vec,x,y,z,w) \
   _mm_castsi128_ps(_mm_shuffle_epi32(_mm_castps_si128(vec), _MM_SHUFFLE((w), (z), (y), (x))))
 
   ////// Elementary Functions ////////////////////////////////////////////////
 
+  inline simd_t abs_mask()
+  {
+    const simd_t zero = _mm_setzero_ps();
+    return SIMD_SHIFTR(_mm_cmpeq_ps(zero, zero), 1);
+  }
+
   inline simd_t abs(const simd_t& x)
   {
-    return _mm_max_ps(x, _mm_sub_ps(_mm_setzero_ps(), x));
+    return _mm_and_ps(x, abs_mask());
   }
 
   inline simd_t add(const simd_t& a, const simd_t& b)
